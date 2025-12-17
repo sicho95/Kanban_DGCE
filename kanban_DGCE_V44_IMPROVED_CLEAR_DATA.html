@@ -1,0 +1,3200 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KanBan DGCE</title>
+    <style>
+        .hamburger-menu-btn {
+            background: none;
+            border: none;
+            color: #f5f5f7;
+            cursor: pointer;
+            padding: 8px 12px;
+            margin-right: 10px;
+            border-radius: 8px;
+            transition: background 0.3s;
+            font-size: 24px;
+            line-height: 1;
+        }
+
+        .hamburger-menu-btn:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .view-selector.filters {
+            margin-left: auto;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: rgba(100,149,237,0.2);
+            --primary-border: #6495ed;
+            --primary-text: #6495ed;
+        }
+
+        body {
+            font-family: 'SF Pro Display', 'Segoe UI', sans-serif;
+            background: radial-gradient(circle at top left, rgba(50,48,47,0.96), rgba(20,20,20,0.98));
+            color: #f5f5f7;
+            overflow-x: hidden;
+        }
+
+        /* Header fixe */
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 900;
+            background: rgba(55,55,55,0.95);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .header h1 {
+            font-size: 1.8rem;
+            color: var(--primary-text);
+            letter-spacing: 0.5px;
+            margin: 0;
+            margin-right: 33px;
+        }
+
+        .view-selector {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .view-btn, .filter-btn {
+            padding: 0.6rem 1rem;
+            background: rgba(255,255,255,0.12);
+            backdrop-filter: blur(25px);
+            border: 1px solid rgba(255,255,255,0.08);
+            color: #f5f5f7;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        .view-btn:hover, .filter-btn:hover {
+            background: rgba(255,255,255,0.16);
+            
+            box-shadow: 0 6px 20px rgba(255,255,255,0.08);
+        }
+
+        .view-btn.active {
+            background: rgba(255,255,255,0.12);
+            color: var(--primary-text);
+            border-color: var(--primary-border);
+            box-shadow: 0 4px 15px rgba(100,149,237,0.3);
+        }
+
+    .filter-btn.active {
+        background: rgba(255,255,255,0.12);
+        color: var(--primary-text);
+        border-color: var(--primary-border);
+        box-shadow: 0 4px 15px rgba(100,149,237,0.3);
+    }
+
+
+    
+    /* Styles pour les boutons modals (dupliqué de filter-btn) */
+    .btn {
+        padding: 0.6rem 1rem;
+        background: rgba(255, 255, 255, 0.12);
+        backdrop-filter: blur(25px);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        color: #f5f5f7;
+        border-radius: 12px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .btn:hover {
+        background: rgba(255, 255, 255, 0.16);
+        box-shadow: 0 6px 20px rgba(255, 255, 255, 0.08);
+    }
+
+    .btn-secondary {
+        padding: 0.6rem 1rem;
+        background: rgba(255, 255, 255, 0.12);
+        backdrop-filter: blur(25px);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        color: #f5f5f7;
+        border-radius: 12px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .btn-secondary:hover {
+        background: rgba(255, 255, 255, 0.16);
+        box-shadow: 0 6px 20px rgba(255, 255, 255, 0.08);
+    }
+
+        .kanban-container {
+            padding: 2rem;
+            display: flex;
+            gap: 1.5rem;
+            overflow-x: auto;
+            min-height: calc(100vh - 120px);
+        }
+
+        .column {
+            width: 350px;
+            min-width: 350px;
+            max-width: 350px;
+            flex-shrink: 0;
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(30px);
+            border-radius: 20px;
+            padding: 1rem;
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            transition: background 0.4s ease, transform 0.3s ease, box-shadow 0.3s ease;
+            height: fit-content;
+            cursor: move;
+        }
+
+        .column:hover {
+            
+            background: rgba(255,255,255,0.13);
+            box-shadow: 0 10px 40px rgba(255,255,255,0.08);
+        }
+
+        .column.dragging-column {
+            opacity: 0.5;
+            cursor: grabbing;
+        }
+
+        .column.drag-over-column {
+            border: 2px solid var(--primary-border);
+            background: rgba(100,149,237,0.15);
+        }
+
+        .column-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-radius: 12px;
+            position: relative;
+            cursor: move;
+        }
+
+        .column-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .column-badge {
+            background: rgba(255,255,255,0.2);
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+
+        .column-menu-container {
+            position: relative;
+        }
+
+        .column-menu-btn {
+            background: transparent;
+            border: none;
+            color: rgba(255,255,255,0.7);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 5px 10px;
+            line-height: 1;
+            transition: all 0.3s ease;
+        }
+
+        .column-menu-btn:hover {
+            color: #fff;
+            background: rgba(255,255,255,0.1);
+            border-radius: 8px;
+        }
+
+        .column-menu-dropdown, .card-menu-dropdown {
+            position: absolute;
+            right: 0;
+            top: 100%;
+            background: rgba(40,40,40,0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 12px;
+            padding: 0.5rem 0;
+            display: none;
+            flex-direction: column;
+            min-width: 160px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+            z-index: 1000;
+            margin-top: 5px;
+        }
+
+        .column-menu-dropdown.show, .card-menu-dropdown.show {
+            display: flex;
+        }
+
+        .column-menu-dropdown button, .card-menu-dropdown button {
+            background: none;
+            border: none;
+            text-align: left;
+            color: #f5f5f7;
+            padding: 0.7rem 1rem;
+            cursor: pointer;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .column-menu-dropdown button:hover, .card-menu-dropdown button:hover {
+            background: rgba(255,255,255,0.15);
+        }
+
+        .add-task-btn {
+            background: rgba(255,255,255,0.12);
+            backdrop-filter: blur(25px);
+            border: 1px solid rgba(255,255,255,0.08);
+            color: #fff;
+            border-radius: 12px;
+            padding: 0.6rem 1rem;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            width: 100%;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            order: -1;
+        }
+
+        .add-task-btn:hover {
+            background: rgba(255,255,255,0.18);
+            
+            box-shadow: 0 6px 20px rgba(255,255,255,0.08);
+        }
+
+        .cards-container {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            min-height: 50px;
+            flex: 1;
+            max-height: 70vh;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+
+        .card {
+            background: rgba(255,255,255,0.12);
+            backdrop-filter: blur(25px);
+            border-radius: 16px;
+            padding: 1rem;
+            border: 1px solid rgba(255,255,255,0.08);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: grab;
+            position: relative;
+        }
+
+        .card:active {
+            cursor: grabbing;
+        }
+
+        .card:hover {
+            
+            background: rgba(255,255,255,0.16);
+            box-shadow: 0 10px 25px rgba(255,255,255,0.08);
+        }
+
+        .card.dragging {
+            opacity: 0.5;
+            cursor: grabbing;
+        }
+
+        .cards-container.drag-over {
+            background: rgba(100,149,237,0.2);
+            border-radius: 12px;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.8rem;
+        }
+
+        .card-title-container {
+            flex: 1;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .card-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #fff;
+            flex: 1;
+        }
+
+        .card-section {
+            background: var(--primary-color);
+            color: #f5f5f7;
+            padding: 3px 10px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .card-menu-container {
+            position: relative;
+        }
+
+        .card-menu-btn {
+            background: transparent;
+            border: none;
+            color: rgba(255,255,255,0.6);
+            font-size: 1.3rem;
+            cursor: pointer;
+            padding: 0 5px;
+            line-height: 1;
+            transition: all 0.3s ease;
+        }
+
+        .card-menu-btn:hover {
+            color: #fff;
+        }
+
+        .card-description {
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 0.8rem;
+            line-height: 1.4;
+        }
+
+        .card-meta span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .priority-tag {
+            padding: 4px 10px;
+            border-radius: 10px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .priority-high { background: rgba(255,59,48,0.3); color: #ff6b6b; }
+        .priority-medium { background: rgba(255,149,0,0.3); color: #ffb347; }
+        .priority-low { background: rgba(52,199,89,0.3); color: #4cd964; }
+
+        .progress {
+            height: 14px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 7px;
+            overflow: hidden;
+            margin-top: 0.5rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4cd964, #34c759);
+            border-radius: 7px;
+            text-align: right;
+            color: #fff;
+            font-size: 0.75rem;
+            line-height: 14px;
+            padding-right: 5px;
+            transition: width 0.3s ease;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(12px);
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .modal.show {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-content {
+            background: rgba(40,40,40,0.95);
+            backdrop-filter: blur(25px);
+            padding: 1.5rem 2rem;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 500px;
+            color: #fff;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            
+            animation: slideIn 0.4s ease forwards;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0;  }
+            to { opacity: 1;  }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .modal-header h2 {
+            font-size: 1.5rem;
+            color: var(--primary-text);
+        }
+
+        .close-modal {
+            font-size: 2rem;
+            color: rgba(255,255,255,0.6);
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .close-modal:hover {
+            color: #fff;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            color: rgba(255,255,255,0.9);
+            font-size: 0.95rem;
+        }
+
+        .form-group input, .form-group select, .form-group textarea {
+            padding: 0.8rem;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 12px;
+            color: #fff;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            outline: none;
+            background: rgba(255,255,255,0.15);
+            border-color: var(--primary-text);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+            font-family: inherit;
+        }
+
+        .color-picker {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(45px, 1fr));
+            gap: 10px;
+            max-height: 250px;
+            overflow-y: auto;
+        }
+
+        .color-option {
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            cursor: pointer;
+            border: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .color-option:hover {
+            transform: scale(1.1);
+        }
+
+        .color-option.selected {
+            border-color: #fff;
+            transform: scale(1.15);
+            box-shadow: 0 0 15px rgba(255,255,255,0.5);
+        }
+
+        .calendar-view {
+            display: none;
+            padding: 2rem;
+        }
+
+        .calendar-view.show {
+            display: block;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .calendar-day {
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(20px);
+            border-radius: 16px;
+            padding: 1rem;
+            min-height: 120px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .calendar-day-header {
+            font-weight: 600;
+            color: var(--primary-text);
+            margin-bottom: 0.5rem;
+        }
+
+        .calendar-task {
+            background: rgba(255,255,255,0.1);
+            padding: 0.5rem;
+            border-radius: 8px;
+            margin-top: 0.5rem;
+            font-size: 0.85rem;
+        }
+
+        .overdue {
+            border: 2px solid rgba(255,59,48,0.8);
+        }
+
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.2);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .header {
+                top: 0;
+            }
+
+            .header h1 {
+                font-size: 1.5rem;
+            }
+
+            .column {
+                width: 300px;
+                min-width: 300px;
+                max-width: 300px;
+            }
+
+            .kanban-container {
+                padding: 1.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 1rem;
+                top: 0;
+            }
+
+            .header h1 {
+                font-size: 1.3rem;
+                width: 100%;
+            }
+
+            .view-selector {
+                width: 100%;
+                overflow-x: auto;
+                flex-wrap: nowrap;
+                padding-bottom: 5px;
+            }
+
+            .view-btn, .filter-btn {
+                font-size: 13px;
+                padding: 0.5rem 0.8rem;
+                white-space: nowrap;
+            }
+
+            .btn, .btn-secondary {
+                width: 100%;
+            }
+
+            .column {
+                width: 280px;
+                min-width: 280px;
+                max-width: 280px;
+            }
+
+            .kanban-container {
+                padding: 1rem;
+            }
+
+            .modal-content {
+                width: 95%;
+                padding: 1rem 1.5rem;
+            }
+
+            .color-picker {
+                grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+            }
+
+            .color-option {
+                width: 40px;
+                height: 40px;
+            }
+
+            .calendar-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .cards-container {
+                max-height: 60vh;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header {
+                top: 0;
+            }
+
+            .header h1 {
+                font-size: 1.2rem;
+            }
+
+            .view-btn, .filter-btn {
+                font-size: 12px;
+                padding: 0.4rem 0.7rem;
+            }
+
+            .column {
+                width: 260px;
+                min-width: 260px;
+                max-width: 260px;
+            }
+
+            .column-title {
+                font-size: 1rem;
+            }
+
+            .card-title {
+                font-size: 0.95rem;
+            }
+
+            .calendar-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Pour les tablettes en mode paysage */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .calendar-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+    
+        /* Métadonnées verticales */
+        .card-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 0.8rem;
+        }
+
+        .card-meta div {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Ressources en texte */
+        .card-resources-text {
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.6);
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .calendar-task-detail { position: fixed; background: rgba(50,50,50,0.98); border: 1px solid #6495ed; border-radius: 12px; padding: 1.5rem; min-width: 320px; max-width: 420px; box-shadow: 0 10px 40px rgba(0,0,0,0.8); z-index: 1000; display: none; }
+        .calendar-task-detail.show { display: block; }
+        .calendar-task-detail-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; border-bottom: 1px solid rgba(100,149,237,0.3); padding-bottom: 0.75rem; gap: 1rem; }
+        .calendar-task-detail-header-left { display: flex; align-items: center; gap: 0.75rem; flex: 1; min-width: 0; }
+        .calendar-task-detail-header-right { display: flex; align-items: center; gap: 0.5rem; flex-shrink: 0; }
+        .calendar-task-detail-title { font-size: 1.1rem; font-weight: 600; color: #f5f5f7; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .calendar-task-detail-section { display: inline-block; background: rgba(100,149,237,0.25); color: #6495ed; padding: 0.25rem 0.75rem; border-radius: 6px; font-size: 0.85rem; white-space: nowrap; flex-shrink: 0; }
+        .calendar-task-detail-menu { position: relative; }
+        .calendar-task-detail-menu-btn { background: none; border: none; color: #f5f5f7; font-size: 1.2rem; cursor: pointer; padding: 0.25rem; transition: color 0.2s ease; line-height: 1; }
+        .calendar-task-detail-menu-btn:hover { color: #6495ed; }
+        .calendar-task-detail-menu-dropdown { display: none; position: absolute; right: 0; top: 100%; margin-top: 0.5rem; background: rgba(40,40,40,0.95); border: 1px solid #6495ed; border-radius: 8px; min-width: 150px; box-shadow: 0 4px 12px rgba(0,0,0,0.5); z-index: 1001; }
+        .calendar-task-detail-menu-dropdown.show { display: block; }
+        .calendar-task-detail-menu-dropdown button { width: 100%; padding: 0.75rem 1rem; background: none; border: none; color: #f5f5f7; text-align: left; cursor: pointer; transition: background 0.2s ease; font-size: 0.9rem; }
+        .calendar-task-detail-menu-dropdown button:hover { background: rgba(100,149,237,0.2); }
+        .calendar-task-detail-close { background: none; border: none; color: #f5f5f7; font-size: 1.5rem; cursor: pointer; padding: 0; transition: color 0.2s ease; line-height: 1; }
+        .calendar-task-detail-close:hover { color: #6495ed; }
+        .calendar-task-detail-description { color: #d0d0d0; margin-bottom: 1rem; line-height: 1.5; }
+        .calendar-task-detail-meta { display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.9rem; color: #b0b0b0; }
+        .calendar-task-detail-meta-item { display: flex; align-items: center; gap: 0.5rem; }
+        .calendar-task-detail-progress { margin-top: 1rem; }
+        .calendar-task-detail-progress-label { font-size: 0.85rem; color: #b0b0b0; margin-bottom: 0.5rem; }
+        .calendar-task { cursor: pointer; transition: all 0.2s ease; }
+        .calendar-task:hover { background: rgba(100,149,237,0.3);  }
+
+    /* Colonne fictive "Ajouter colonne" */
+    .add-column-placeholder {
+        width: 350px;
+        min-width: 350px;
+        max-width: 350px;
+        flex-shrink: 0;
+        background: transparent;
+        border: 2px dashed rgba(100, 149, 237, 0.4);
+        border-radius: 20px;
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        min-height: 200px;
+        opacity: 0.6;
+    }
+
+    .add-column-placeholder:hover {
+        background: rgba(100, 149, 237, 0.1);
+        border-color: rgba(100, 149, 237, 0.7);
+        opacity: 1;
+    }
+
+    .add-column-icon {
+        font-size: 3rem;
+        color: var(--primary-text);
+        font-weight: 300;
+    }
+
+    .add-column-text {
+        font-size: 1rem;
+        color: rgba(245, 245, 247, 0.8);
+        font-weight: 500;
+        text-align: center;
+    }
+
+    @media (max-width: 768px) {
+        .add-column-placeholder {
+            width: 280px;
+            min-width: 280px;
+            max-width: 280px;
+            min-height: 150px;
+        }
+
+        .add-column-icon {
+            font-size: 2.5rem;
+        }
+
+        .add-column-text {
+            font-size: 0.9rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .add-column-placeholder {
+            width: 260px;
+            min-width: 260px;
+            max-width: 260px;
+        }
+    }
+
+    
+    /* Footer copyright */
+    .footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        text-align: center;
+        padding: 8px 0;
+        background: rgba(20, 20, 20, 0.8);
+        backdrop-filter: blur(10px);
+        color: rgba(255, 255, 255, 0.3);
+        font-size: 11px;
+        font-weight: 400;
+        z-index: 800;
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+</style>
+</head>
+<body>
+    <div class="header">
+        <button class="hamburger-menu-btn" onclick="toggleSettingsMenu()" title="Menu"><span>☰</span></button>
+            <h1>🎯 KanBan DGCE</h1>
+        <div class="view-selector">
+            <button class="view-btn active" onclick="switchView('general')">Général</button>
+            <button class="view-btn" onclick="switchView('soa')">SOA</button>
+            <button class="view-btn" onclick="switchView('smsc')">SMSC</button>
+            <button class="view-btn" onclick="switchView('sosc')">SOSC</button>
+            <button class="view-btn" onclick="switchView('sbo')">SBO</button>
+            <button class="view-btn" onclick="switchView('transverse')">Transverse</button>
+        </div>
+        <div class="view-selector filters">
+            <button class="filter-btn" onclick="showAllTasks()">Toutes les tâches</button>
+            <button class="filter-btn" onclick="filterOverdue()">En retard</button>
+            <button class="filter-btn" onclick="filterThisWeek()">Cette semaine</button>
+            <button class="filter-btn" onclick="filterThisMonth()">Ce mois</button>
+            <button class="filter-btn" onclick="showCalendar()">📅 Calendrier</button>
+        </div>
+    </div>
+
+    <div class="kanban-container" id="kanbanContainer"></div>
+    
+    <div class="calendar-view" id="calendarView">
+        <h2 style="color: var(--primary-text); margin-bottom: 20px;">📅 Vue Calendrier</h2>
+        <div class="calendar-grid" id="calendarGrid"></div>
+    </div>
+
+    <div class="calendar-task-detail" id="calendarTaskDetail">
+        <div class="calendar-task-detail-header">
+            <div class="calendar-task-detail-header-left">
+                <h3 class="calendar-task-detail-title" id="detailTitle"></h3>
+                <div class="calendar-task-detail-section" id="detailSection"></div>
+            </div>
+            <div class="calendar-task-detail-header-right">
+                <div class="calendar-task-detail-menu">
+                    <button class="calendar-task-detail-menu-btn" onclick="toggleDetailMenu(event)">⋮</button>
+                    <div class="calendar-task-detail-menu-dropdown" id="detailMenu">
+                        <button onclick="editCardFromDetail()">✏️ Modifier</button>
+                        <button onclick="deleteCardFromDetail()">🗑️ Supprimer</button>
+                    </div>
+                </div>
+                <button class="calendar-task-detail-close" onclick="closeTaskDetail()">×</button>
+            </div>
+        </div>
+        <div class="calendar-task-detail-description" id="detailDescription" style="display: none;"></div>
+        <div class="calendar-task-detail-meta" id="detailMeta"></div>
+        <div class="calendar-task-detail-progress" id="detailProgressContainer" style="display: none;">
+            <div class="calendar-task-detail-progress-label">Progression</div>
+            <div class="progress">
+                <div class="progress-fill" id="detailProgress"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Colonne -->
+    <div class="modal" id="columnModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="columnModalTitle">Ajouter/Modifier une colonne</h2>
+                <span class="close-modal" onclick="closeModal('columnModal')">&times;</span>
+            </div>
+            <div class="form-group">
+                <label>Titre de la colonne</label>
+                <input type="text" id="columnTitle" placeholder="Ex: À faire">
+            </div>
+            <div class="form-group" id="existingColumnGroup">
+                <label>Ou choisir une colonne existante</label>
+                <select id="existingColumnSelect" onchange="handleExistingColumnSelect()">
+                    <option value="">-- Sélectionner une colonne --</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Couleur de la colonne</label>
+                <div class="color-picker" id="columnColorPicker"></div>
+            </div>
+            <div class="form-group">
+                <label>Kanbans utilisant cette colonne (visualisation)</label>
+                <div id="sectionTagsContainer" style="display:flex; flex-wrap:wrap; gap:8px; padding:10px; background:rgba(255,255,255,0.05); border-radius:8px; min-height:40px;"></div>
+            </div>
+            <button class="btn" onclick="saveColumn()">Enregistrer</button>
+        </div>
+    </div>
+    <!-- Modal Tâche -->
+    <div class="modal" id="cardModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Ajouter/Modifier une tâche</h2>
+                <span class="close-modal" onclick="closeModal('cardModal')">&times;</span>
+            </div>
+            <div class="form-group">
+                <label>Titre</label>
+                <input type="text" id="cardTitle" placeholder="Titre de la tâche">
+            </div>
+            <div class="form-group">
+                <label>Description</label>
+                <textarea id="cardDescription" placeholder="Description de la tâche"></textarea>
+            </div>
+            <div class="form-group">
+                <label>Section</label>
+                <select id="cardSection">
+                    <option value="SOA">SOA</option>
+                    <option value="SMSC">SMSC</option>
+                    <option value="SOSC">SOSC</option>
+                    <option value="SBO">SBO</option>
+                    <option value="Transverse">Transverse</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Colonne</label>
+                <select id="cardColumn"></select>
+            </div>
+            <div class="form-group">
+                <label>Date d'échéance</label>
+                <input type="date" id="cardDueDate">
+            </div>
+            <div class="form-group">
+                <label>Ressources (séparez par des virgules)</label>
+                <input type="text" id="cardResources" placeholder="Ex: Jean Dupont, Marie Martin">
+            </div>
+            <div class="form-group">
+                <label>État d'avancement (%)</label>
+                <input type="number" id="cardProgress" min="0" max="100" value="0">
+            </div>
+            <div class="form-group">
+                <label>Priorité</label>
+                <select id="cardPriority">
+                    <option value="low">Basse</option>
+                    <option value="medium">Moyenne</option>
+                    <option value="high">Haute</option>
+                </select>
+            </div>
+            <button class="btn" onclick="saveCard()">Enregistrer</button>
+        </div>
+    </div>
+
+    <!-- Modal Paramètres -->
+    <div class="modal" id="settingsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>⚙️ Paramètres</h2>
+                <span class="close-modal" onclick="closeModal('settingsModal')">&times;</span>
+            </div>
+            <div class="form-group">
+                <button class="btn" onclick="openTitleModal()">📝 Modifier le titre</button>
+            <button class="btn" onclick="openSectionsManagementModal()">📋 Gérer les Sections</button>
+                <button class="btn" onclick="exportToPDF()">📥 Exporter en PDF</button>
+                                    <button class="btn" onclick="exportData()">📥 Exporter les données (JSON)</button>
+                    <button class="btn" onclick="importData()">📤 Importer les données</button>
+                <button class="btn btn-secondary" onclick="clearAllData()">🗑️ Effacer toutes les données</button>
+                <button class="btn btn-secondary" onclick="resetApplication()" style="background: rgba(255,59,48,0.2); border-color: rgba(255,59,48,0.3);">⚠️ Réinitialiser totalement l'application</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="titleModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Modifier le titre de l'application</h2>
+                <span class="close-modal" onclick="closeModal('titleModal')">&times;</span>
+            </div>
+            <div class="form-group">
+                <label>Titre de l'application</label>
+                <input type="text" id="appTitleInput" placeholder="Ex: 🎯 Mon Kanban">
+            </div>
+            <button class="btn" onclick="saveAppTitle()">Enregistrer</button>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script>
+
+// Log sur création colonne
+function addColumnToSection(sectionId, colId) {
+    let section = sections.find(s => s.id === sectionId);
+    if (!section.columns.includes(colId)) {
+        section.columns.push(colId);
+        let order = getSectionOrder(sectionId);
+        order.push(colId);
+        saveSectionOrder(sectionId, order);
+        console.log('[CREATION] Section:', sectionId, 'Colonne ajoutée:', colId, 'Colonnes:', section.columns, 'Ordre:', order);
+    }
+    renderKanban(sectionId);
+}
+// Log sur suppression colonne
+function removeColumnFromSection(sectionId, colId) {
+    let section = sections.find(s => s.id === sectionId);
+    if (!section) return;
+    console.log('[SUPPRESSION] Section:', sectionId, 'Colonne supprimée:', colId, 'Avant:', section.columns);
+    section.columns = section.columns.filter(id => id !== colId);
+    let order = getSectionOrder(sectionId).filter(id => id !== colId);
+    saveSectionOrder(sectionId, order);
+    console.log('[SUPPRESSION] Après:', section.columns, 'Ordre:', order);
+    renderKanban(sectionId);
+}
+// Log sur changement d'ordre drag/drop
+function updateOrderAfterDrag(sectionId, newOrder) {
+    console.log('[ORDRE] Drag/drop dans section:', sectionId, 'Nouvel ordre:', newOrder);
+    saveSectionOrderSafe(sectionId, newOrder);
+    renderKanban(sectionId);
+}
+// Log sur render
+function renderKanban(sectionId) {
+    const section = sections.find(sec => sec.id === sectionId);
+    let order = getSectionOrderSafe(sectionId);
+    let columns = getCurrentSectionColumns(sectionId);
+    console.log('[RENDER] Section:', sectionId, 'Colonnes:', columns, 'Ordre:', order, 'Section.columns:', section.columns);
+    // ...affiche les colonnes...
+}
+// Log sur sauvegarde ordre
+function saveSectionOrderSafe(sectionId, orderArray) {
+    let section = sections.find(s => s.id === sectionId);
+    let realCols = section ? section.columns : [];
+    let newOrder = orderArray.filter(id => realCols.includes(id));
+    console.log('[SAVE-ORDER] Section:', sectionId, 'Ordre sauvegardé:', newOrder, 'Section.columns:', realCols);
+    saveSectionOrder(sectionId, newOrder);
+}
+
+function getSectionOrderSafe(sectionId) {
+    let section = sections.find(s => s.id === sectionId);
+    let realCols = section ? section.columns : [];
+    let order = getSectionOrder(sectionId).filter(id => realCols.includes(id));
+    let missing = realCols.filter(id => !order.includes(id));
+    return order.concat(missing);
+}
+function saveSectionOrderSafe(sectionId, orderArray) {
+    let section = sections.find(s => s.id === sectionId);
+    let realCols = section ? section.columns : [];
+    let newOrder = orderArray.filter(id => realCols.includes(id));
+    saveSectionOrder(sectionId, newOrder);
+}
+function removeColumnFromSection(sectionId, colId) {
+    let section = sections.find(s => s.id === sectionId);
+    if (!section) return;
+    section.columns = section.columns.filter(id => id !== colId);
+    let order = getSectionOrder(sectionId).filter(id => id !== colId);
+    saveSectionOrder(sectionId, order);
+    renderKanban(sectionId);
+}
+function getCurrentSectionColumns(sectionId) {
+    return getSectionOrderSafe(sectionId);
+}
+function populateColumnsSelect(sectionId, selectedColId) {
+    const columnSelect = document.getElementById('taskColumn');
+    if (!columnSelect) return;
+    const cols = getCurrentSectionColumns(sectionId);
+    columnSelect.innerHTML = '';
+    cols.forEach((colId, i) => {
+        let col = columns.find(c=>c.id===colId);
+        if(!col) return;
+        let opt = document.createElement('option');
+        opt.value = col.id;
+        opt.textContent = col.title;
+        if((selectedColId && col.id===selectedColId) || (!selectedColId && i===0)) opt.selected=true;
+        columnSelect.appendChild(opt);
+    });
+}
+function openCardModalFromGlobal(sectionId) {
+    document.getElementById('taskSection').value = sectionId;
+    populateColumnsSelect(sectionId);
+}
+function openCardModalFromColumn(sectionId, colId) {
+    document.getElementById('taskSection').value = sectionId;
+    populateColumnsSelect(sectionId, colId);
+}
+
+function getCurrentSectionColumns(sectionId) {
+    const section = sections.find(sec => sec.id === sectionId);
+    if (!section) return [];
+    let order = getSectionOrder(sectionId);
+    let cols = section.columns.slice();
+    if (order.length) cols.sort((a,b) => order.indexOf(a) - order.indexOf(b));
+    return cols;
+}
+function populateColumnsSelect(sectionId, selectedColId) {
+    const columnSelect = document.getElementById('taskColumn');
+    if (!columnSelect) return;
+    const cols = getCurrentSectionColumns(sectionId);
+    columnSelect.innerHTML = '';
+    cols.forEach((colId, i) => {
+        let col = columns.find(c=>c.id===colId);
+        if(!col) return;
+        let opt = document.createElement('option');
+        opt.value = col.id;
+        opt.textContent = col.title;
+        if((selectedColId && col.id===selectedColId) || (!selectedColId && i===0)) opt.selected=true;
+        columnSelect.appendChild(opt);
+    });
+}
+// ouverture modale ajout tâche global : préremplissage section et colonne une
+function openCardModalFromGlobal(sectionId) {
+    document.getElementById('taskSection').value = sectionId;
+    populateColumnsSelect(sectionId);
+    // ... ouvrir modale ...
+}
+// ouverture modale ajout tâche sur colonne
+function openCardModalFromColumn(sectionId, colId) {
+    document.getElementById('taskSection').value = sectionId;
+    populateColumnsSelect(sectionId, colId);
+    // ... ouvrir modale ...
+}
+
+function saveSectionOrder(sectionId, orderArray) {
+    localStorage.setItem('order_section_' + sectionId, JSON.stringify(orderArray));
+}
+function getSectionOrder(sectionId) {
+    return JSON.parse(localStorage.getItem('order_section_' + sectionId) || '[]');
+}
+
+        // Palette de 30 couleurs
+        const colorPalette = [
+            'rgba(255,149,0,0.3)', 'rgba(255,59,48,0.3)', 'rgba(255,204,0,0.3)',
+            'rgba(52,199,89,0.3)', 'rgba(0,122,255,0.3)', 'rgba(88,86,214,0.3)',
+            'rgba(175,82,222,0.3)', 'rgba(255,45,85,0.3)', 'rgba(255,99,164,0.3)',
+            'rgba(255,179,71,0.3)', 'rgba(255,213,79,0.3)', 'rgba(158,216,107,0.3)',
+            'rgba(102,212,207,0.3)', 'rgba(90,200,250,0.3)', 'rgba(64,156,255,0.3)',
+            'rgba(125,122,255,0.3)', 'rgba(191,90,242,0.3)', 'rgba(255,55,95,0.3)',
+            'rgba(255,115,87,0.3)', 'rgba(255,176,58,0.3)', 'rgba(240,240,240,0.25)',
+            'rgba(220,220,255,0.25)', 'rgba(180,230,255,0.25)', 'rgba(200,255,230,0.25)',
+            'rgba(255,220,200,0.25)', 'rgba(250,180,200,0.25)', 'rgba(210,210,255,0.25)',
+            'rgba(190,250,190,0.25)', 'rgba(255,250,190,0.25)', 'rgba(255,200,255,0.25)'
+        ];
+
+        // Données
+        let columns = JSON.parse(localStorage.getItem('kanbanColumns')) || [
+            { id: 1, title: "À faire", color: "rgba(100,149,237,0.3)", order: 0 },
+            { id: 2, title: "En cours", color: "rgba(0,122,255,0.3)", order: 1 },
+            { id: 3, title: "En révision", color: "rgba(255,149,0,0.3)", order: 2 },
+            { id: 4, title: "Terminé", color: "rgba(52,199,89,0.3)", order: 3 }
+        ];
+
+        let cards = JSON.parse(localStorage.getItem('kanbanCards')) || [];
+        let currentView = 'general';
+        let currentEditingColumn = null;
+        let currentEditingCard = null;
+        let selectedColor = "rgba(100,149,237,0.3)";
+        let currentContextColumn = null;
+        let draggedCard = null;
+        let draggedColumn = null;
+
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', () => {
+            loadAppTitle();
+            renderKanban();
+            initializeColorPicker();
+            setupDragAndDrop();
+            
+            // Fermer les menus au clic extérieur
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.column-menu-container') && !e.target.closest('.card-menu-container')) {
+                    document.querySelectorAll('.column-menu-dropdown, .card-menu-dropdown').forEach(menu => {
+                        menu.classList.remove('show');
+                    });
+                }
+            });
+        });
+
+        // Initialize color picker with palette
+        function initializeColorPicker() {
+            const picker = document.getElementById('columnColorPicker');
+            picker.innerHTML = colorPalette.map(color =>
+                `<div class="color-option" style="background: ${color}" data-color="${color}"></div>`
+            ).join('');
+            
+            picker.querySelectorAll('.color-option').forEach(option => {
+                option.addEventListener('click', () => {
+                    selectedColor = option.dataset.color;
+                    updateColorSelection();
+                });
+            });
+        }
+
+        // Toggle menus
+        function toggleColumnMenu(columnId, event) {
+            event.stopPropagation();
+            const menu = document.getElementById(`column-menu-${columnId}`);
+            
+            // Fermer tous les autres menus
+            document.querySelectorAll('.column-menu-dropdown, .card-menu-dropdown').forEach(m => {
+                if (m !== menu) m.classList.remove('show');
+            });
+            
+            menu.classList.toggle('show');
+        }
+
+        function toggleCardMenu(cardId, event) {
+            event.stopPropagation();
+            const menu = document.getElementById(`card-menu-${cardId}`);
+            
+            // Fermer tous les autres menus
+            document.querySelectorAll('.column-menu-dropdown, .card-menu-dropdown').forEach(m => {
+                if (m !== menu) m.classList.remove('show');
+            });
+            
+            menu.classList.toggle('show');
+        }
+
+        // Rendu du Kanban
+        function renderKanban() {
+            const container = document.getElementById('kanbanContainer');
+            container.innerHTML = '';
+
+            let displayedColumns = [];
+            const filterViews = ['allTasks', 'overdue', 'thisWeek', 'thisMonth'];
+
+            if (currentView === 'general' || filterViews.includes(currentView)) {
+                const columnsInSections = new Set();
+                sections.forEach(section => {
+                    if (section.columns) {
+                        section.columns.forEach(colId => columnsInSections.add(colId));
+                    }
+                });
+
+                const orphanColumns = columns.filter(col => !columnsInSections.has(col.id));
+                const maxColumns = Math.max(...sections.map(s => s.columns ? s.columns.length : 0), 0);
+
+                for (let i = 0; i < Math.max(maxColumns, orphanColumns.length); i++) {
+                    if (i < orphanColumns.length) {
+                        displayedColumns.push(orphanColumns[i]);
+                    }
+
+                    sections.forEach(section => {
+                        if (section.columns && i < section.columns.length) {
+                            const colId = section.columns[i];
+                            const column = columns.find(c => c.id === colId);
+                            if (column && !displayedColumns.find(c => c.id === colId)) {
+                                displayedColumns.push(column);
+                            }
+                        }
+                    });
+                }
+            } else {
+                const viewLower = currentView.toLowerCase();
+                const currentSection = sections.find(s => s.name.toLowerCase() === viewLower);
+                
+window.lastSectionId = currentSection ? currentSection.id : null;
+if (currentSection && currentSection.columns) {
+                    displayedColumns = currentSection.columns.map(colId => 
+                        columns.find(c => c.id === colId)
+                    ).filter(col => col !== undefined);
+                }
+            }
+
+            displayedColumns.forEach(column => {
+                const columnElement = createColumnElement(column);
+                container.appendChild(columnElement);
+            });
+
+            updateColumnSelects();
+
+        // Ajouter la colonne fictive "Ajouter une colonne"
+        const addColumnPlaceholder = document.createElement('div');
+        addColumnPlaceholder.className = 'add-column-placeholder';
+        addColumnPlaceholder.onclick = () => openColumnModal();
+        addColumnPlaceholder.innerHTML = `
+            <div class="add-column-icon">+</div>
+            <div class="add-column-text">Ajouter une colonne</div>
+        `;
+        container.appendChild(addColumnPlaceholder);
+        
+        setupDragAndDrop();
+        }
+
+        // Créer une colonne
+        function createColumnElement(column, customCount) {
+            const columnDiv = document.createElement('div');
+            columnDiv.className = 'column';
+            columnDiv.style.background = column.color || 'rgba(255,255,255,0.08)';
+            columnDiv.dataset.columnId = column.id;
+            columnDiv.draggable = true;
+
+            const filteredCards = getFilteredCards(column.id);
+            
+            columnDiv.innerHTML = `
+                <div class="column-header">
+                    <div style="display: flex; align-items: center;">
+                        <div class="column-title">${column.title}</div>
+                        <span class="column-badge">${customCount !== undefined ? customCount : filteredCards.length}</span>
+                    </div>
+                    <div class="column-menu-container">
+                        <button class="column-menu-btn" onclick="toggleColumnMenu(${column.id}, event)">⋮</button>
+                        <div class="column-menu-dropdown" id="column-menu-${column.id}">
+                            <button onclick="editColumn(${column.id})">✏️ Modifier</button>
+                            <button onclick="deleteColumn(${column.id})">🗑️ Supprimer</button>
+                        </div>
+                    </div>
+                </div>
+                <button class="add-task-btn" onclick="openCardModalInContext(${column.id})"><span style="color: #f5f5f7;">+</span> Ajouter une tâche</button>
+                <div class="cards-container" data-column-id="${column.id}">
+                    ${filteredCards.map(card => createCardHTML(card)).join('')}
+                </div>
+            `;
+
+            return columnDiv;
+        }
+
+        // Obtenir les cartes filtrées
+        function getFilteredCards(columnId) {
+            let filtered = cards.filter(card => card.columnId === columnId);
+            
+            if (currentView !== 'general') {
+                filtered = filtered.filter(card =>
+                    card.section.toLowerCase() === currentView.toLowerCase()
+                );
+            }
+
+            return filtered;
+        }
+
+        // Créer le HTML d'une carte
+        function createCardHTML(card) {
+            const dueDate = card.dueDate ? new Date(card.dueDate) : null;
+            const isOverdue = dueDate && dueDate < new Date() && card.progress < 100;
+
+            // Construit les métadonnées (date et priorité en vertical)
+            const metaItems = [];
+            if (card.dueDate) metaItems.push(`<div>📅 ${formatDateDisplay(card.dueDate)}</div>`);
+            if (card.priority) metaItems.push(`<div>${getPriorityIcon(card.priority)} ${getPriorityLabel(card.priority)}</div>`);
+            const metaHtml = metaItems.length > 0 ? `<div class="card-meta">${metaItems.join('')}</div>` : '';
+
+            // Ressources en mode texte
+            const resourcesHtml = card.resources && card.resources.length > 0 
+                ? `<div class="card-resources-text">👤 ${card.resources.join(', ')}</div>` : '';
+
+            return `
+                <div class="card ${isOverdue ? 'overdue' : ''}" draggable="true" data-card-id="${card.id}">
+                    <div class="card-header">
+                        <div class="card-title-container">
+                            <div class="card-title">${card.title}</div>
+                            ${card.section && card.section.trim() ? (() => {
+                                const section = sections.find(s => s.name.toLowerCase() === card.section.toLowerCase());
+                                const bgColor = section ? section.color : 'rgba(100,149,237,0.3)';
+                                return `<span class="card-section" style="background:${bgColor}; color:#f5f5f7;">${card.section}</span>`;
+                            })() : ""}
+                        </div>
+                        <div class="card-menu-container">
+                            <button class="card-menu-btn" onclick="toggleCardMenu(${card.id}, event)">⋮</button>
+                            <div class="card-menu-dropdown" id="card-menu-${card.id}">
+                                <button onclick="editCard(${card.id})">✏️ Modifier</button>
+                                <button onclick="deleteCard(${card.id})">🗑️ Supprimer</button>
+                            </div>
+                        </div>
+                    </div>
+                    ${card.description ? `<div class="card-description">${card.description}</div>` : ''}
+                    ${metaHtml}
+                    ${resourcesHtml}
+                    <div class="progress">
+                        <div class="progress-fill" style="width: ${card.progress || 0}%">${card.progress || 0}%</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Gestion des vues
+        function switchView(view) {
+            currentView = view;
+            document.querySelectorAll('.view-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            document.getElementById('calendarView').classList.remove('show');
+            document.getElementById('kanbanContainer').style.display = 'flex';
+            renderKanban();
+        }
+
+        // Filtres
+        // Affiche toutes les tâches de la vue actuelle
+        function showAllTasks() {
+        // Cacher le calendrier et réafficher le kanban
+        document.getElementById('calendarView').classList.remove('show');
+        document.getElementById('kanbanContainer').style.display = 'flex';
+
+        // Retirer l'état actif de tous les boutons de filtre
+        document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+        renderKanban();
+    }
+
+        // Filtre les tâches en retard selon la vue actuelle
+        function filterOverdue() {
+        // Cacher le calendrier et réafficher le kanban
+        document.getElementById('calendarView').classList.remove('show');
+        document.getElementById('kanbanContainer').style.display = 'flex';
+
+        // Gérer l'état actif des boutons de filtre
+        document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+        event.target.classList.add('active');
+
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            const tomorrow = new Date(today);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+
+            let overdueCards = cards.filter(card => {
+                const dueDate = card.dueDate ? new Date(card.dueDate) : null;
+                return dueDate && dueDate < tomorrow && card.progress < 100;
+            });
+
+            if (currentView !== 'general') {
+                overdueCards = overdueCards.filter(card => card.section.toLowerCase() === currentView.toLowerCase());
+            }
+
+            renderFilteredCards(overdueCards);
+        }
+
+        // Filtre les tâches de cette semaine selon la vue actuelle
+        function filterThisWeek() {
+        // Cacher le calendrier et réafficher le kanban
+        document.getElementById('calendarView').classList.remove('show');
+        document.getElementById('kanbanContainer').style.display = 'flex';
+
+        // Gérer l'état actif des boutons de filtre
+        document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+        event.target.classList.add('active');
+        
+            // Fonction pour obtenir le numéro de semaine ISO
+            function getISOWeek(date) {
+                const d = new Date(date);
+                d.setHours(0, 0, 0, 0);
+                // Jeudi de cette semaine
+                d.setDate(d.getDate() + 4 - (d.getDay() || 7));
+                // Premier jeudi de l'année
+                const yearStart = new Date(d.getFullYear(), 0, 1);
+                // Calculer le numéro de semaine
+                const weekNo = Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+                return { year: d.getFullYear(), week: weekNo };
+            }
+
+            const today = new Date();
+            const currentWeek = getISOWeek(today);
+
+            let weekCards = cards.filter(card => {
+                if (!card.dueDate) return false;
+                const dueDate = new Date(card.dueDate);
+                const taskWeek = getISOWeek(dueDate);
+
+                // Même année ET même numéro de semaine
+                return taskWeek.year === currentWeek.year && taskWeek.week === currentWeek.week;
+            });
+
+            // Applique le filtre de section
+            if (currentView !== 'general') {
+                weekCards = weekCards.filter(card => card.section.toLowerCase() === currentView.toLowerCase());
+            }
+
+            renderFilteredCards(weekCards);
+        }
+
+        // Filtre les tâches de ce mois selon la vue actuelle
+        function filterThisMonth() {
+        // Cacher le calendrier et réafficher le kanban
+        document.getElementById('calendarView').classList.remove('show');
+        document.getElementById('kanbanContainer').style.display = 'flex';
+
+        // Gérer l'état actif des boutons de filtre
+        document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+        event.target.classList.add('active');
+        
+            const today = new Date();
+            const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+            const endOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 1);
+
+            let monthCards = cards.filter(card => {
+                const dueDate = card.dueDate ? new Date(card.dueDate) : null;
+                return dueDate && dueDate >= startOfMonth && dueDate < endOfMonth;
+            });
+
+            if (currentView !== 'general') {
+                monthCards = monthCards.filter(card => card.section.toLowerCase() === currentView.toLowerCase());
+            }
+
+            renderFilteredCards(monthCards);
+        }
+
+        function renderFilteredCards(filteredCards) {
+            const kanbanContainer = document.getElementById('kanbanContainer');
+            kanbanContainer.innerHTML = '';
+
+            // Déterminer les colonnes à afficher selon la vue actuelle
+            let displayedColumns = [];
+
+            if (currentView === 'general') {
+                // MÊME LOGIQUE QUE renderKanban pour vue général (interleaving sans tri)
+                const columnsInSections = new Set();
+                sections.forEach(section => {
+                    if (section.columns) {
+                        section.columns.forEach(colId => columnsInSections.add(colId));
+                    }
+                });
+
+                const orphanColumns = columns.filter(col => !columnsInSections.has(col.id));
+                const maxColumns = Math.max(...sections.map(s => s.columns ? s.columns.length : 0), 0);
+
+                for (let i = 0; i < Math.max(maxColumns, orphanColumns.length); i++) {
+                    if (i < orphanColumns.length) {
+                        displayedColumns.push(orphanColumns[i]);
+                    }
+
+                    sections.forEach(section => {
+                        if (section.columns && i < section.columns.length) {
+                            const colId = section.columns[i];
+                            const column = columns.find(c => c.id === colId);
+                            // Anti-doublon (comme renderKanban)
+                            if (column && !displayedColumns.find(c => c.id === colId)) {
+                                displayedColumns.push(column);
+                            }
+                        }
+                    });
+                }
+            } else {
+                // Dans une vue de section, afficher TOUTES les colonnes de cette section (même vides)
+                const viewLower = currentView.toLowerCase();
+                const currentSection = sections.find(s => s.name.toLowerCase() === viewLower);
+
+                window.lastSectionId = currentSection ? currentSection.id : null;
+                if (currentSection && currentSection.columns) {
+                    displayedColumns = currentSection.columns.map(colId => 
+                        columns.find(c => c.id === colId)
+                    ).filter(col => col !== undefined);
+                }
+            }
+
+            // Afficher les colonnes avec les cartes filtrées (PAS DE TRI!)
+            displayedColumns.forEach(column => {
+                const columnCards = filteredCards.filter(card => card.columnId === column.id);
+                const columnDiv = createColumnElement(column, columnCards.length);
+                columnDiv.style.background = column.color || 'rgba(255,255,255,0.08)';
+                const cardsContainer = columnDiv.querySelector('.cards-container');
+                cardsContainer.innerHTML = columnCards.map(card => createCardHTML(card)).join('');
+                kanbanContainer.appendChild(columnDiv);
+            });
+
+        // Ajouter la colonne fictive "Ajouter une colonne"
+        const addColumnPlaceholder = document.createElement('div');
+        addColumnPlaceholder.className = 'add-column-placeholder';
+        addColumnPlaceholder.onclick = () => openColumnModal();
+        addColumnPlaceholder.innerHTML = `
+            <div class="add-column-icon">+</div>
+            <div class="add-column-text">Ajouter une colonne</div>
+        `;
+        kanbanContainer.appendChild(addColumnPlaceholder);
+        
+        setupDragAndDrop();
+        }
+
+        // Calendrier
+        // Affiche le calendrier filtré selon la vue actuelle
+        function showCalendar() {
+            // Retirer l'état actif de tous les boutons de filtre
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+
+            document.getElementById('kanbanContainer').style.display = 'none';
+            document.getElementById('calendarView').classList.add('show');
+            renderCalendar();
+        }
+
+        let currentDetailCardId = null;
+
+        function showTaskDetail(cardId, event) {
+            const card = cards.find(c => c.id === cardId);
+            if (!card) return;
+            currentDetailCardId = cardId;
+            document.getElementById('detailTitle').textContent = card.title;
+            const sectionEl = document.getElementById('detailSection');
+            if (card.section && card.section.trim()) {
+                const section = sections.find(s => s.name.toLowerCase() === card.section.toLowerCase());
+                const bgColor = section ? section.color : 'rgba(100,149,237,0.3)';
+                sectionEl.textContent = card.section;
+                sectionEl.style.background = bgColor;
+                sectionEl.style.color = '#f5f5f7';
+                sectionEl.style.display = 'inline-block';
+            } else {
+                sectionEl.style.display = 'none';
+            }
+            const descEl = document.getElementById('detailDescription');
+            if (card.description && card.description.trim()) { descEl.textContent = card.description; descEl.style.display = 'block'; } else { descEl.style.display = 'none'; }
+            const metaItems = [];
+            if (card.dueDate) metaItems.push('<div class="calendar-task-detail-meta-item">📅 ' + formatDateDisplay(card.dueDate) + '</div>');
+            if (card.priority) metaItems.push('<div class="calendar-task-detail-meta-item">' + getPriorityIcon(card.priority) + ' ' + getPriorityLabel(card.priority) + '</div>');
+            if (card.resources && card.resources.length > 0) metaItems.push('<div class="calendar-task-detail-meta-item">👤 ' + card.resources.join(', ') + '</div>');
+            const metaEl = document.getElementById('detailMeta');
+            metaEl.innerHTML = metaItems.join(''); metaEl.style.display = metaItems.length > 0 ? 'flex' : 'none';
+            const progressContainer = document.getElementById('detailProgressContainer');
+            const progress = card.progress || 0;
+            if (progress > 0) { const progressEl = document.getElementById('detailProgress'); progressEl.style.width = progress + '%'; progressEl.textContent = progress + '%'; progressContainer.style.display = 'block'; } else { progressContainer.style.display = 'none'; }
+            const bubble = document.getElementById('calendarTaskDetail');
+            let left = event.pageX + 20, top = event.pageY;
+            if (left + 350 > window.innerWidth) left = event.pageX - 370;
+            bubble.style.left = left + 'px'; bubble.style.top = top + 'px'; bubble.classList.add('show');
+        }
+
+        function closeTaskDetail() { document.getElementById('calendarTaskDetail').classList.remove('show'); document.getElementById('detailMenu').classList.remove('show'); currentDetailCardId = null; }
+        function toggleDetailMenu(event) { event.stopPropagation(); document.getElementById('detailMenu').classList.toggle('show'); }
+        function editCardFromDetail() { if (currentDetailCardId !== null) { closeTaskDetail(); editCard(currentDetailCardId); } }
+        function deleteCardFromDetail() { if (currentDetailCardId !== null) { closeTaskDetail(); deleteCard(currentDetailCardId); } }
+
+        function renderCalendar() {
+            const grid = document.getElementById('calendarGrid');
+            grid.innerHTML = '';
+
+            const today = new Date();
+            const daysInMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
+
+            for (let day = 1; day <= daysInMonth; day++) {
+                const date = new Date(today.getFullYear(), today.getMonth(), day);
+
+                // Filtre les cartes pour ce jour
+                let dayCards = cards.filter(card => {
+                    if (!card.dueDate) return false;
+                    const cardDate = new Date(card.dueDate);
+                    return cardDate.getDate() === day &&
+                           cardDate.getMonth() === today.getMonth() &&
+                           cardDate.getFullYear() === today.getFullYear();
+                });
+
+                // Applique le filtre de section si pas en vue générale
+                if (currentView !== 'general') {
+                    dayCards = dayCards.filter(card =>
+                        card.section.toLowerCase() === currentView.toLowerCase()
+                    );
+                }
+
+                const dayDiv = document.createElement('div');
+                dayDiv.className = 'calendar-day';
+                dayDiv.innerHTML = `
+                    <div class="calendar-day-header">${day} ${date.toLocaleDateString('fr-FR', { weekday: 'short' })}</div>
+                    ${dayCards.map(card => {
+                        const section = sections.find(s => s.name.toLowerCase() === card.section.toLowerCase());
+                        const bgColor = section ? section.color : 'rgba(100,149,237,0.3)';
+                        const sectionText = card.section && card.section.trim() ? ` - ${card.section}` : '';
+                        return `<div class="calendar-task" style="background:${bgColor}; border-left-color:${bgColor}; color:#f5f5f7;" onclick="showTaskDetail(${card.id}, event)">${card.title}${sectionText}</div>`;
+                    }).join('')}
+                `;
+                grid.appendChild(dayDiv);
+            }
+        }
+
+        function displaySectionTags(sectionsToDisplay) {
+            const container = document.getElementById('sectionTagsContainer');
+            if (!container) return;
+            
+            container.innerHTML = sectionsToDisplay.map(sectionId => {
+                const section = sections.find(s => s.id === sectionId);
+                if (!section) return '';
+                return `<div style="display:inline-flex; align-items:center; gap:6px; padding:6px 12px; background:${section.color}; border-radius:20px; color:white; font-weight:500; font-size:0.9rem;">${section.name}</div>`;
+            }).join('');
+        }
+        function handleExistingColumnSelect() {
+            const select = document.getElementById('existingColumnSelect');
+            const titleInput = document.getElementById('columnTitle');
+            const colorPicker = document.getElementById('columnColorPicker');
+            const columnId = parseInt(select.value);
+
+            if (columnId && !isNaN(columnId)) {
+                const column = columns.find(c => c.id === columnId);
+                if (column) {
+                    titleInput.value = column.title;
+                    titleInput.disabled = true;
+                    titleInput.style.opacity = '0.5';
+                    titleInput.style.cursor = 'not-allowed';
+                    titleInput.style.background = 'rgba(100,100,100,0.3)';
+                    selectedColor = column.color;
+                    updateColorSelection();
+                    colorPicker.style.opacity = '0.5';
+                    colorPicker.style.pointerEvents = 'none';
+
+                    const usingSections = sections.filter(s => s.columns && s.columns.includes(columnId)).map(s => s.id);
+                    if (currentView !== 'general') {
+                        const viewLower = currentView.toLowerCase();
+                        const currentSection = sections.find(s => s.name.toLowerCase() === viewLower);
+                        
+window.lastSectionId = currentSection ? currentSection.id : null;
+if (currentSection && !usingSections.includes(currentSection.id)) {
+                            usingSections.push(currentSection.id);
+                        }
+                    }
+                    displaySectionTags(usingSections);
+                }
+            } else {
+                titleInput.disabled = false;
+                titleInput.style.opacity = '1';
+                titleInput.style.cursor = 'text';
+                titleInput.style.background = '';
+                colorPicker.style.opacity = '1';
+                colorPicker.style.pointerEvents = 'auto';
+
+                const sectionsToShow = [];
+                if (currentView !== 'general') {
+                    const viewLower = currentView.toLowerCase();
+                    const currentSection = sections.find(s => s.name.toLowerCase() === viewLower);
+                    
+window.lastSectionId = currentSection ? currentSection.id : null;
+if (currentSection) sectionsToShow.push(currentSection.id);
+                }
+                displaySectionTags(sectionsToShow);
+            }
+        }
+
+        function populateExistingColumnSelect() {
+            const select = document.getElementById('existingColumnSelect');
+            if (!select) return;
+            
+            // Nettoyer les options existantes
+            while (select.firstChild) {
+                select.removeChild(select.firstChild);
+            }
+            
+            // Ajouter l'option par défaut
+            let options = '<option value="">-- Sélectionner une colonne --</option>';
+            
+            // Ajouter les colonnes disponibles
+            if (columns && columns.length) {
+                columns.forEach(col => {
+                    options += `<option value="${col.id}">${col.title}</option>`;
+                });
+            }
+            
+            select.innerHTML = options;
+        }
+        function openColumnModal(columnId = null) {
+            currentEditingColumn = columnId;
+            const modal = document.getElementById('columnModal');
+            const existingColumnGroup = document.getElementById('existingColumnGroup');
+            const titleInput = document.getElementById('columnTitle');
+            const colorPicker = document.getElementById('columnColorPicker');
+
+            if (columnId) {
+                // Mode MODIFICATION : masquer le menu déroulant des colonnes existantes
+                if (existingColumnGroup) {
+                    existingColumnGroup.style.display = 'none';
+                }
+
+                const column = columns.find(c => c.id === columnId);
+
+                // DÉVERROUILLER les champs pour permettre la modification
+                titleInput.disabled = false;
+                titleInput.style.opacity = '1';
+                titleInput.style.cursor = 'text';
+                titleInput.style.background = '';
+                colorPicker.style.opacity = '1';
+                colorPicker.style.pointerEvents = 'auto';
+
+                // Remplir avec les valeurs de la colonne
+                titleInput.value = column.title;
+                selectedColor = column.color;
+
+                // Trouver et afficher les sections utilisant cette colonne
+                const usingSections = sections.filter(s => s.columns && s.columns.includes(columnId)).map(s => s.id);
+                displaySectionTags(usingSections);
+            } else {
+                // Mode CRÉATION : afficher le menu déroulant des colonnes existantes
+                if (existingColumnGroup) {
+                    existingColumnGroup.style.display = 'block';
+                }
+
+                // Populer le menu déroulant des colonnes existantes
+                populateExistingColumnSelect();
+
+                // DÉVERROUILLER les champs pour permettre la création
+                titleInput.disabled = false;
+                titleInput.style.opacity = '1';
+                titleInput.style.cursor = 'text';
+                titleInput.style.background = '';
+                colorPicker.style.opacity = '1';
+                colorPicker.style.pointerEvents = 'auto';
+
+                // Vider les champs
+                titleInput.value = '';
+                selectedColor = "rgba(100,149,237,0.3)";
+
+                // Si on est dans une vue de section, afficher cette section
+                const sectionsToShow = [];
+                if (currentView !== 'general') {
+                    const viewLower = currentView.toLowerCase();
+                    const currentSection = sections.find(s => s.name.toLowerCase() === viewLower);
+                    
+window.lastSectionId = currentSection ? currentSection.id : null;
+if (currentSection) sectionsToShow.push(currentSection.id);
+                }
+                displaySectionTags(sectionsToShow);
+            }
+
+            updateColorSelection();
+            modal.classList.add('show');
+        }
+        function openCardModal(columnId = null, cardId = null) {
+            currentEditingCard = cardId;
+            currentContextColumn = columnId;
+            const modal = document.getElementById('cardModal');
+
+            // Mettre à jour la liste des sections AVANT de pré-remplir
+            updateSectionSelect();
+
+            if (cardId) {
+                // Mode MODIFICATION : pré-remplir avec les valeurs de la carte
+                const card = cards.find(c => c.id === cardId);
+                document.getElementById('cardTitle').value = card.title;
+                document.getElementById('cardDescription').value = card.description || '';
+                document.getElementById('cardSection').value = card.section;
+                document.getElementById('cardColumn').value = card.columnId;
+                document.getElementById('cardDueDate').value = card.dueDate || '';
+                document.getElementById('cardResources').value = card.resources ? card.resources.join(', ') : '';
+                document.getElementById('cardProgress').value = card.progress || 0;
+                document.getElementById('cardPriority').value = card.priority || 'low';
+            } else {
+                // Mode CRÉATION : pré-remplir avec le contexte actuel
+                document.getElementById('cardTitle').value = '';
+                document.getElementById('cardDescription').value = '';
+
+                // Pré-remplir la section avec la vue actuelle (ou SOA par défaut)
+                const defaultSection = currentView !== 'general' ? currentView.toUpperCase() : '';
+                document.getElementById('cardSection').value = defaultSection;
+
+                // Pré-remplir la colonne si fournie (bouton + de la colonne)
+                if (columnId) {
+                    document.getElementById('cardColumn').value = columnId;
+                } else {
+                    document.getElementById('cardColumn').value = '';
+                }
+
+                document.getElementById('cardDueDate').value = '';
+                document.getElementById('cardResources').value = '';
+                document.getElementById('cardProgress').value = 0;
+                document.getElementById('cardPriority').value = 'low';
+            }
+
+            // Mettre à jour les colonnes disponibles selon la section
+            updateColumnSelects();
+
+            updateColumnSelects();
+            modal.classList.add('show');
+        }
+
+        function openCardModalInContext(columnId) {
+        openCardModal(columnId, null);
+
+        // Si on est dans une vue de section, pré-remplir la section
+        if (currentView !== 'general') {
+            const sectionSelect = document.getElementById('cardSection');
+            if (sectionSelect) {
+                // Trouver la section correspondant à la vue actuelle
+                const section = sections.find(s => s.name.toLowerCase() === currentView.toLowerCase());
+
+                if (section) {
+                    sectionSelect.value = section.name;
+                    // Mettre à jour les colonnes disponibles selon la section
+                    updateColumnSelects();
+
+                    // Re-sélectionner la colonne après le filtre
+                    const columnSelect = document.getElementById('cardColumn');
+                    if (columnSelect && columnId) {
+                        columnSelect.value = columnId;
+                    }
+                }
+            }
+        }
+    }
+
+        function toggleSettingsMenu() { openSettingsModal(); }
+
+        function openSettingsModal() {
+            document.getElementById('settingsModal').classList.add('show');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('show');
+        }
+
+        // Sauvegarder colonne
+        function saveColumn() {
+            const title = document.getElementById('columnTitle').value.trim();
+            const existingColumnSelect = document.getElementById('existingColumnSelect');
+            const selectedExistingId = existingColumnSelect ? parseInt(existingColumnSelect.value) : null;
+
+            // Si une colonne existante est sélectionnée dans le menu déroulant
+            if (selectedExistingId && !isNaN(selectedExistingId)) {
+                // Utiliser la colonne existante et l'associer à la section actuelle
+                if (currentView !== 'general') {
+                    const viewLower = currentView.toLowerCase();
+                    const currentSection = sections.find(s => s.name.toLowerCase() === viewLower);
+
+window.lastSectionId = currentSection ? currentSection.id : null;
+if (currentSection) {
+                        // Initialiser columns si elle n'existe pas
+                        if (!currentSection.columns) {
+                            currentSection.columns = [];
+                        }
+
+                        // Vérifier si la colonne n'est pas déjà dans la section
+                        if (!currentSection.columns.includes(selectedExistingId)) {
+                            currentSection.columns.push(selectedExistingId);
+                            saveSections();
+                        }
+                    }
+                }
+
+                saveToLocalStorage();
+                renderKanban();
+                closeModal('columnModal');
+                return;
+            }
+
+            // Sinon, créer une nouvelle colonne ou modifier l'existante
+            if (!title) {
+                alert('Veuillez entrer un titre pour la colonne');
+                return;
+            }
+
+            if (currentEditingColumn) {
+                // Modification d'une colonne existante
+                const column = columns.find(c => c.id === currentEditingColumn);
+                column.title = title;
+                column.color = selectedColor;
+            } else {
+                // Création d'une nouvelle colonne
+                const newColumn = {
+                    id: Date.now(),
+                    title: title,
+                    color: selectedColor,
+                    order: columns.length
+                };
+                columns.push(newColumn);
+
+                // Si on est dans une vue de section, associer automatiquement la nouvelle colonne
+                if (currentView !== 'general') {
+                    const viewLower = currentView.toLowerCase();
+                    const currentSection = sections.find(s => s.name.toLowerCase() === viewLower);
+
+window.lastSectionId = currentSection ? currentSection.id : null;
+if (currentSection) {
+                        // Initialiser columns si elle n'existe pas
+                        if (!currentSection.columns) {
+                            currentSection.columns = [];
+                        }
+
+                        currentSection.columns.push(newColumn.id);
+                        saveSections();
+                    }
+                }
+            }
+
+            saveToLocalStorage();
+            renderKanban();
+            closeModal('columnModal');
+        }
+        // Sauvegarder carte
+        function saveCard() {
+            const title = document.getElementById('cardTitle').value.trim();
+            const description = document.getElementById('cardDescription').value.trim();
+            const section = document.getElementById('cardSection').value;
+            const columnId = parseInt(document.getElementById('cardColumn').value);
+            const dueDate = document.getElementById('cardDueDate').value;
+            const resources = document.getElementById('cardResources').value.split(',').map(r => r.trim()).filter(r => r);
+            const progress = parseInt(document.getElementById('cardProgress').value) || 0;
+            const priority = document.getElementById('cardPriority').value;
+
+            if (!title) {
+                alert('Veuillez entrer un titre pour la tâche');
+                return;
+            }
+
+            // Validation section/colonne
+            if (section) {
+                const sec = sections.find(s => s.name === section);
+                const allowed = sec && Array.isArray(sec.columns) ? sec.columns : [];
+                if (!allowed || allowed.length === 0) {
+                    alert("Cette section ne contient aucune colonne. Ajoutez des colonnes à la section avant d'y affecter une tâche.");
+                    return;
+                }
+                if (!allowed.includes(columnId)) {
+                    alert("Cette colonne n'existe pas dans le kanban de la section sélectionnée.");
+                    return;
+                }
+            }
+
+            if (currentEditingCard) {
+                const card = cards.find(c => c.id === currentEditingCard);
+                card.title = title;
+                card.description = description;
+                card.section = section;
+                card.columnId = columnId;
+                card.dueDate = dueDate;
+                card.resources = resources;
+                card.progress = progress;
+                card.priority = priority;
+                card.lastUpdated = new Date().getTime();
+            } else {
+                const newCard = {
+                    id: Date.now(),
+                    title,
+                    description,
+                    section,
+                    columnId: currentContextColumn || columnId,
+                    dueDate,
+                    resources,
+                    progress,
+                    priority,
+                    lastUpdated: new Date().getTime()
+                };
+                cards.push(newCard);
+            }
+
+            saveToLocalStorage();
+            renderKanban();
+            closeModal('cardModal');
+        }
+
+        // Éditer et supprimer
+        function editColumn(columnId) {
+            openColumnModal(columnId);
+        }
+
+        function deleteColumn(columnId) {
+            const column = columns.find(c => c.id === columnId);
+            if (!column) return;
+
+            const usingSections = sections.filter(s => s.columns && s.columns.includes(columnId));
+            const tasksInColumn = cards.filter(c => c.columnId === columnId);
+
+            if (currentView === 'general') {
+                if (usingSections.length > 0) {
+                    const sectionNames = usingSections.map(s => s.name).join(', ');
+                    alert(`Impossible de supprimer cette colonne !
+
+Cette colonne est utilisée par : ${sectionNames}
+
+Retirer la colonne de chaque section avant de la supprimer.`);
+                    return;
+                }
+
+                if (tasksInColumn.length > 0) {
+                    const confirmMsg = `ATTENTION : SUPPRESSION DÉFINITIVE
+
+Cette colonne "${column.title}" contient ${tasksInColumn.length} tâche(s).
+
+La suppression entraînera la SUPPRESSION DÉFINITIVE de toutes ces tâches.
+
+Continuer ?`;
+                    if (!confirm(confirmMsg)) return;
+                }
+
+                columns = columns.filter(c => c.id !== columnId);
+                cards = cards.filter(c => c.columnId !== columnId);
+                saveToLocalStorage();
+                renderKanban();
+
+            } else {
+                const viewLower = currentView.toLowerCase();
+                const currentSection = sections.find(s => s.name.toLowerCase() === viewLower);
+                
+window.lastSectionId = currentSection ? currentSection.id : null;
+if (!currentSection || !currentSection.columns) return;
+
+                const otherSectionsUsingColumn = usingSections.filter(s => s.id !== currentSection.id);
+                const willBeOrphan = otherSectionsUsingColumn.length === 0;
+                const hasNoTasks = tasksInColumn.length === 0;
+
+                if (willBeOrphan && hasNoTasks) {
+                    const confirmMsg = `Suppression définitive
+
+La colonne "${column.title}" n'est utilisée nulle part ailleurs et ne contient aucune tâche.
+
+Elle sera SUPPRIMÉE DÉFINITIVEMENT.
+
+Continuer ?`;
+                    if (!confirm(confirmMsg)) return;
+
+                    currentSection.columns = currentSection.columns.filter(id => id !== columnId);
+                    saveSections();
+                    columns = columns.filter(c => c.id !== columnId);
+                    saveToLocalStorage();
+                    renderKanban();
+
+                } else {
+                    let reason = '';
+                    if (!willBeOrphan) {
+                        const otherNames = otherSectionsUsingColumn.map(s => s.name).join(', ');
+                        reason = `utilisée dans : ${otherNames}`;
+                    }
+                    if (!hasNoTasks) {
+                        if (reason) reason += ' et ';
+                        reason += `contient ${tasksInColumn.length} tâche(s)`;
+                    }
+
+                    const confirmMsg = `Retrait de la section
+
+La colonne "${column.title}" sera retirée de cette section uniquement.
+
+Elle sera conservée car elle est ${reason}.
+
+Continuer ?`;
+                    if (!confirm(confirmMsg)) return;
+
+                    currentSection.columns = currentSection.columns.filter(id => id !== columnId);
+                    saveSections();
+                    renderKanban();
+                }
+            }
+        }
+
+        function editCard(cardId) {
+            openCardModal(null, cardId);
+        }
+
+        function deleteCard(cardId) {
+            if (confirm('Êtes-vous sûr de vouloir supprimer cette tâche ?')) {
+                cards = cards.filter(c => c.id !== cardId);
+                saveToLocalStorage();
+                renderKanban();
+            }
+        }
+
+        // Drag and Drop - Cards and Columns
+
+        // Configure tous les événements de drag and drop
+        function setupDragAndDrop() {
+            const cardElements = document.querySelectorAll('.card');
+            const containers = document.querySelectorAll('.cards-container');
+            const columnElements = document.querySelectorAll('.column');
+
+            // Configure le drag des cartes
+            cardElements.forEach(card => {
+                card.addEventListener('dragstart', handleCardDragStart);
+                card.addEventListener('dragend', handleCardDragEnd);
+            });
+
+            // Configure le drop dans les conteneurs de cartes
+            containers.forEach(container => {
+                container.addEventListener('dragover', handleCardDragOver);
+                container.addEventListener('drop', handleCardDrop);
+                container.addEventListener('dragleave', handleCardDragLeave);
+            });
+
+            // Configure le drag des colonnes
+            columnElements.forEach(column => {
+                setupColumnDrag(column);
+            });
+        }
+
+        // ===== DRAG AND DROP DES CARTES =====
+
+        // Gère le début du drag d'une carte
+        function handleCardDragStart(e) {
+            draggedCard = this;
+            this.classList.add('dragging');
+            e.dataTransfer.effectAllowed = 'move';
+            e.stopPropagation();
+        }
+
+        // Gère la fin du drag d'une carte
+        function handleCardDragEnd(e) {
+            this.classList.remove('dragging');
+            this.style.opacity = '1';
+        }
+
+        // Gère le survol lors du drag d'une carte
+        function handleCardDragOver(e) {
+            if (draggedCard) {
+                e.preventDefault();
+                e.dataTransfer.dropEffect = 'move';
+
+                // Trouve l'élément après lequel insérer
+                const afterElement = getDragAfterElementCard(this, e.clientY);
+
+                if (afterElement == null) {
+                    this.appendChild(draggedCard);
+                } else {
+                    this.insertBefore(draggedCard, afterElement);
+                }
+
+                e.stopPropagation();
+            }
+        }
+
+        // Gère la sortie lors du drag d'une carte
+        function handleCardDragLeave(e) {
+            // Vide pour le moment
+        }
+
+        // Gère le drop d'une carte
+        function handleCardDrop(e) {
+            if (draggedCard) {
+                e.stopPropagation();
+                e.preventDefault();
+
+                const cardId = parseInt(draggedCard.dataset.cardId);
+                const newColumnId = parseInt(this.dataset.columnId);
+
+                const card = cards.find(c => c.id === cardId);
+                if (card) {
+                    if (currentView === 'general' && card.section) {
+                        const sec = sections.find(s => s.name === card.section);
+                        if (sec && Array.isArray(sec.columns) && sec.columns.length > 0) {
+                            if (!sec.columns.includes(newColumnId)) {
+                                console.warn('Déplacement interdit: colonne non présente dans la section', card.section, 'colId:', newColumnId);
+                                renderKanban();
+                                draggedCard = null;
+                                return;
+                            }
+                        }
+                    }
+
+                    card.columnId = newColumnId;
+                    card.lastUpdated = new Date().getTime();
+
+                    const cardElements = Array.from(this.querySelectorAll('.card'));
+                    const orderedIds = cardElements.map(el => parseInt(el.dataset.cardId));
+
+                    const columnCards = cards.filter(c => c.columnId === newColumnId);
+                    const orderedCards = [];
+                    orderedIds.forEach(id => {
+                        const c = columnCards.find(card => card.id === id);
+                        if (c) orderedCards.push(c);
+                    });
+
+                    cards = cards.filter(c => c.columnId !== newColumnId).concat(orderedCards);
+
+                    saveToLocalStorage();
+                    renderKanban();
+                }
+
+                draggedCard = null;
+            }
+        }
+
+        // Calcule la position d'insertion d'une carte pendant le drag
+        function getDragAfterElementCard(container, y) {
+            const draggableElements = [...container.querySelectorAll('.card:not(.dragging)')];
+
+            return draggableElements.reduce((closest, child) => {
+                const box = child.getBoundingClientRect();
+                const offset = y - box.top - box.height / 2;
+
+                if (offset < 0 && offset > closest.offset) {
+                    return { offset: offset, element: child };
+                } else {
+                    return closest;
+                }
+            }, { offset: Number.NEGATIVE_INFINITY }).element;
+        }
+
+        // ===== DRAG AND DROP DES COLONNES =====
+
+        // Configure le drag d'une colonne
+        function setupColumnDrag(columnElement) {
+            columnElement.addEventListener('dragstart', (e) => {
+                e.dataTransfer.setData('text/plain', columnElement.dataset.columnId);
+                columnElement.classList.add('dragging-column');
+            });
+
+            columnElement.addEventListener('dragend', () => {
+                columnElement.classList.remove('dragging-column');
+
+                // Sauvegarde uniquement l'ordre des colonnes de la section courante (quand on est sur une section)
+                if (currentView !== 'general') {
+                    const currentSection = sections.find(s => s.name.toLowerCase() === currentView.toLowerCase());
+                    if (!currentSection) {
+                        console.warn('[COL-ORDER] Section courante introuvable, ordre non sauvegardé');
+                        return;
+                    }
+
+                    const container = document.getElementById('kanbanContainer');
+                    const cols = Array.from(container.querySelectorAll('.column')).map(el => parseInt(el.dataset.columnId));
+                    const newOrder = cols.filter(id => currentSection.columns && currentSection.columns.includes(id));
+
+                    currentSection.columns = newOrder;
+                    saveSections();
+                    saveSectionOrderSafe(currentSection.id, newOrder);
+                    console.log('[COL-ORDER] Nouvel ordre colonne (section):', currentSection.name, newOrder);
+                    renderKanban();
+                }
+            });
+
+            columnElement.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                const dragging = document.querySelector('.dragging-column');
+                if (!dragging || dragging === columnElement) return;
+
+                const container = document.getElementById('kanbanContainer');
+                const columnsList = Array.from(container.querySelectorAll('.column'));
+                const draggingIndex = columnsList.indexOf(dragging);
+                const targetIndex = columnsList.indexOf(columnElement);
+
+                if (draggingIndex < targetIndex) {
+                    container.insertBefore(dragging, columnElement.nextSibling);
+                } else {
+                    container.insertBefore(dragging, columnElement);
+                }
+            });
+        }
+
+        // Calcule la position d'insertion d'une colonne pendant le drag
+        function getDragAfterElementColumn(container, x) {
+            const draggableElements = [...container.querySelectorAll('.column:not(.dragging-column)')];
+
+            return draggableElements.reduce((closest, child) => {
+                const box = child.getBoundingClientRect();
+                const offset = x - box.left - box.width / 2;
+
+                if (offset < 0 && offset > closest.offset) {
+                    return { offset: offset, element: child };
+                } else {
+                    return closest;
+                }
+            }, { offset: Number.NEGATIVE_INFINITY }).element;
+        }
+
+        // Color Picker
+        function updateColorSelection() {
+            document.querySelectorAll('.color-option').forEach(option => {
+                option.classList.remove('selected');
+                if (option.dataset.color === selectedColor) {
+                    option.classList.add('selected');
+                }
+            });
+        }
+
+        // Utilitaires
+        function updateColumnSelects() {
+            const sectionSelect = document.getElementById('cardSection');
+            const sectionName = sectionSelect ? sectionSelect.value : '';
+            const columnSelect = document.getElementById('cardColumn');
+            if (!columnSelect) return;
+
+            const previousValue = columnSelect.value;
+            columnSelect.innerHTML = '';
+            columnSelect.disabled = false;
+
+            if (!sectionName) {
+                columns
+                    .slice()
+                    .sort((a, b) => {
+                        const ao = (a.order !== undefined && a.order !== null) ? a.order : 9999;
+                        const bo = (b.order !== undefined && b.order !== null) ? b.order : 9999;
+                        return ao - bo;
+                    })
+                    .forEach(col => {
+                        const opt = document.createElement('option');
+                        opt.value = col.id;
+                        opt.textContent = col.title;
+                        columnSelect.appendChild(opt);
+                    });
+
+                if (previousValue) columnSelect.value = previousValue;
+                return;
+            }
+
+            const section = sections.find(s => s.name === sectionName);
+            const allowedIds = section && Array.isArray(section.columns) ? section.columns.slice() : [];
+
+            if (!allowedIds.length) {
+                const opt = document.createElement('option');
+                opt.value = '';
+                opt.textContent = 'Aucune colonne pour cette section';
+                columnSelect.appendChild(opt);
+                columnSelect.value = '';
+                columnSelect.disabled = true;
+                return;
+            }
+
+            allowedIds
+                .map(id => columns.find(c => c.id === id))
+                .filter(Boolean)
+                .forEach(col => {
+                    const opt = document.createElement('option');
+                    opt.value = col.id;
+                    opt.textContent = col.title;
+                    columnSelect.appendChild(opt);
+                });
+
+            if (previousValue && allowedIds.includes(parseInt(previousValue))) {
+                columnSelect.value = previousValue;
+            }
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' });
+        }
+
+        // Formate une date pour l'affichage (jj mmm. yyyy)
+        function formatDateDisplay(dateString) {
+            if (!dateString) return '';
+            const date = new Date(dateString);
+            const day = date.getDate();
+            const months = ['jan.', 'fév.', 'mar.', 'avr.', 'mai', 'juin', 
+                           'juil.', 'aoû.', 'sep.', 'oct.', 'nov.', 'déc.'];
+            const month = months[date.getMonth()];
+            const year = date.getFullYear();
+            return `${day} ${month} ${year}`;
+        }
+
+        // Obtient l'icône de priorité
+        function getPriorityIcon(priority) {
+            const icons = { 'low': '🟢', 'medium': '🟡', 'high': '🔴' };
+            return icons[priority] || '⚪';
+        }
+
+        function getPriorityLabel(priority) {
+            const labels = { low: 'Basse', medium: 'Moyenne', high: 'Haute' };
+            return labels[priority] || priority;
+        }
+
+        function saveToLocalStorage() {
+            localStorage.setItem('kanbanColumns', JSON.stringify(columns));
+            localStorage.setItem('kanbanCards', JSON.stringify(cards));
+            localStorage.setItem('kanban_sections', JSON.stringify(sections));
+        }
+
+        // Export PDF
+        async function exportToPDF() {
+            const { jsPDF } = window.jspdf;
+            
+            const calendarView = document.getElementById('calendarView');
+            const kanbanContainer = document.getElementById('kanbanContainer');
+            const isCalendarView = calendarView.classList.contains('show');
+            
+            const elementToCapture = isCalendarView ? calendarView : kanbanContainer;
+            
+            try {
+                const canvas = await html2canvas(elementToCapture, {
+                    backgroundColor: '#1a1a1a',
+                    scale: 2,
+                    logging: false,
+                    useCORS: true
+                });
+
+                const imgData = canvas.toDataURL('image/png');
+                const pdf = new jsPDF({
+                    orientation: canvas.width > canvas.height ? 'landscape' : 'portrait',
+                    unit: 'px',
+                    format: [canvas.width, canvas.height]
+                });
+
+                pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height);
+                
+                const filename = isCalendarView ?
+                    `kanban-calendrier-${Date.now()}.pdf` :
+                    `kanban-${currentView}-${Date.now()}.pdf`;
+                
+                pdf.save(filename);
+                alert('Export PDF réussi !');
+            } catch (error) {
+                console.error('Erreur lors de l\'export PDF:', error);
+                alert('Erreur lors de l\'export PDF. Veuillez réessayer.');
+            }
+        }
+
+        // Exporte les données au format JSON
+        function exportData() {
+            // Collecter tous les ordres de colonnes par section
+            const columnOrders = {};
+            sections.forEach(section => {
+                const order = getSectionOrder(section.id);
+                if (order && order.length > 0) {
+                    columnOrders[section.id] = order;
+                }
+            });
+
+            const data = {
+            appTitle: localStorage.getItem('appTitle') || '🎯 KanBan DGCE',
+                columns: columns,
+                cards: cards,
+                sections: sections,
+                columnOrders: columnOrders,
+                exportDate: new Date().toISOString(),
+                version: '3.0'
+            };
+
+            const jsonString = JSON.stringify(data, null, 2);
+            const blob = new Blob([jsonString], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `kanban-dgce-${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+
+            alert('Export JSON réussi !');
+        }
+
+        // Import
+        function importData() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'application/json';
+            input.onchange = (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    try {
+                        const data = JSON.parse(event.target.result);
+
+                        if (!data.columns || !data.cards || !data.sections) {
+                            alert('Format de fichier invalide. Le fichier doit contenir "columns", "cards" et "sections".');
+                            return;
+                        }
+                        if (!Array.isArray(data.columns) || !Array.isArray(data.cards) || !Array.isArray(data.sections)) {
+                            alert('Format de fichier invalide. "columns", "cards" et "sections" doivent être des tableaux.');
+                            return;
+                        }
+
+                        console.log('Import - Sections avant:', sections.length, sections.map(s => s.name));
+                        console.log('Import - Colonnes avant:', columns.length);
+                        console.log('Import - Cartes avant:', cards.length);
+
+                        if (data.appTitle) {
+                            localStorage.setItem('appTitle', data.appTitle);
+                            loadAppTitle();
+                        }
+
+                        data.columns.forEach(col => {
+                            const existing = columns.find(c => c.id === col.id);
+                            if (!existing) {
+                                columns.push(col);
+                                console.log('Ajout colonne:', col.title);
+                            } else {
+                                existing.title = col.title;
+                                existing.color = col.color;
+                                if (col.order !== undefined) existing.order = col.order;
+                                console.log('Mise à jour colonne:', col.title);
+                            }
+                        });
+
+                        const allColumnIds = (Array.isArray(columns) && columns.length) ? columns.map(c => c.id) : [];
+
+                        const getNextSectionId = () => {
+                            const maxId = sections.length ? Math.max(...sections.map(s => s.id || 0)) : 0;
+                            return maxId + 1;
+                        };
+
+                        const normalizeCols = (arr) => {
+                            if (!Array.isArray(arr)) return [];
+                            return arr.map(x => parseInt(x)).filter(id => allColumnIds.includes(id));
+                        };
+
+                        const ensureSectionByName = (name) => {
+                            if (!name) return null;
+                            let sec = sections.find(s => s.name === name);
+                            if (sec) {
+                                if (!Array.isArray(sec.columns)) sec.columns = [];
+                                return sec;
+                            }
+                            const newId = getNextSectionId();
+                            sec = { id: newId, name: name, color: null, columns: [] };
+                            sections.push(sec);
+                            console.log('Ajout section (depuis carte):', name);
+                            return sec;
+                        };
+
+                        data.sections.forEach(sec => {
+                            if (!sec || !sec.name) return;
+
+                            const existingByName = sections.find(s => s.name === sec.name);
+                            const importedCols = normalizeCols(sec.columns);
+
+                            if (existingByName) {
+                                if (sec.color) existingByName.color = sec.color;
+                                if (!Array.isArray(existingByName.columns)) existingByName.columns = [];
+                                if (importedCols.length) {
+                                    const localCols = normalizeCols(existingByName.columns);
+                                    existingByName.columns = Array.from(new Set(localCols.concat(importedCols)));
+                                }
+                                console.log('Mise à jour section (par nom):', sec.name, 'Colonnes:', existingByName.columns);
+                            } else {
+                                const newId = sections.some(s => s.id === sec.id) ? getNextSectionId() : (sec.id || getNextSectionId());
+                                sections.push({ id: newId, name: sec.name, color: sec.color || null, columns: importedCols });
+                                console.log('Ajout section:', sec.name, 'Colonnes:', importedCols);
+                            }
+                        });
+
+                        data.cards.forEach(card => {
+                            if (!card) return;
+                            if (!card.lastUpdated) card.lastUpdated = new Date().getTime();
+
+                            const existing = cards.find(c => c.id === card.id);
+                            if (!existing) {
+                                cards.push(card);
+                                console.log('Ajout carte:', card.title);
+                            } else {
+                                const existingTime = existing.lastUpdated || 0;
+                                if (card.lastUpdated > existingTime) {
+                                    Object.assign(existing, card);
+                                    console.log('Mise à jour carte:', card.title);
+                                }
+                            }
+
+                            if (card.section && card.columnId) {
+                                const sec = ensureSectionByName(card.section);
+                                const colId = parseInt(card.columnId);
+                                if (sec && allColumnIds.includes(colId)) {
+                                    if (!sec.columns.includes(colId)) {
+                                        sec.columns.push(colId);
+                                    }
+                                }
+                            }
+                        });
+
+                        sections.forEach(sec => {
+                            if (!Array.isArray(sec.columns)) sec.columns = [];
+                            sec.columns = sec.columns.map(x => parseInt(x)).filter(id => allColumnIds.includes(id));
+                        });
+
+                        console.log('Import - Sections après:', sections.length, sections.map(s => ({name: s.name, cols: s.columns})));
+                        console.log('Import - Colonnes après:', columns.length);
+                        console.log('Import - Cartes après:', cards.length);
+
+                        
+                        // Restaurer les ordres de colonnes par section si disponibles
+                        if (data.columnOrders) {
+                            Object.keys(data.columnOrders).forEach(sectionId => {
+                                const order = data.columnOrders[sectionId];
+                                if (Array.isArray(order) && order.length > 0) {
+                                    saveSectionOrder(sectionId, order);
+                                }
+                            });
+                            console.log('Import - Ordres de colonnes restaurés');
+                        }
+
+                        saveToLocalStorage();
+                        renderSectionsList();
+                        updateSectionButtons();
+                        updateSectionSelect();
+                        renderKanban();
+
+                        alert('✅ Données importées et fusionnées avec succès !');
+                    } catch (error) {
+                        console.error('Erreur lors de l\'importation:', error);
+                        alert('❌ Erreur lors de l\'importation: ' + error.message);
+                    }
+                };
+                reader.readAsText(file);
+            };
+            input.click();
+        }
+
+        // Efface toutes les données
+        function clearAllData() {
+            if (!confirm('⚠️ ATTENTION !\n\nCette action va :\n• Effacer TOUTES les tâches\n• Réinitialiser les sections (vide)\n• Recréer les 4 colonnes par défaut\n\nVotre titre personnalisé sera conservé.\n\nContinuer ?')) {
+                return;
+            }
+
+            // Double confirmation
+            if (!confirm('Dernière confirmation : êtes-vous absolument certain de vouloir effacer toutes les données ?\n\nCette action est irréversible !')) {
+                return;
+            }
+
+            // Réinitialiser les 4 colonnes par défaut
+            columns = [
+                { id: 1, title: 'À faire', color: 'rgba(100,149,237,0.3)', order: 0 },
+                { id: 2, title: 'En cours', color: 'rgba(0,122,255,0.3)', order: 1 },
+                { id: 3, title: 'En révision', color: 'rgba(255,149,0,0.3)', order: 2 },
+                { id: 4, title: 'Terminé', color: 'rgba(52,199,89,0.3)', order: 3 }
+            ];
+
+            // Effacer toutes les cartes
+            cards = [];
+
+            // Réinitialiser les sections (vider complètement)
+            sections = [];
+
+            // Nettoyer TOUS les ordres de colonnes dans localStorage
+            Object.keys(localStorage).forEach(key => {
+                if (key.startsWith('order:section:')) {
+                    localStorage.removeItem(key);
+                }
+            });
+
+            // Sauvegarder
+            saveSections();
+            saveToLocalStorage();
+            updateSectionButtons();
+            updateSectionSelect();
+            currentView = 'general';
+            renderKanban();
+
+            alert('✅ Nettoyage effectué !\n\n• Toutes les tâches supprimées\n• Sections réinitialisées\n• 4 colonnes par défaut créées\n• Titre conservé');
+        }
+
+        
+        // Réinitialise TOTALEMENT l'application
+        function resetApplication() {
+            if (!confirm('⚠️ RÉINITIALISATION TOTALE ⚠️\n\nCette action va TOUT effacer et réinitialiser l\'application aux paramètres d\'usine :\n\n• Toutes les tâches\n• Toutes les colonnes\n• Toutes les sections\n• Le titre\n\nCette action est IRRÉVERSIBLE !\n\nContinuer ?')) {
+                return;
+            }
+
+            // Double confirmation
+            if (!confirm('🔴 DERNIÈRE CONFIRMATION 🔴\n\nÊtes-vous ABSOLUMENT CERTAIN de vouloir réinitialiser TOTALEMENT l\'application ?\n\nToutes vos données seront DÉFINITIVEMENT perdues !')) {
+                return;
+            }
+
+            // Réinitialiser les colonnes par défaut
+            columns = [
+                { id: 1, title: 'À faire', color: 'rgba(100,149,237,0.3)', order: 0 },
+                { id: 2, title: 'En cours', color: 'rgba(0,122,255,0.3)', order: 1 },
+                { id: 3, title: 'En révision', color: 'rgba(255,149,0,0.3)', order: 2 },
+                { id: 4, title: 'Terminé', color: 'rgba(52,199,89,0.3)', order: 3 }
+            ];
+
+            // Effacer toutes les cartes
+            cards = [];
+
+            // Réinitialiser les sections par défaut
+            sections = [
+                { id: 1, name: 'SOA', color: '#6495ed', columns: [1, 2, 3, 4] },
+                { id: 2, name: 'SMSC', color: '#4ecca3', columns: [1, 2, 3, 4] },
+                { id: 3, name: 'SOSC', color: '#ffa500', columns: [1, 2, 3, 4] },
+                { id: 4, name: 'SBO', color: '#ff6b9d', columns: [1, 2, 3, 4] },
+                { id: 5, name: 'Transverse', color: '#9b59b6', columns: [1, 2, 3, 4] }
+            ];
+
+            // Réinitialiser le titre
+            localStorage.setItem('appTitle', 'KanBan DGCE');
+            loadAppTitle();
+
+            // Nettoyer TOUT le localStorage des ordres
+            Object.keys(localStorage).forEach(key => {
+                if (key.startsWith('order:section:')) {
+                    localStorage.removeItem(key);
+                }
+            });
+
+            // Sauvegarder tout
+            saveSections();
+            saveToLocalStorage();
+            updateSectionButtons();
+            updateSectionSelect();
+            currentView = 'general';
+            renderKanban();
+
+            alert('✅ Application réinitialisée avec succès !\n\nL\'application a été restaurée aux paramètres d\'usine.');
+        }
+
+        
+        function initSections() {
+            const saved = localStorage.getItem('kanban_sections');
+            if (saved) {
+                sections = JSON.parse(saved);
+                sections = sections.map(s => {
+                    if (!s.columns) {
+                        s.columns = [1, 2, 3, 4];
+                    }
+                    return s;
+                });
+                saveSections();
+            } else {
+                sections = [
+                    { id: 1, name: 'SOA', color: '#6495ed', columns: [1, 2, 3, 4] },
+                    { id: 2, name: 'SMSC', color: '#4ecca3', columns: [1, 2, 3, 4] },
+                    { id: 3, name: 'SOSC', color: '#ffa500', columns: [1, 2, 3, 4] },
+                    { id: 4, name: 'SBO', color: '#ff6b9d', columns: [1, 2, 3, 4] },
+                    { id: 5, name: 'Transverse', color: '#9b59b6', columns: [1, 2, 3, 4] }
+                ];
+                saveSections();
+            }
+        }
+
+        function saveSections() {
+            localStorage.setItem('kanban_sections', JSON.stringify(sections));
+        }
+
+        function updateSectionButtons() {
+            const viewSelector = document.querySelector('.view-selector');
+            if (!viewSelector) return;
+
+            viewSelector.innerHTML = '<button class="view-btn active" onclick="switchView(\'general\')">Général</button>';
+
+            sections.forEach(section => {
+                const btn = document.createElement('button');
+                btn.className = 'view-btn';
+                btn.textContent = section.name;
+                btn.onclick = () => switchView(section.name.toLowerCase());
+                viewSelector.appendChild(btn);
+            });
+        }
+
+        function updateSectionSelect() {
+            const select = document.getElementById('cardSection');
+            if (!select) return;
+
+            const currentValue = select.value;
+            select.innerHTML = '';
+
+            // Ajouter une option vide
+            const emptyOption = document.createElement('option');
+            emptyOption.value = '';
+            emptyOption.textContent = '';
+            select.appendChild(emptyOption);
+
+            sections.forEach(section => {
+                const option = document.createElement('option');
+                option.value = section.name;
+                option.textContent = section.name;
+                select.appendChild(option);
+            });
+
+            if (currentValue && sections.find(s => s.name === currentValue)) {
+                select.value = currentValue;
+            }
+        
+            select.onchange = () => {
+                updateColumnSelects();
+            };
+        }
+
+        function openSectionsManagementModal() {
+            // FERMER Paramètres en utilisant classList
+            const settingsModal = document.getElementById('settingsModal');
+            if (settingsModal) {
+                settingsModal.classList.remove('show');
+            }
+
+            // OUVRIR Sections
+            const sectionsModal = document.getElementById('sectionsManagementModal');
+            if (sectionsModal) {
+                sectionsModal.style.display = 'flex';
+                sectionsModal.style.position = 'fixed';
+                sectionsModal.style.top = '0';
+                sectionsModal.style.left = '0';
+                sectionsModal.style.width = '100%';
+                sectionsModal.style.height = '100%';
+                sectionsModal.style.zIndex = '9999';
+                sectionsModal.style.background = 'rgba(0,0,0,0.7)';
+                sectionsModal.style.justifyContent = 'center';
+                sectionsModal.style.alignItems = 'center';
+                renderSectionsList();
+            }
+        }
+
+        function closeSectionsManagementModal() {
+            const modal = document.getElementById('sectionsManagementModal');
+            if (modal) {
+                modal.style.display = 'none';
+                modal.style.zIndex = '';
+                modal.style.position = '';
+                modal.style.top = '';
+                modal.style.left = '';
+                modal.style.width = '';
+                modal.style.height = '';
+                modal.style.background = '';
+                modal.style.justifyContent = '';
+                modal.style.alignItems = '';
+            }
+
+            updateSectionButtons();
+            updateSectionSelect();
+
+            // Rouvrir la modale de paramètres en utilisant classList.add('show')
+            const settingsModal = document.getElementById('settingsModal');
+            if (settingsModal) {
+                settingsModal.classList.add('show');
+            }
+        }
+
+        function renderSectionsList() {
+            const container = document.getElementById('sectionsList');
+            if (!container) return;
+
+            container.innerHTML = '';
+            sections.forEach(section => {
+                const div = document.createElement('div');
+                div.innerHTML = `
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <div style="width:20px; height:20px; background:${section.color}; border-radius:4px; cursor:pointer;" title="Cliquer pour changer la couleur" onclick="openColorPicker(${section.id})"></div>
+                        <span style="font-weight:500; color:white;">${section.name}</span>
+                    </div>
+                    <div style="display:flex; gap:8px;">
+                        <button onclick="openSectionModal(${section.id})" style="padding:8px 12px; background:#6495ed; color:white; border:none; border-radius:6px; cursor:pointer;">Modifier</button>
+                        <button onclick="deleteSection(${section.id})" style="padding:8px 12px; background:#ff4444; color:white; border:none; border-radius:6px; cursor:pointer;">Supprimer</button>
+                    </div>
+                `;
+                div.style.cssText = 'display:flex; justify-content:space-between; align-items:center; padding:15px; margin-bottom:10px; background:rgba(255,255,255,0.08); border-radius:12px; border-left:4px solid ' + section.color;
+                container.appendChild(div);
+            });
+        }
+
+        function openColorPicker(sectionId) {
+            const modal = document.getElementById('colorPickerModal');
+            if (!modal) {
+                // Créer la modale si elle n'existe pas
+                const modalDiv = document.createElement('div');
+                modalDiv.id = 'colorPickerModal';
+                modalDiv.className = 'modal';
+                modalDiv.style.zIndex = '10000';
+                modalDiv.innerHTML = `
+                    <div class="modal-content" style="max-width: 500px;">
+                        <h2 style="color:white; margin-bottom:20px;">Choisir une couleur</h2>
+                        <div id="colorPickerGrid" style="display:grid; grid-template-columns:repeat(6, 60px); gap:10px; justify-content:center; margin-bottom:20px;">
+                        </div>
+                        <button onclick="closeModal('colorPickerModal')" style="padding:12px 24px; background:#666; color:white; border:none; border-radius:8px; cursor:pointer; width:100%;">Annuler</button>
+                    </div>
+                `;
+                document.body.appendChild(modalDiv);
+            }
+
+            // Remplir la grille de couleurs
+            const grid = document.getElementById('colorPickerGrid');
+            const section = sections.find(s => s.id === sectionId);
+            const currentColor = section ? section.color : '';
+
+            grid.innerHTML = colorPalette.map(color => `
+                <div style="width:60px; height:60px; background:${color}; border-radius:8px; cursor:pointer; border:3px solid ${color === currentColor ? 'white' : 'transparent'}; transition: all 0.2s;" 
+                     onclick="selectSectionColor(${sectionId}, '${color}')"
+                     onmouseover="this.style.transform='scale(1.1)'"
+                     onmouseout="this.style.transform='scale(1)'">
+                </div>
+            `).join('');
+
+            document.getElementById('colorPickerModal').classList.add('show');
+        }
+
+        function selectSectionColor(sectionId, color) {
+            const section = sections.find(s => s.id === sectionId);
+            if (section) {
+                section.color = color;
+                saveSections();
+                closeModal('colorPickerModal');
+                setTimeout(() => {
+                    renderSectionsList();
+                    updateSectionButtons();
+                    renderKanban();
+                }, 100);
+            }
+        }
+
+        function openSectionModal(editId = null) {
+            const title = document.getElementById('sectionModalTitle');
+            const input = document.getElementById('sectionName');
+            const hiddenId = document.getElementById('editingSectionId');
+
+            if (editId) {
+                const section = sections.find(s => s.id === editId);
+                if (section) {
+                    title.textContent = 'Modifier Section';
+                    input.value = section.name;
+                    hiddenId.value = editId;
+                }
+            } else {
+                title.textContent = 'Ajouter Section';
+                input.value = '';
+                hiddenId.value = '';
+            }
+
+            const modal = document.getElementById('sectionModal');
+            if (modal) {
+                modal.style.display = 'flex';
+                modal.style.position = 'fixed';
+                modal.style.top = '0';
+                modal.style.left = '0';
+                modal.style.width = '100%';
+                modal.style.height = '100%';
+                modal.style.zIndex = '10000';
+                modal.style.background = 'rgba(0,0,0,0.7)';
+                modal.style.justifyContent = 'center';
+                modal.style.alignItems = 'center';
+            }
+        }
+
+        function closeSectionModal() {
+            const modal = document.getElementById('sectionModal');
+            if (modal) modal.style.display = 'none';
+        }
+
+        function saveSection() {
+            const input = document.getElementById('sectionName');
+            const hiddenId = document.getElementById('editingSectionId');
+            const name = input.value.trim();
+
+            if (!name) {
+                alert('Nom requis');
+                return;
+            }
+
+            const id = hiddenId.value ? parseInt(hiddenId.value) : null;
+
+            if (id) {
+                const section = sections.find(s => s.id === id);
+                if (section) {
+                    const oldName = section.name;
+                    section.name = name;
+
+                    if (typeof cards !== 'undefined' && oldName !== name) {
+                        cards.forEach(card => {
+                            if (card.section === oldName) {
+                                card.section = name;
+                            }
+                        });
+                        saveToLocalStorage();
+                    }
+                }
+            } else {
+                const newId = sections.length ? Math.max(...sections.map(s => s.id)) + 1 : 1;
+                const randomColor = colorPalette[Math.floor(Math.random() * colorPalette.length)];
+                sections.push({ id: newId, name: name, color: randomColor, columns: [] });
+            }
+
+            saveSections();
+            renderSectionsList();
+            updateSectionButtons();
+            updateSectionSelect();
+            renderKanban();
+            closeSectionModal();
+        }
+
+        function deleteSection(id) {
+            if (!confirm('Supprimer cette section ?')) return;
+
+            const section = sections.find(s => s.id === id);
+            if (!section) return;
+
+            const sectionName = section.name;
+            const sectionColumns = section.columns || [];
+
+            const columnsToDelete = sectionColumns.filter(colId => {
+                const usedElsewhere = sections.some(s => s.id !== id && s.columns && s.columns.includes(colId));
+                const hasCards = cards.some(c => c.columnId === colId);
+                return !usedElsewhere && !hasCards;
+            });
+
+            columns = columns.filter(col => !columnsToDelete.includes(col.id));
+            sections = sections.filter(s => s.id !== id);
+            saveSections();
+
+            if (typeof cards !== 'undefined') {
+                cards.forEach(card => {
+                    if (card.section === sectionName) {
+                        card.section = '';
+                    }
+                });
+                saveToLocalStorage();
+            }
+
+            renderSectionsList();
+            updateSectionButtons();
+            updateSectionSelect();
+            renderKanban();
+        }
+
+        initSections();
+            updateSectionButtons();
+            updateSectionSelect();
+
+        function loadAppTitle() {
+            const saved = localStorage.getItem('appTitle');
+            const title = saved || '🎯 KanBan DGCE';
+            const h1 = document.querySelector('.header h1');
+            if (h1) h1.textContent = title;
+            document.title = title;
+        }
+
+        function openTitleModal() {
+            const modal = document.getElementById('titleModal');
+            const input = document.getElementById('appTitleInput');
+            input.value = localStorage.getItem('appTitle') || '🎯 KanBan DGCE';
+            modal.classList.add('show');
+            input.focus();
+        }
+
+        function saveAppTitle() {
+            const input = document.getElementById('appTitleInput');
+            const title = input.value.trim();
+            if (!title) { alert('Le titre ne peut pas être vide'); return; }
+            localStorage.setItem('appTitle', title);
+            loadAppTitle();
+            closeModal('titleModal');
+            saveToLocalStorage();
+        }
+
+</script>
+
+<!-- Modal Gestion Sections -->
+<div id="sectionsManagementModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); z-index:9999; justify-content:center; align-items:center;">
+    <div class="modal-content" style="background:rgba(40,40,40,0.98); border-radius:20px; padding:2rem; width:90%; max-width:600px; max-height:80vh; overflow-y:auto; box-shadow:0 10px 40px rgba(0,0,0,0.8);">
+        <div class="modal-header" style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:1rem; margin-bottom:1.5rem;">
+            <h2 style="margin:0; color:white; font-size:1.8rem;">📋 Gestion des Sections</h2>
+            <span class="close-modal" onclick="closeSectionsManagementModal()" style="font-size:2rem; color:rgba(255,255,255,0.6); cursor:pointer; transition:color 0.3s;">&times;</span>
+        </div>
+        <div id="sectionsList" style="margin-bottom:1.5rem;"></div>
+        <div style="text-align:center;">
+            <button class="btn" onclick="openSectionModal()" style="background:#6495ed; color:white; padding:1rem 2rem; border:none; border-radius:12px; cursor:pointer; font-size:1rem; font-weight:600; box-shadow:0 4px 15px rgba(100,149,237,0.3);">
+                ➕ Ajouter une section
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Ajout/Modification Section -->
+<div id="sectionModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); z-index:10000; justify-content:center; align-items:center;">
+    <div class="modal-content" style="background:rgba(40,40,40,0.98); border-radius:20px; padding:2rem; width:90%; max-width:400px; box-shadow:0 10px 40px rgba(0,0,0,0.8);">
+        <div class="modal-header" style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:1rem; margin-bottom:1.5rem;">
+            <h2 id="sectionModalTitle" style="margin:0; color:white; font-size:1.6rem;">Ajouter Section</h2>
+            <span class="close-modal" onclick="closeSectionModal()" style="font-size:2rem; color:rgba(255,255,255,0.6); cursor:pointer; transition:color 0.3s;">&times;</span>
+        </div>
+        <div style="margin-bottom:1.5rem;">
+            <label for="sectionName" style="display:block; color:rgba(255,255,255,0.9); font-weight:500; margin-bottom:0.5rem;">Nom de la section</label>
+            <input type="text" id="sectionName" placeholder="Ex: Nouvelle section" style="width:100%; padding:1rem; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); border-radius:12px; color:white; font-size:1rem; outline:none;" />
+            <input type="hidden" id="editingSectionId" value="" />
+        </div>
+        <div style="text-align:center;">
+            <button class="btn" onclick="saveSection()" style="background:#6495ed; color:white; padding:1rem 2rem; border:none; border-radius:12px; cursor:pointer; font-size:1rem; font-weight:600; width:100%; box-shadow:0 4px 15px rgba(100,149,237,0.3);">
+                Enregistrer
+            </button>
+        </div>
+    </div>
+</div>
+
+    <!-- Footer Copyright -->
+    <div class="footer">
+        © 2025, CEN Damien SICHAUMETTE
+    </div>
+</body>
+</html>
