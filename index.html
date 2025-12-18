@@ -882,6 +882,79 @@
         z-index: 800;
         border-top: 1px solid rgba(255, 255, 255, 0.05);
     }
+
+    /* --- NAVIGATION CALENDRIER COMPACTE --- */
+    .calendar-navigation { display: flex; justify-content: center; align-items: center; gap: 15px; margin-top: 5px; margin-bottom: 5px; padding: 5px; }
+
+    .calendar-month-display {
+        font-size: 18px;
+        font-weight: 600;
+        color: var(--primary-text);
+        min-width: 160px;
+        text-align: center;
+        text-transform: capitalize;
+    }
+
+    /* Flèches simples */
+    .calendar-nav-arrow {
+        background: transparent;
+        border: none;
+        color: var(--primary-text);
+        cursor: pointer;
+        font-size: 20px;
+        padding: 2px 8px;
+        transition: opacity 0.2s;
+        display: flex;
+        align-items: center;
+    }
+    .calendar-nav-arrow:hover {
+        opacity: 0.7;
+    }
+
+    /* Bouton Aujourd'hui style "Filtre" (Similaire au bouton "Toutes les tâches") */
+    .calendar-today-btn { background: rgba(255, 255, 255, 0.1); border: none; color: #f5f5f7; padding: 8px 16px; border-radius: 6px; font-size: 14px; cursor: pointer; transition: background 0.3s; font-family: inherit; }
+
+    .calendar-today-btn:hover {
+        background: rgba(255, 255, 255, 0.2);
+    }
+
+    /* Grille collée à la navigation */
+    .calendar-grid {
+        margin-top: 0 !important;
+    }
+
+    /* Halo subtil jour actuel */
+    .calendar-day.today-highlight {
+        box-shadow: 0 0 10px rgba(100,149,237,0.4);
+        border: 1px solid rgba(100,149,237,0.6);
+        position: relative;
+        z-index: 5;
+    }
+
+    /* FORCER L'EQUILIBRE PARFAIT */
+    .calendar-view {
+        padding-top: 0 !important;
+        margin-top: 0 !important;
+    }
+
+    .calendar-navigation {
+        margin-top: 10px !important;    /* Espace Haut */
+        margin-bottom: 10px !important; /* Espace Bas (identique) */
+        padding: 0 !important;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 15px;
+    }
+
+    /* On s'assure que le bouton filter-btn s'affiche bien dans ce contexte */
+    .calendar-navigation .filter-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        height: auto; /* Laisser le padding définir la hauteur comme les autres */
+    }
 </style>
 </head>
 <body>
@@ -908,8 +981,15 @@
     <div class="kanban-container" id="kanbanContainer"></div>
     
     <div class="calendar-view" id="calendarView">
-        <h2 style="color: var(--primary-text); margin-bottom: 20px;">📅 Vue Calendrier</h2>
-        <div class="calendar-grid" id="calendarGrid"></div>
+        
+        
+        <div class="calendar-navigation">
+            <button class="calendar-nav-arrow" onclick="previousMonth()">&#9664;</button>
+            <div class="calendar-month-display" id="calendarMonthDisplay"></div>
+            <button class="calendar-nav-arrow" onclick="nextMonth()">&#9654;</button>
+            <button class="filter-btn" onclick="goToToday()" style="margin:0;">Aujourd'hui</button>
+        </div>
+<div class="calendar-grid" id="calendarGrid"></div>
     </div>
 
     <div class="calendar-task-detail" id="calendarTaskDetail">
@@ -1438,17 +1518,40 @@ if (currentSection && currentSection.columns) {
         }
 
         // Gestion des vues
+        
         function switchView(view) {
             currentView = view;
+
+            // 1. Gestion des boutons (Méthode V50 qui marche)
             document.querySelectorAll('.view-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
-            document.getElementById('calendarView').classList.remove('show');
-            document.getElementById('kanbanContainer').style.display = 'flex';
-            renderKanban();
+            // On vérifie si event existe (clic utilisateur) pour éviter erreur si appel auto
+            if (typeof event !== 'undefined' && event.target) {
+                event.target.classList.add('active');
+            }
+
+            // 2. Gestion intelligente Calendrier vs Kanban
+            const calendarView = document.getElementById('calendarView');
+            // Vérifie si le calendrier est visible (par classe 'show' ou style inline display)
+            // Note: on ajoute une sécurité sur null au cas où
+            const isCalendarOpen = calendarView && (
+                calendarView.classList.contains('show') || 
+                (calendarView.style.display && calendarView.style.display !== 'none')
+            );
+
+            if (isCalendarOpen) {
+                // Si calendrier ouvert : on reste dessus, on rafraichit les données
+                renderCalendar();
+            } else {
+                // Sinon (mode Kanban classique) : on force l'affichage du Kanban
+                if (calendarView) calendarView.classList.remove('show');
+                const kanbanContainer = document.getElementById('kanbanContainer');
+                if (kanbanContainer) kanbanContainer.style.display = 'flex';
+                renderKanban();
+            }
         }
 
+
         // Filtres
-        // Affiche toutes les tâches de la vue actuelle
         function showAllTasks() {
         // Cacher le calendrier et réafficher le kanban
         document.getElementById('calendarView').classList.remove('show');
@@ -1677,7 +1780,7 @@ if (currentSection && currentSection.columns) {
         function editCardFromDetail() { if (currentDetailCardId !== null) { closeTaskDetail(); editCard(currentDetailCardId); } }
         function deleteCardFromDetail() { if (currentDetailCardId !== null) { closeTaskDetail(); deleteCard(currentDetailCardId); } }
 
-        function renderCalendar() {
+        function renderCalendar_OLD() {
             const grid = document.getElementById('calendarGrid');
             grid.innerHTML = '';
 
@@ -1707,12 +1810,14 @@ if (currentSection && currentSection.columns) {
                 dayDiv.className = 'calendar-day';
                 dayDiv.innerHTML = `
                     <div class="calendar-day-header">${day} ${date.toLocaleDateString('fr-FR', { weekday: 'short' })}</div>
-                    ${dayCards.map(card => {
-                        const section = sections.find(s => s.name.toLowerCase() === card.section.toLowerCase());
-                        const bgColor = section ? section.color : 'rgba(100,149,237,0.3)';
-                        const sectionText = card.section && card.section.trim() ? ` - ${card.section}` : '';
-                        return `<div class="calendar-task" style="background:${bgColor}; border-left-color:${bgColor}; color:#f5f5f7;" onclick="showTaskDetail(${card.id}, event)">${card.title}${sectionText}</div>`;
-                    }).join('')}
+                    
+                ${dayCards.map(card => {
+                    const section = sections.find(s => s.name.toLowerCase() === card.section.toLowerCase());
+                    const bgColor = section ? section.color : 'rgba(100,149,237,0.3)';
+                    const sectionText = card.section && card.section.trim() ? ` - ${card.section}` : '';
+                    return `<div class="calendar-task" style="background:${bgColor}; border-left-color:${bgColor}; color:#f5f5f7;" onclick="showTaskDetail(${card.id}, event)">${card.title}${sectionText}</div>`;
+                }).join('')}
+
                 `;
                 grid.appendChild(dayDiv);
             }
@@ -3154,6 +3259,71 @@ Continuer ?`;
             saveToLocalStorage();
         }
 
+
+    /* --- LOGIQUE CALENDRIER --- */
+    let currentCalendarDate = new Date();
+
+    function renderCalendar() {
+        const grid = document.getElementById('calendarGrid');
+        if (!grid) return;
+        grid.innerHTML = '';
+
+        const today = new Date();
+        const displayDate = currentCalendarDate;
+
+        // Mise à jour titre mois
+        const monthDisplay = document.getElementById('calendarMonthDisplay');
+        if (monthDisplay) {
+            monthDisplay.textContent = displayDate.toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' });
+        }
+
+        const year = displayDate.getFullYear();
+        const month = displayDate.getMonth();
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+        for (let day = 1; day <= daysInMonth; day++) {
+            const dateObj = new Date(year, month, day);
+
+            // Détection jour actuel
+            const isToday = dateObj.getDate() === today.getDate() && 
+                           dateObj.getMonth() === today.getMonth() && 
+                           dateObj.getFullYear() === today.getFullYear();
+
+            // Filtrage cartes
+            let dayCards = cards.filter(card => {
+                if (!card.dueDate) return false;
+                const cardDate = new Date(card.dueDate);
+                return cardDate.getDate() === day &&
+                       cardDate.getMonth() === month &&
+                       cardDate.getFullYear() === year;
+            });
+
+            if (currentView !== 'general') {
+                dayCards = dayCards.filter(card => card.section.toLowerCase() === currentView.toLowerCase());
+            }
+
+            const dayDiv = document.createElement('div');
+            // Application classe halo si aujourd'hui
+            dayDiv.className = isToday ? 'calendar-day today-highlight' : 'calendar-day';
+
+            dayDiv.innerHTML = `
+                <div class="calendar-day-header">${day} ${dateObj.toLocaleDateString('fr-FR', { weekday: 'short' })}</div>
+                
+                ${dayCards.map(card => {
+                    const section = sections.find(s => s.name.toLowerCase() === card.section.toLowerCase());
+                    const bgColor = section ? section.color : 'rgba(100,149,237,0.3)';
+                    const sectionText = card.section && card.section.trim() ? ` - ${card.section}` : '';
+                    return `<div class="calendar-task" style="background:${bgColor}; border-left-color:${bgColor}; color:#f5f5f7;" onclick="showTaskDetail(${card.id}, event)">${card.title}${sectionText}</div>`;
+                }).join('')}
+
+            `;
+            grid.appendChild(dayDiv);
+        }
+    }
+
+    function previousMonth() { currentCalendarDate.setMonth(currentCalendarDate.getMonth() - 1); renderCalendar(); }
+    function nextMonth() { currentCalendarDate.setMonth(currentCalendarDate.getMonth() + 1); renderCalendar(); }
+    function goToToday() { currentCalendarDate = new Date(); renderCalendar(); }
 </script>
 
 <!-- Modal Gestion Sections -->
