@@ -98,8 +98,8 @@
         .view-btn.active {
             background: rgba(255,255,255,0.12);
             color: var(--primary-text);
-            border-color: var(--primary-border);
-            box-shadow: 0 4px 15px rgba(100,149,237,0.3);
+            border-color: rgba(100,149,237,0.5);
+            box-shadow: 0 4px 15px rgba(100,149,237,0.5);
         }
 
     .filter-btn.active {
@@ -955,12 +955,43 @@
         justify-content: center;
         height: auto; /* Laisser le padding définir la hauteur comme les autres */
     }
+
+        /* ===== MODAL VISIBILITY FIX (V61) ===== */
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 3000;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            overflow: auto;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .modal-content {
+            position: relative;
+            z-index: 3001;
+            width: min(720px, 96vw);
+            max-height: 92vh;
+            overflow-y: auto;
+        }
+        .close-modal {
+            position: absolute;
+            top: 12px;
+            right: 16px;
+            z-index: 3002;
+        }
+        .modal.show {
+            display: flex !important;
+        }
 </style>
 </head>
 <body>
     <div class="header">
         <button class="hamburger-menu-btn" onclick="toggleSettingsMenu()" title="Menu"><span>☰</span></button>
-            <h1>🎯 KanBan DGCE</h1>
+            <h1>✅ KanBan DGCE</h1>
         <div class="view-selector">
             <button class="view-btn active" onclick="switchView('general')">Général</button>
             <button class="view-btn" onclick="switchView('soa')">SOA</button>
@@ -1051,7 +1082,7 @@
     <div class="modal" id="cardModal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2>Ajouter/Modifier une tâche</h2>
+                <h2 id="modalTitle">Ajouter/Modifier une tâche</h2>
                 <span class="close-modal" onclick="closeModal('cardModal')">&times;</span>
             </div>
             <div class="form-group">
@@ -1275,6 +1306,8 @@ function getSectionOrder(sectionId) {
 
         // Palette de 30 couleurs
         const colorPalette = [
+            '#0066cc', '#4ecca3', '#ffa500', '#ff6b9d', '#9b59b6',
+            
             'rgba(255,149,0,0.3)', 'rgba(255,59,48,0.3)', 'rgba(255,204,0,0.3)',
             'rgba(52,199,89,0.3)', 'rgba(0,122,255,0.3)', 'rgba(88,86,214,0.3)',
             'rgba(175,82,222,0.3)', 'rgba(255,45,85,0.3)', 'rgba(255,99,164,0.3)',
@@ -1414,7 +1447,8 @@ if (currentSection && currentSection.columns) {
 
             updateColumnSelects();
 
-        // Ajouter la colonne fictive "Ajouter une colonne"
+        if (currentView !== 'general') {
+            // Ajouter la colonne fictive "Ajouter une colonne"
         const addColumnPlaceholder = document.createElement('div');
         addColumnPlaceholder.className = 'add-column-placeholder';
         addColumnPlaceholder.onclick = () => openColumnModal();
@@ -1423,6 +1457,7 @@ if (currentSection && currentSection.columns) {
             <div class="add-column-text">Ajouter une colonne</div>
         `;
         container.appendChild(addColumnPlaceholder);
+        }
         
         setupDragAndDrop();
         }
@@ -1522,31 +1557,51 @@ if (currentSection && currentSection.columns) {
         function switchView(view) {
             currentView = view;
 
-            // 1. Gestion des boutons (Méthode V50 qui marche)
-            document.querySelectorAll('.view-btn').forEach(btn => btn.classList.remove('active'));
-            // On vérifie si event existe (clic utilisateur) pour éviter erreur si appel auto
+            // 1. Gestion des boutons avec couleur dynamique depuis data-section-color
+            document.querySelectorAll('.view-btn').forEach(btn => {
+                btn.classList.remove('active');
+                // Retirer les styles inline personnalisés
+                btn.style.boxShadow = '';
+                btn.style.borderColor = '';
+            });
+
+            // Ajouter la classe active au bouton cliqué
             if (typeof event !== 'undefined' && event.target) {
                 event.target.classList.add('active');
+
+                // Récupérer la couleur de la section depuis l'attribut data-section-color
+                const sectionColor = event.target.getAttribute('data-section-color');
+
+                if (sectionColor) {
+                    // Appliquer la couleur pour le contour (border) et le halo (box-shadow)
+                    const color = sectionColor;
+                    // Convertir hex en rgba pour le box-shadow
+                    const r = parseInt(color.slice(1,3), 16);
+                    const g = parseInt(color.slice(3,5), 16);
+                    const b = parseInt(color.slice(5,7), 16);
+
+                    event.target.style.borderColor = color;
+                    event.target.style.boxShadow = `0 4px 15px rgba(${r},${g},${b},0.4)`;
+                }
             }
 
             // 2. Gestion intelligente Calendrier vs Kanban
             const calendarView = document.getElementById('calendarView');
-            // Vérifie si le calendrier est visible (par classe 'show' ou style inline display)
-            // Note: on ajoute une sécurité sur null au cas où
             const isCalendarOpen = calendarView && (
-                calendarView.classList.contains('show') || 
+                calendarView.classList.contains('show') ||
                 (calendarView.style.display && calendarView.style.display !== 'none')
             );
 
+            // 3. Mettre à jour la vue appropriée
             if (isCalendarOpen) {
-                // Si calendrier ouvert : on reste dessus, on rafraichit les données
                 renderCalendar();
             } else {
-                // Sinon (mode Kanban classique) : on force l'affichage du Kanban
-                if (calendarView) calendarView.classList.remove('show');
-                const kanbanContainer = document.getElementById('kanbanContainer');
-                if (kanbanContainer) kanbanContainer.style.display = 'flex';
                 renderKanban();
+            }
+
+            // 4. Sauvegarder la vue (sauf pour filtres temporaires)
+            if (!['this-week', 'overdue', 'this-month'].includes(view)) {
+                localStorage.setItem('currentView', view);
             }
         }
 
@@ -1777,8 +1832,8 @@ if (currentSection && currentSection.columns) {
 
         function closeTaskDetail() { document.getElementById('calendarTaskDetail').classList.remove('show'); document.getElementById('detailMenu').classList.remove('show'); currentDetailCardId = null; }
         function toggleDetailMenu(event) { event.stopPropagation(); document.getElementById('detailMenu').classList.toggle('show'); }
-        function editCardFromDetail() { if (currentDetailCardId !== null) { closeTaskDetail(); editCard(currentDetailCardId); } }
-        function deleteCardFromDetail() { if (currentDetailCardId !== null) { closeTaskDetail(); deleteCard(currentDetailCardId); } }
+        function editCardFromDetail() { if (currentDetailCardId !== null) { const id = currentDetailCardId; closeTaskDetail(); editCard(id); } }
+        function deleteCardFromDetail() { if (currentDetailCardId !== null) { const id = currentDetailCardId; closeTaskDetail(); deleteCard(id); } }
 
         function renderCalendar_OLD() {
             const grid = document.getElementById('calendarGrid');
@@ -1971,53 +2026,116 @@ if (currentSection) sectionsToShow.push(currentSection.id);
             updateColorSelection();
             modal.classList.add('show');
         }
+        
         function openCardModal(columnId = null, cardId = null) {
             currentEditingCard = cardId;
             currentContextColumn = columnId;
             const modal = document.getElementById('cardModal');
 
-            // Mettre à jour la liste des sections AVANT de pré-remplir
-            updateSectionSelect();
+            // Sécurité : si modalTitle n'existe pas (anciens fichiers), on l'ignore silencieusement
+            const titleEl = document.getElementById('modalTitle');
 
-            if (cardId) {
-                // Mode MODIFICATION : pré-remplir avec les valeurs de la carte
-                const card = cards.find(c => c.id === cardId);
-                document.getElementById('cardTitle').value = card.title;
-                document.getElementById('cardDescription').value = card.description || '';
-                document.getElementById('cardSection').value = card.section;
-                document.getElementById('cardColumn').value = card.columnId;
-                document.getElementById('cardDueDate').value = card.dueDate || '';
-                document.getElementById('cardResources').value = card.resources ? card.resources.join(', ') : '';
-                document.getElementById('cardProgress').value = card.progress || 0;
-                document.getElementById('cardPriority').value = card.priority || 'low';
-            } else {
-                // Mode CRÉATION : pré-remplir avec le contexte actuel
-                document.getElementById('cardTitle').value = '';
-                document.getElementById('cardDescription').value = '';
-
-                // Pré-remplir la section avec la vue actuelle (ou SOA par défaut)
-                const defaultSection = currentView !== 'general' ? currentView.toUpperCase() : '';
-                document.getElementById('cardSection').value = defaultSection;
-
-                // Pré-remplir la colonne si fournie (bouton + de la colonne)
-                if (columnId) {
-                    document.getElementById('cardColumn').value = columnId;
-                } else {
-                    document.getElementById('cardColumn').value = '';
-                }
-
-                document.getElementById('cardDueDate').value = '';
-                document.getElementById('cardResources').value = '';
-                document.getElementById('cardProgress').value = 0;
-                document.getElementById('cardPriority').value = 'low';
+            // 1. Mettre à jour la liste des sections
+            const sectionSelect = document.getElementById('cardSection');
+            if (sectionSelect) {
+                sectionSelect.innerHTML = '';
+                sections.forEach(sec => {
+                    const opt = document.createElement('option');
+                    opt.value = sec.name;
+                    opt.textContent = sec.name;
+                    sectionSelect.appendChild(opt);
+                });
             }
 
-            // Mettre à jour les colonnes disponibles selon la section
-            updateColumnSelects();
+            if (cardId !== null && cardId !== undefined) {
+                // MODE MODIFICATION
+                if (titleEl) titleEl.textContent = 'Modifier la tâche';
+                const card = cards.find(c => c.id === cardId);
 
-            updateColumnSelects();
-            modal.classList.add('show');
+                if (card) {
+                    if(document.getElementById('cardTitle')) document.getElementById('cardTitle').value = card.title;
+                    if(document.getElementById('cardDescription')) document.getElementById('cardDescription').value = card.description || '';
+
+                    if (sectionSelect) {
+                        // Gestion Section (casse-insensitive)
+                        let sectionToSelect = card.section;
+                        let optionExists = Array.from(sectionSelect.options).some(o => o.value === sectionToSelect);
+                        if (!optionExists) {
+                            if (Array.from(sectionSelect.options).some(o => o.value === sectionToSelect.toUpperCase())) {
+                                sectionToSelect = sectionToSelect.toUpperCase();
+                            }
+                        }
+                        sectionSelect.value = sectionToSelect;
+
+                        // IMPORTANT : Mettre à jour les colonnes immédiatement
+                        updateColumnSelect(sectionToSelect);
+                    }
+
+                    // Sélectionner la colonne (après updateColumnSelect)
+                    if(document.getElementById('cardColumn')) document.getElementById('cardColumn').value = card.columnId;
+
+                    if(document.getElementById('cardDueDate')) document.getElementById('cardDueDate').value = card.dueDate || '';
+                    if(document.getElementById('cardResources')) document.getElementById('cardResources').value = card.resources ? card.resources.join(', ') : '';
+                    if(document.getElementById('cardProgress')) document.getElementById('cardProgress').value = card.progress || 0;
+                    if(document.getElementById('cardPriority')) document.getElementById('cardPriority').value = card.priority || 'low';
+                }
+            } else {
+                // MODE CRÉATION
+                if (titleEl) titleEl.textContent = 'Nouvelle tâche';
+                if(document.getElementById('cardTitle')) document.getElementById('cardTitle').value = '';
+                if(document.getElementById('cardDescription')) document.getElementById('cardDescription').value = '';
+                if(document.getElementById('cardDueDate')) document.getElementById('cardDueDate').value = '';
+                if(document.getElementById('cardResources')) document.getElementById('cardResources').value = '';
+                if(document.getElementById('cardProgress')) document.getElementById('cardProgress').value = 0;
+                if(document.getElementById('cardPriority')) document.getElementById('cardPriority').value = 'low';
+
+                if (sectionSelect) {
+                    // Section par défaut
+                    let defaultSection = 'SOA';
+                    if (typeof currentView !== 'undefined' && currentView !== 'general') {
+                        const matchingSec = sections.find(s => s.name.toLowerCase() === currentView.toLowerCase());
+                        if (matchingSec) defaultSection = matchingSec.name;
+                    }
+                    sectionSelect.value = defaultSection;
+                    updateColumnSelect(defaultSection);
+                }
+
+                if(document.getElementById('cardColumn')) {
+                    if (columnId) {
+                        document.getElementById('cardColumn').value = columnId;
+                    } else {
+                         const colSelect = document.getElementById('cardColumn');
+                         if (colSelect.options.length > 0) colSelect.selectedIndex = 0;
+                    }
+                }
+            }
+            if (modal) openModal('cardModal');
         }
+
+        function updateColumnSelect(sectionName) {
+            const columnSelect = document.getElementById('cardColumn');
+            if (!columnSelect) return;
+
+            columnSelect.innerHTML = '';
+            const section = sections.find(s => s.name === sectionName);
+            if (!section) return;
+
+            const sectionColumns = [];
+            if (section.columns && section.columns.length > 0) {
+                 section.columns.forEach(colId => {
+                     const col = columns.find(c => c.id === colId);
+                     if (col) sectionColumns.push(col);
+                 });
+            }
+
+            sectionColumns.forEach(col => {
+                const opt = document.createElement('option');
+                opt.value = col.id;
+                opt.textContent = col.title;
+                columnSelect.appendChild(opt);
+            });
+        }
+
 
         function openCardModalInContext(columnId) {
         openCardModal(columnId, null);
@@ -2129,6 +2247,7 @@ if (currentSection) {
 
             saveToLocalStorage();
             renderKanban();
+            if(typeof renderCalendar === 'function') renderCalendar();
             closeModal('columnModal');
         }
         // Sauvegarder carte
@@ -2190,6 +2309,8 @@ if (currentSection) {
 
             saveToLocalStorage();
             renderKanban();
+            if(typeof renderCalendar === 'function') renderCalendar();
+            if(typeof renderCalendar === "function") renderCalendar();
             closeModal('cardModal');
         }
 
@@ -2295,6 +2416,7 @@ Continuer ?`;
                 cards = cards.filter(c => c.id !== cardId);
                 saveToLocalStorage();
                 renderKanban();
+                if(typeof renderCalendar === "function") renderCalendar();
             }
         }
 
@@ -2646,7 +2768,7 @@ Continuer ?`;
             });
 
             const data = {
-            appTitle: localStorage.getItem('appTitle') || '🎯 KanBan DGCE',
+            appTitle: localStorage.getItem('appTitle') || '✅ KanBan DGCE',
                 columns: columns,
                 cards: cards,
                 sections: sections,
@@ -2814,7 +2936,7 @@ Continuer ?`;
                         renderSectionsList();
                         updateSectionButtons();
                         updateSectionSelect();
-                        renderKanban();
+                        updateAllViews();
 
                         alert('✅ Données importées et fusionnées avec succès !');
                     } catch (error) {
@@ -2829,7 +2951,7 @@ Continuer ?`;
 
         // Efface toutes les données
         function clearAllData() {
-            if (!confirm('⚠️ ATTENTION !\n\nCette action va :\n• Effacer TOUTES les tâches\n• Réinitialiser les sections (vide)\n• Recréer les 4 colonnes par défaut\n\nVotre titre personnalisé sera conservé.\n\nContinuer ?')) {
+            if (!confirm('⚠️ ATTENTION !\n\nCette action va :\n• Effacer TOUTES les tâches\n• Effacer TOUTES les colonnes\n• Effacer TOUTES les sections\n\nVotre titre personnalisé sera conservé.\n\nContinuer ?')) {
                 return;
             }
 
@@ -2838,18 +2960,13 @@ Continuer ?`;
                 return;
             }
 
-            // Réinitialiser les 4 colonnes par défaut
-            columns = [
-                { id: 1, title: 'À faire', color: 'rgba(100,149,237,0.3)', order: 0 },
-                { id: 2, title: 'En cours', color: 'rgba(0,122,255,0.3)', order: 1 },
-                { id: 3, title: 'En révision', color: 'rgba(255,149,0,0.3)', order: 2 },
-                { id: 4, title: 'Terminé', color: 'rgba(52,199,89,0.3)', order: 3 }
-            ];
+            // Effacer toutes les colonnes
+            columns = [];
 
             // Effacer toutes les cartes
             cards = [];
 
-            // Réinitialiser les sections (vider complètement)
+            // Effacer toutes les sections
             sections = [];
 
             // Nettoyer TOUS les ordres de colonnes dans localStorage
@@ -2865,9 +2982,9 @@ Continuer ?`;
             updateSectionButtons();
             updateSectionSelect();
             currentView = 'general';
-            renderKanban();
+            updateAllViews();
 
-            alert('✅ Nettoyage effectué !\n\n• Toutes les tâches supprimées\n• Sections réinitialisées\n• 4 colonnes par défaut créées\n• Titre conservé');
+            alert('✅ Nettoyage effectué !\n\n• Toutes les tâches supprimées\n• Toutes les colonnes supprimées\n• Toutes les sections supprimées\n• Titre conservé\n\nVue Général est maintenant vide.');
         }
 
         
@@ -2895,7 +3012,7 @@ Continuer ?`;
 
             // Réinitialiser les sections par défaut
             sections = [
-                { id: 1, name: 'SOA', color: '#6495ed', columns: [1, 2, 3, 4] },
+                { id: 1, name: 'SOA', color: '#0066cc', columns: [1, 2, 3, 4] },
                 { id: 2, name: 'SMSC', color: '#4ecca3', columns: [1, 2, 3, 4] },
                 { id: 3, name: 'SOSC', color: '#ffa500', columns: [1, 2, 3, 4] },
                 { id: 4, name: 'SBO', color: '#ff6b9d', columns: [1, 2, 3, 4] },
@@ -2903,7 +3020,7 @@ Continuer ?`;
             ];
 
             // Réinitialiser le titre
-            localStorage.setItem('appTitle', 'KanBan DGCE');
+            localStorage.setItem('appTitle', '✅ KanBan DGCE');
             loadAppTitle();
 
             // Nettoyer TOUT le localStorage des ordres
@@ -2919,7 +3036,7 @@ Continuer ?`;
             updateSectionButtons();
             updateSectionSelect();
             currentView = 'general';
-            renderKanban();
+            updateAllViews();
 
             alert('✅ Application réinitialisée avec succès !\n\nL\'application a été restaurée aux paramètres d\'usine.');
         }
@@ -2938,7 +3055,7 @@ Continuer ?`;
                 saveSections();
             } else {
                 sections = [
-                    { id: 1, name: 'SOA', color: '#6495ed', columns: [1, 2, 3, 4] },
+                    { id: 1, name: 'SOA', color: '#0066cc', columns: [1, 2, 3, 4] },
                     { id: 2, name: 'SMSC', color: '#4ecca3', columns: [1, 2, 3, 4] },
                     { id: 3, name: 'SOSC', color: '#ffa500', columns: [1, 2, 3, 4] },
                     { id: 4, name: 'SBO', color: '#ff6b9d', columns: [1, 2, 3, 4] },
@@ -2962,6 +3079,7 @@ Continuer ?`;
                 const btn = document.createElement('button');
                 btn.className = 'view-btn';
                 btn.textContent = section.name;
+                btn.setAttribute('data-section-color', section.color);
                 btn.onclick = () => switchView(section.name.toLowerCase());
                 viewSelector.appendChild(btn);
             });
@@ -3136,7 +3254,7 @@ Continuer ?`;
 
             const modal = document.getElementById('sectionModal');
             if (modal) {
-                modal.style.display = 'flex';
+                openModal('sectionModal');
                 modal.style.position = 'fixed';
                 modal.style.top = '0';
                 modal.style.left = '0';
@@ -3183,8 +3301,17 @@ Continuer ?`;
                 }
             } else {
                 const newId = sections.length ? Math.max(...sections.map(s => s.id)) + 1 : 1;
-                const randomColor = colorPalette[Math.floor(Math.random() * colorPalette.length)];
-                sections.push({ id: newId, name: name, color: randomColor, columns: [] });
+
+                // Attribution intelligente : prendre la première couleur non utilisée
+                const usedColors = sections.map(s => s.color);
+                let selectedColor = colorPalette.find(color => !usedColors.includes(color));
+
+                // Si toutes les couleurs sont utilisées, prendre une au hasard
+                if (!selectedColor) {
+                    selectedColor = colorPalette[Math.floor(Math.random() * colorPalette.length)];
+                }
+
+                sections.push({ id: newId, name: name, color: selectedColor, columns: [] });
             }
 
             saveSections();
@@ -3235,7 +3362,7 @@ Continuer ?`;
 
         function loadAppTitle() {
             const saved = localStorage.getItem('appTitle');
-            const title = saved || '🎯 KanBan DGCE';
+            const title = saved || '✅ KanBan DGCE';
             const h1 = document.querySelector('.header h1');
             if (h1) h1.textContent = title;
             document.title = title;
@@ -3244,7 +3371,7 @@ Continuer ?`;
         function openTitleModal() {
             const modal = document.getElementById('titleModal');
             const input = document.getElementById('appTitleInput');
-            input.value = localStorage.getItem('appTitle') || '🎯 KanBan DGCE';
+            input.value = localStorage.getItem('appTitle') || '✅ KanBan DGCE';
             modal.classList.add('show');
             input.focus();
         }
@@ -3324,6 +3451,44 @@ Continuer ?`;
     function previousMonth() { currentCalendarDate.setMonth(currentCalendarDate.getMonth() - 1); renderCalendar(); }
     function nextMonth() { currentCalendarDate.setMonth(currentCalendarDate.getMonth() + 1); renderCalendar(); }
     function goToToday() { currentCalendarDate = new Date(); renderCalendar(); }
+
+        // ===== MODAL HELPERS (V61) =====
+        function openModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (!modal) return;
+            // Directly set style here to avoid recursion loop from regex replacement
+            modal.style.display = 'flex';
+            modal.classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (!modal) return;
+            modal.style.display = 'none';
+            modal.classList.remove('show');
+            document.body.style.overflow = 'auto';
+        }
+
+        function setupModalOverlayClose() {
+            document.querySelectorAll('.modal').forEach(modal => {
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) {
+                        modal.style.display = 'none';
+                        modal.classList.remove('show');
+                        document.body.style.overflow = 'auto';
+                    }
+                });
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', setupModalOverlayClose);
+
+        function updateAllViews() {
+            renderKanban();
+            renderCalendar();
+        }
+
 </script>
 
 <!-- Modal Gestion Sections -->
