@@ -782,16 +782,16 @@
         .calendar-task-detail-header-left { display: flex; align-items: center; gap: 0.75rem; flex: 1; min-width: 0; }
         .calendar-task-detail-header-right { display: flex; align-items: center; gap: 0.5rem; flex-shrink: 0; }
         .calendar-task-detail-title { font-size: 1.1rem; font-weight: 600; color: #f5f5f7; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .calendar-task-detail-section { display: inline-block; background: rgba(100,149,237,0.25); color: #6495ed; padding: 0.25rem 0.75rem; border-radius: 6px; font-size: 0.85rem; white-space: nowrap; flex-shrink: 0; }
+        .calendar-task-detail-section { display: inline-block; background: rgba(100,149,237,0.25); color: #ffffff; padding: 0.25rem 0.75rem; border-radius: 6px; font-size: 0.85rem; white-space: nowrap; flex-shrink: 0; }
         .calendar-task-detail-menu { position: relative; }
         .calendar-task-detail-menu-btn { background: none; border: none; color: #f5f5f7; font-size: 1.2rem; cursor: pointer; padding: 0.25rem; transition: color 0.2s ease; line-height: 1; }
-        .calendar-task-detail-menu-btn:hover { color: #6495ed; }
+        .calendar-task-detail-menu-btn:hover { color: #ffffff; }
         .calendar-task-detail-menu-dropdown { display: none; position: absolute; right: 0; top: 100%; margin-top: 0.5rem; background: rgba(40,40,40,0.95); border: 1px solid #6495ed; border-radius: 8px; min-width: 150px; box-shadow: 0 4px 12px rgba(0,0,0,0.5); z-index: 1001; }
         .calendar-task-detail-menu-dropdown.show { display: block; }
         .calendar-task-detail-menu-dropdown button { width: 100%; padding: 0.75rem 1rem; background: none; border: none; color: #f5f5f7; text-align: left; cursor: pointer; transition: background 0.2s ease; font-size: 0.9rem; }
         .calendar-task-detail-menu-dropdown button:hover { background: rgba(100,149,237,0.2); }
         .calendar-task-detail-close { background: none; border: none; color: #f5f5f7; font-size: 1.5rem; cursor: pointer; padding: 0; transition: color 0.2s ease; line-height: 1; }
-        .calendar-task-detail-close:hover { color: #6495ed; }
+        .calendar-task-detail-close:hover { color: #ffffff; }
         .calendar-task-detail-description { color: #d0d0d0; margin-bottom: 1rem; line-height: 1.5; }
         .calendar-task-detail-meta { display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.9rem; color: #b0b0b0; }
         .calendar-task-detail-meta-item { display: flex; align-items: center; gap: 0.5rem; }
@@ -986,13 +986,555 @@
         .modal.show {
             display: flex !important;
         }
+
+
+/* ============================================ */
+/* STYLES COMPTES RENDUS DE RÉUNION - V80     */
+/* ============================================ */
+
+/* Info box */
+.info-box {
+    background: rgba(33, 150, 243, 0.1);
+    border-left: 4px solid #2196f3;
+    padding: 15px;
+    border-radius: 6px;
+    margin-bottom: 25px;
+    font-size: 13px;
+    color: #64b5f6;
+}
+
+/* Utilisateur principal */
+.user-card {
+    background: rgba(142, 68, 173, 0.1);
+    border: 2px solid rgba(142, 68, 173, 0.3);
+    border-radius: 8px;
+    padding: 20px;
+    position: relative;
+}
+
+.user-badge {
+    position: absolute;
+    top: -12px;
+    right: 20px;
+    background: linear-gradient(135deg, #8e44ad, #9b59b6);
+    color: white;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.user-grid-4 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+/* Grille 4 colonnes pour ressources */
+.form-grid-4 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.form-field label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #aaa;
+}
+
+.form-field input {
+    padding: 8px 12px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 6px;
+    color: #f5f5f7;
+    font-size: 13px;
+}
+
+.form-field input:focus {
+    border-color: rgba(142, 68, 173, 0.5);
+    background: rgba(255,255,255,0.08);
+    outline: none;
+}
+
+/* Liste des ressources */
+.resources-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 20px;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.resource-item {
+    display: grid;
+    grid-template-columns: 2fr 1.2fr 1.8fr 2fr auto;
+    gap: 15px;
+    align-items: center;
+    padding: 12px 15px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 6px;
+    transition: all 0.2s;
+}
+
+.resource-item:hover {
+    background: rgba(255,255,255,0.08);
+    border-color: rgba(142, 68, 173, 0.3);
+}
+
+.resource-name {
+    font-weight: 500;
+    font-size: 14px;
+    color: #f5f5f7;
+}
+
+.resource-grade,
+.resource-unit,
+.resource-email {
+    color: #aaa;
+    font-size: 13px;
+}
+
+/* Formulaire d'ajout */
+.add-form {
+    background: rgba(255,255,255,0.03);
+    border: 2px dashed rgba(255,255,255,0.15);
+    border-radius: 8px;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+/* Tags */
+.tags-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 12px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 8px;
+    min-height: 50px;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.tags-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 15px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 8px;
+    min-height: 100px;
+}
+
+.tag-chip {
+    padding: 8px 12px;
+    background: rgba(142, 68, 173, 0.15);
+    color: #ba68c8;
+    border: 1px solid rgba(142, 68, 173, 0.3);
+    border-radius: 16px;
+    font-size: 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 500;
+}
+
+.tag-chip button {
+    background: rgba(244, 67, 54, 0.8);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    transition: all 0.2s;
+}
+
+.tag-chip button:hover {
+    background: #f44336;
+    transform: scale(1.1);
+}
+
+/* Sections checkboxes */
+.sections-checkboxes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 15px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.section-checkbox {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    background: rgba(255,255,255,0.05);
+    border: 2px solid rgba(255,255,255,0.1);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 14px;
+}
+
+.section-checkbox:hover {
+    background: rgba(255,255,255,0.08);
+}
+
+.section-checkbox.selected {
+    background: rgba(33, 150, 243, 0.15);
+    border-color: #2196f3;
+    color: #64b5f6;
+    font-weight: 500;
+}
+
+.section-checkbox input[type="checkbox"] {
+    cursor: pointer;
+}
+
+/* Participants */
+.participants-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 12px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 8px;
+    min-height: 60px;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.participant-chip {
+    padding: 6px 12px;
+    border-radius: 16px;
+    font-size: 13px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.chip-organizer {
+    background: rgba(33, 150, 243, 0.2);
+    color: #64b5f6;
+    font-weight: 500;
+    border: 1px solid rgba(33, 150, 243, 0.3);
+}
+
+.chip-attendee {
+    background: rgba(255,255,255,0.08);
+    color: #f5f5f7;
+    border: 1px solid rgba(255,255,255,0.15);
+}
+
+.chip-remove {
+    background: rgba(244, 67, 54, 0.8);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    transition: all 0.2s;
+}
+
+.chip-remove:hover {
+    background: #f44336;
+    transform: scale(1.1);
+}
+
+/* Suggestions dropdown */
+.suggestions-dropdown {
+    display: none;
+    position: relative;
+    background: rgba(42, 42, 42, 0.98);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 6px;
+    margin-top: 5px;
+    max-height: 200px;
+    overflow-y: auto;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+    z-index: 100;
+}
+
+.suggestion-item {
+    padding: 10px 15px;
+    cursor: pointer;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    transition: all 0.2s;
+}
+
+.suggestion-item:hover {
+    background: rgba(142, 68, 173, 0.2);
+}
+
+.suggestion-item:last-child {
+    border-bottom: none;
+}
+
+/* Tableaux */
+.mr-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.mr-table th {
+    background: rgba(255,255,255,0.08);
+    padding: 10px;
+    text-align: left;
+    font-weight: 600;
+    border: 1px solid rgba(255,255,255,0.1);
+    font-size: 13px;
+    color: #aaa;
+}
+
+.mr-table td {
+    padding: 8px;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.mr-table input,
+.mr-table textarea {
+    width: 100%;
+    background: transparent;
+    border: none;
+    color: #f5f5f7;
+    font-family: inherit;
+    font-size: 13px;
+    outline: none;
+    padding: 4px;
+}
+
+.mr-table input:focus,
+.mr-table textarea:focus {
+    background: rgba(255,255,255,0.05);
+}
+
+.mr-table textarea {
+    resize: vertical;
+    min-height: 40px;
+}
+
+.mr-table tr.separator-row td {
+    background: rgba(255,255,255,0.05);
+    height: 8px;
+    padding: 0;
+    border: none;
+}
+
+/* Task chips dans les tableaux */
+.task-chips-container {
+    margin-top: 8px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.task-chip {
+    padding: 4px 8px;
+    background: rgba(76, 175, 80, 0.2);
+    border-left: 3px solid #4caf50;
+    border-radius: 4px;
+    font-size: 11px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.task-chip:hover {
+    background: rgba(76, 175, 80, 0.3);
+}
+
+/* Cartes CR dans la liste */
+.mr-card {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-left: 4px solid;
+    border-radius: 8px;
+    padding: 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.mr-card:hover {
+    background: rgba(255,255,255,0.08);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+}
+
+.mr-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.mr-card-title {
+    font-size: 16px;
+    font-weight: 600;
+    flex: 1;
+    color: #f5f5f7;
+}
+
+.mr-status-badge {
+    padding: 5px 14px;
+    border-radius: 14px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.mr-status-brouillon {
+    background: rgba(158, 158, 158, 0.2);
+    color: #bdbdbd;
+    border: 1px solid rgba(158, 158, 158, 0.3);
+}
+
+.mr-status-encours {
+    background: rgba(255, 152, 0, 0.2);
+    color: #ffb74d;
+    border: 1px solid rgba(255, 152, 0, 0.3);
+}
+
+.mr-status-valide {
+    background: rgba(76, 175, 80, 0.2);
+    color: #81c784;
+    border: 1px solid rgba(76, 175, 80, 0.3);
+}
+
+.mr-meta {
+    display: flex;
+    gap: 20px;
+    font-size: 13px;
+    color: #aaa;
+    margin-top: 10px;
+}
+
+.mr-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 12px;
+}
+
+.mr-tag {
+    padding: 4px 10px;
+    background: rgba(142, 68, 173, 0.15);
+    color: #ba68c8;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 500;
+    border: 1px solid rgba(142, 68, 173, 0.25);
+}
+
+/* Boutons spécifiques CR */
+.btn-small {
+    padding: 6px 12px;
+    font-size: 12px;
+}
+
+/* Help icon */
+.help-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 50%;
+    font-size: 12px;
+    cursor: help;
+    color: #aaa;
+}
+
+/* Intégration calendrier */
+.calendar-task.meeting {
+    background: rgba(142, 68, 173, 0.2) !important;
+    border-left-color: #8e44ad !important;
+    color: #ba68c8 !important;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .form-grid-4, .user-grid-4 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .resource-item {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+}
+
+@media (max-width: 768px) {
+    .form-grid-4, .user-grid-4 {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+
+/* Correctif final pour le bouton Réunions */
+button[onclick*="reunions"] {
+    display: inline-flex !important;
+    order: -1 !important; /* Force la 1ère position */
+    background: rgba(142, 68, 173, 0.25) !important; /* Fond violet léger pour le distinguer */
+    border: 1px solid #8e44ad !important;
+    font-weight: 600 !important;
+}
+
+/* S'assurer que le header laisse de la place */
+.view-selector {
+    flex: 1; /* Prend l'espace disponible */
+    min-width: 0; /* Évite les problèmes de flex overflow */
+}
+
+
+/* Réunions: bouton actif (texte bleu + contour violet) */
+#btn-reunions.active {
+    color: #6495ed !important;
+    border-color: #8e44ad !important;
+    box-shadow: 0 4px 15px rgba(142, 68, 173, 0.35) !important;
+}
+
+/* Réunions: grille de cartes */
+.meeting-reports-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 20px;
+}
 </style>
 </head>
 <body>
     <div class="header">
         <button class="hamburger-menu-btn" onclick="toggleSettingsMenu()" title="Menu"><span>☰</span></button>
             <h1>✅ KanBan DGCE</h1>
-        <div class="view-selector">
+        
+            <button id="btn-reunions" class="view-btn" onclick="switchView('reunions')" data-section-color="#8e44ad">📋 Réunions</button>
+<div class="view-selector">
+            <button class="view-btn" onclick="switchView('reunions')" data-section-color="#8e44ad">📋 Réunions</button>
             <button class="view-btn active" onclick="switchView('general')">Général</button>
             <button class="view-btn" onclick="switchView('soa')">SOA</button>
             <button class="view-btn" onclick="switchView('smsc')">SMSC</button>
@@ -1011,7 +1553,20 @@
 
     <div class="kanban-container" id="kanbanContainer"></div>
     
-    <div class="calendar-view" id="calendarView">
+    
+
+    <!-- VUE RÉUNIONS (Intégrée) -->
+    <div id="reunionsView" style="display:none; padding: 20px; height: calc(100vh - 140px); overflow-y: auto;">
+        <div style="display:flex; justify-content: space-between; align-items:center; margin-bottom: 20px; gap: 15px; flex-wrap: wrap;">
+            <h2 style="margin: 0;">📋 Comptes Rendus de Réunion</h2>
+            <button class="btn" onclick="openMeetingReportModal()"><span style="color:#ffffff; font-size:16px;">➕</span> Nouveau Compte Rendu</button>
+        </div>
+        <div id="meetingReportsList" class="meeting-reports-grid"></div>
+    </div>
+<div class="calendar-view" 
+
+    
+id="calendarView">
         
         
         <div class="calendar-navigation">
@@ -1141,6 +1696,8 @@
             <div class="form-group">
                 <button class="btn" onclick="openTitleModal()">📝 Modifier le titre</button>
             <button class="btn" onclick="openSectionsManagementModal()">📋 Gérer les Sections</button>
+            <button class="btn" onclick="openResourcesManagementModal()">👥 Gérer les Ressources</button>
+            <button class="btn" onclick="openTagsManagementModal()">🏷️ Gérer les Tags</button>
                 <button class="btn" onclick="exportToPDF()">📥 Exporter en PDF</button>
                                     <button class="btn" onclick="exportData()">📥 Exporter les données (JSON)</button>
                     <button class="btn" onclick="importData()">📤 Importer les données</button>
@@ -3489,6 +4046,949 @@ Continuer ?`;
             renderCalendar();
         }
 
+
+
+
+// ============================================
+// COMPTES RENDUS DE RÉUNION - V80
+// ============================================
+
+let meetingReports = JSON.parse(localStorage.getItem('meetingReports')) || [];
+let resources = JSON.parse(localStorage.getItem('resources')) || [];
+let meetingTags = JSON.parse(localStorage.getItem('meetingTags')) || [];
+let mainUser = JSON.parse(localStorage.getItem('mainUser')) || {
+    name: '', 
+    grade: '',
+    unit: '',
+    email: '',
+    isMain: true
+};
+let currentEditingMR = null;
+
+function saveMeetingReportsToStorage() {
+    localStorage.setItem('meetingReports', JSON.stringify(meetingReports));
+}
+
+function saveResourcesToStorage() {
+    localStorage.setItem('resources', JSON.stringify(resources));
+}
+
+function saveMeetingTagsToStorage() {
+    localStorage.setItem('meetingTags', JSON.stringify(meetingTags));
+}
+
+function saveMainUserToStorage() {
+    localStorage.setItem('mainUser', JSON.stringify(mainUser));
+}
+
+// Wrapper pour switchView pour gérer la vue Réunions
+(function() {
+    const originalSwitchView = typeof switchView !== 'undefined' ? switchView : function() {};
+    window.switchView = function(view) {
+        if (view === 'reunions') {
+            currentView = 'reunions';
+            document.getElementById('kanbanContainer').style.display = 'none';
+            const calView = document.getElementById('calendarView');
+            if (calView) calView.classList.remove('show');
+
+            document.querySelectorAll('.view-btn').forEach(btn => {
+                btn.classList.remove('active');
+                btn.style.boxShadow = '';
+                btn.style.borderColor = '';
+            });
+
+            if (typeof event !== 'undefined' && event.target) {
+                event.target.classList.add('active');
+                const color = '#8e44ad';
+                const r = 142, g = 68, b = 173;
+                event.target.style.borderColor = color;
+                event.target.style.boxShadow = `0 4px 15px rgba(${r},${g},${b},0.4)`;
+            }
+
+            openMeetingReportsListModal();
+            localStorage.setItem('currentView', 'reunions');
+        } else {
+            originalSwitchView(view);
+        }
+    };
+})();
+
+// Ouvrir la liste des CR
+function openMeetingReportsListModal() {
+    renderMeetingReportsList();
+    openModal('meetingReportsListModal');
+}
+
+// Render liste des CR
+function renderMeetingReportsList() {
+    const container = document.getElementById('meetingReportsList');
+    if (!container) return;
+
+    if (meetingReports.length === 0) {
+        container.innerHTML = '<div style="text-align: center; padding: 40px; color: #888;">Aucun compte rendu. Créez-en un avec le bouton ci-dessus.</div>';
+        return;
+    }
+
+    const sorted = [...meetingReports].sort((a, b) => new Date(b.statusDate) - new Date(a.statusDate));
+
+    container.innerHTML = sorted.map(mr => {
+        const statusClass = `mr-status-${mr.status}`;
+        const statusIcon = mr.status === 'brouillon' ? '⚪' : mr.status === 'encours' ? '🟠' : '🟢';
+        const statusLabel = mr.status === 'brouillon' ? 'Brouillon' : mr.status === 'encours' ? 'En cours' : 'Validé';
+        const borderColor = mr.status === 'brouillon' ? '#9e9e9e' : mr.status === 'encours' ? '#ff9800' : '#4caf50';
+
+        const tagsHtml = mr.tags && mr.tags.length > 0 ? 
+            `<div class="mr-tags">${mr.tags.map(tag => `<span class="mr-tag">${tag}</span>`).join('')}</div>` : '';
+
+        const sectionsText = mr.sections && mr.sections.length > 0 ? mr.sections.join(', ') : 'Général';
+
+        return `
+            <div class="mr-card" style="border-left-color: ${borderColor};">
+                <div class="mr-card-header">
+                    <div class="mr-card-title">📋 ${mr.title}</div>
+                    <span class="mr-status-badge ${statusClass}">${statusIcon} ${statusLabel}</span>
+                </div>
+                <div class="mr-meta">
+                    <span>📅 ${formatDateDisplay(mr.statusDate)}</span>
+                    <span>👥 ${mr.participants ? mr.participants.length : 0} participants</span>
+                    <span>📂 ${sectionsText}</span>
+                </div>
+                ${tagsHtml}
+                <div style="margin-top: 15px; display: flex; gap: 10px; justify-content: flex-end;">
+                    <button class="btn btn-secondary btn-small" onclick="event.stopPropagation(); editMeetingReport(${mr.id})">✏️ Modifier</button>
+                    <button class="btn btn-secondary btn-small" onclick="event.stopPropagation(); deleteMeetingReport(${mr.id})">🗑️ Supprimer</button>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+// Ouvrir le formulaire CR
+function openMeetingReportModal(mrId = null) {
+    currentEditingMR = mrId;
+    const title = document.getElementById('meetingReportModalTitle');
+
+    if (mrId) {
+        title.textContent = '📋 Modifier le Compte Rendu';
+        loadMeetingReportData(mrId);
+    } else {
+        title.textContent = '📋 Nouveau Compte Rendu';
+        resetMeetingReportForm();
+    }
+
+    renderMRSectionsCheckboxes();
+    renderMRParticipants();
+    renderMRTags();
+    openModal('meetingReportModal');
+}
+
+// Reset formulaire
+function resetMeetingReportForm() {
+    document.getElementById('mrTitle').value = '';
+    document.getElementById('mrStatus').value = 'brouillon';
+    document.getElementById('mrStatusDate').value = new Date().toISOString().split('T')[0];
+
+    window.currentMRTags = [];
+    window.currentMRSections = ['Général'];
+    window.currentMRParticipants = [{
+        name: mainUser.name, 
+        unit: mainUser.unit, 
+        isOrganizer: true
+    }];
+
+    renderMRTags();
+    resetTable('agendaPast');
+    resetTable('agendaCurrent');
+    resetTable('agendaNext');
+    resetTable('discussionsTable');
+}
+
+// Charger les données d'un CR
+function loadMeetingReportData(mrId) {
+    const mr = meetingReports.find(m => m.id === mrId);
+    if (!mr) return;
+
+    document.getElementById('mrTitle').value = mr.title || '';
+    document.getElementById('mrStatus').value = mr.status || 'brouillon';
+    document.getElementById('mrStatusDate').value = mr.statusDate || '';
+
+    window.currentMRTags = mr.tags || [];
+    window.currentMRSections = mr.sections || ['Général'];
+    window.currentMRParticipants = mr.participants || [{name: mainUser.name, unit: mainUser.unit, isOrganizer: true}];
+
+    renderMRTags();
+    renderMRParticipants();
+    loadTableData('agendaPast', mr.agendaPast);
+    loadTableData('agendaCurrent', mr.agendaCurrent);
+    loadTableData('agendaNext', mr.agendaNext);
+    loadTableData('discussionsTable', mr.discussions);
+}
+
+// Sauvegarder le CR
+function saveMeetingReport() {
+    const title = document.getElementById('mrTitle').value.trim();
+    if (!title) {
+        alert('Veuillez saisir un titre');
+        return;
+    }
+
+    const mr = {
+        id: currentEditingMR || Date.now(),
+        title: title,
+        status: document.getElementById('mrStatus').value,
+        statusDate: document.getElementById('mrStatusDate').value,
+        tags: window.currentMRTags || [],
+        sections: window.currentMRSections || ['Général'],
+        participants: window.currentMRParticipants || [],
+        agendaPast: getTableData('agendaPast'),
+        agendaCurrent: getTableData('agendaCurrent'),
+        agendaNext: getTableData('agendaNext'),
+        discussions: getTableData('discussionsTable'),
+        lastUpdated: new Date().getTime()
+    };
+
+    if (currentEditingMR) {
+        const index = meetingReports.findIndex(m => m.id === currentEditingMR);
+        if (index >= 0) meetingReports[index] = mr;
+    } else {
+        meetingReports.push(mr);
+    }
+
+    saveMeetingReportsToStorage();
+    closeModal('meetingReportModal');
+    renderMeetingReportsList();
+
+    if (typeof renderCalendar === 'function') {
+        renderCalendar();
+    }
+}
+
+function editMeetingReport(mrId) {
+    openMeetingReportModal(mrId);
+}
+
+function deleteMeetingReport(mrId) {
+    if (!confirm('Supprimer ce compte rendu ?')) return;
+
+    meetingReports = meetingReports.filter(mr => mr.id !== mrId);
+    saveMeetingReportsToStorage();
+    renderMeetingReportsList();
+
+    if (typeof renderCalendar === 'function') {
+        renderCalendar();
+    }
+}
+
+// GESTION TAGS
+if (!window.currentMRTags) window.currentMRTags = [];
+
+function renderMRTags() {
+    const container = document.getElementById('mrTagsContainer');
+    if (!container) return;
+
+    const tags = window.currentMRTags || [];
+    container.innerHTML = tags.map(tag => {
+        const escaped = tag.replace(/'/g, "\'").replace(/"/g, '&quot;');
+        return `<span class="tag-chip">${tag}<button onclick="removeMRTag('${escaped}')">×</button></span>`;
+    }).join('');
+}
+
+function handleMRTagInput(event) {
+    if (event.key === 'Enter') {
+        event.preventDefault();
+        const input = document.getElementById('mrTagInput');
+        const value = input.value.trim();
+        if (value && !window.currentMRTags.includes(value)) {
+            window.currentMRTags.push(value);
+            renderMRTags();
+        }
+        input.value = '';
+        document.getElementById('mrTagSuggestions').style.display = 'none';
+    }
+}
+
+function showMRTagSuggestions(event) {
+    const input = event.target;
+    const value = input.value.toLowerCase().trim();
+    const container = document.getElementById('mrTagSuggestions');
+
+    if (!value) {
+        container.style.display = 'none';
+        return;
+    }
+
+    const suggestions = meetingTags.filter(tag => 
+        tag.toLowerCase().includes(value) && !window.currentMRTags.includes(tag)
+    );
+
+    if (suggestions.length === 0) {
+        container.style.display = 'none';
+        return;
+    }
+
+    container.innerHTML = suggestions.map(tag => {
+        const escaped = tag.replace(/'/g, "\'").replace(/"/g, '&quot;');
+        return `<div class="suggestion-item" onclick="selectMRTag('${escaped}')">${tag}</div>`;
+    }).join('');
+    container.style.display = 'block';
+}
+
+function selectMRTag(tag) {
+    if (!window.currentMRTags.includes(tag)) {
+        window.currentMRTags.push(tag);
+        renderMRTags();
+    }
+    document.getElementById('mrTagInput').value = '';
+    document.getElementById('mrTagSuggestions').style.display = 'none';
+}
+
+function removeMRTag(tag) {
+    window.currentMRTags = window.currentMRTags.filter(t => t !== tag);
+    renderMRTags();
+}
+
+// GESTION SECTIONS
+if (!window.currentMRSections) window.currentMRSections = ['Général'];
+
+function renderMRSectionsCheckboxes() {
+    const container = document.getElementById('mrSectionsContainer');
+    if (!container) return;
+
+    const allSections = ['Général', ...sections.map(s => s.name)];
+
+    container.innerHTML = allSections.map(sectionName => {
+        const isChecked = window.currentMRSections && window.currentMRSections.includes(sectionName);
+        const escaped = sectionName.replace(/'/g, "\'").replace(/"/g, '&quot;');
+        return `
+            <label class="section-checkbox ${isChecked ? 'selected' : ''}">
+                <input type="checkbox" 
+                       ${isChecked ? 'checked' : ''} 
+                       onchange="toggleMRSection('${escaped}', this.checked)">
+                ${sectionName}
+            </label>
+        `;
+    }).join('');
+}
+
+function toggleMRSection(sectionName, checked) {
+    if (!window.currentMRSections) window.currentMRSections = [];
+
+    if (checked) {
+        if (!window.currentMRSections.includes(sectionName)) {
+            window.currentMRSections.push(sectionName);
+        }
+    } else {
+        window.currentMRSections = window.currentMRSections.filter(s => s !== sectionName);
+    }
+
+    renderMRSectionsCheckboxes();
+}
+
+// GESTION PARTICIPANTS
+if (!window.currentMRParticipants) {
+    window.currentMRParticipants = [{name: mainUser.name, unit: mainUser.unit, isOrganizer: true}];
+}
+
+function renderMRParticipants() {
+    const container = document.getElementById('mrParticipantsContainer');
+    if (!container) return;
+
+    const participants = window.currentMRParticipants || [];
+    container.innerHTML = participants.map((p, index) => {
+        const chipClass = p.isOrganizer ? 'chip-organizer' : 'chip-attendee';
+        const icon = p.isOrganizer ? '👤 ' : '';
+        const removeBtn = p.isOrganizer ? '' : `<button class="chip-remove" onclick="removeMRParticipant(${index})">×</button>`;
+
+        return `
+            <span class="participant-chip ${chipClass}">
+                ${icon}${p.name}${p.unit ? ' (' + p.unit + ')' : ''}
+                ${removeBtn}
+            </span>
+        `;
+    }).join('');
+}
+
+function handleParticipantInput(event) {
+    if (event.key === 'Enter') {
+        event.preventDefault();
+        const input = document.getElementById('mrParticipantInput');
+        const value = input.value.trim();
+        if (value) {
+            addMRParticipant(value);
+            input.value = '';
+            document.getElementById('mrParticipantSuggestions').style.display = 'none';
+        }
+    }
+}
+
+function showParticipantSuggestions(event) {
+    const input = event.target;
+    const value = input.value.toLowerCase().trim();
+    const container = document.getElementById('mrParticipantSuggestions');
+
+    if (!value) {
+        container.style.display = 'none';
+        return;
+    }
+
+    const currentNames = (window.currentMRParticipants || []).map(p => p.name);
+    const suggestions = resources.filter(r => 
+        r.name.toLowerCase().includes(value) && !currentNames.includes(r.name)
+    );
+
+    if (suggestions.length === 0) {
+        container.style.display = 'none';
+        return;
+    }
+
+    container.innerHTML = suggestions.map(r => {
+        const nameEsc = r.name.replace(/'/g, "\'").replace(/"/g, '&quot;');
+        const unitEsc = (r.unit || '').replace(/'/g, "\'").replace(/"/g, '&quot;');
+        return `<div class="suggestion-item" onclick="selectParticipant('${nameEsc}', '${unitEsc}')">${r.name}${r.unit ? ' - ' + r.unit : ''}</div>`;
+    }).join('');
+    container.style.display = 'block';
+}
+
+function selectParticipant(name, unit) {
+    addMRParticipant(name, unit);
+    document.getElementById('mrParticipantInput').value = '';
+    document.getElementById('mrParticipantSuggestions').style.display = 'none';
+}
+
+function addMRParticipant(name, unit = '') {
+    if (!window.currentMRParticipants) window.currentMRParticipants = [];
+
+    if (!window.currentMRParticipants.find(p => p.name === name)) {
+        window.currentMRParticipants.push({name, unit, isOrganizer: false});
+        renderMRParticipants();
+    }
+}
+
+function removeMRParticipant(index) {
+    if (window.currentMRParticipants) {
+        window.currentMRParticipants.splice(index, 1);
+        renderMRParticipants();
+    }
+}
+
+// GESTION TABLEAUX
+function handleTableNav(event, tableId) {
+    const input = event.target;
+    const cell = input.closest('td');
+    const row = cell.closest('tr');
+    const tbody = row.closest('tbody');
+
+    if (event.key === 'Tab') {
+        event.preventDefault();
+        const nextCell = cell.nextElementSibling;
+        if (nextCell) {
+            const nextInput = nextCell.querySelector('input, textarea');
+            if (nextInput) nextInput.focus();
+        } else {
+            const nextRow = row.nextElementSibling;
+            if (nextRow && !nextRow.classList.contains('separator-row')) {
+                const firstCell = nextRow.querySelector('td');
+                const firstInput = firstCell ? firstCell.querySelector('input, textarea') : null;
+                if (firstInput) firstInput.focus();
+            }
+        }
+    } else if (event.key === 'Enter' && !event.shiftKey) {
+        event.preventDefault();
+        addTableRow(tableId);
+        setTimeout(() => {
+            const rows = tbody.querySelectorAll('tr:not(.separator-row)');
+            const lastRow = rows[rows.length - 1];
+            const firstInput = lastRow ? lastRow.querySelector('input, textarea') : null;
+            if (firstInput) firstInput.focus();
+        }, 10);
+    } else if (event.ctrlKey && event.key.toLowerCase() === 'l') {
+        event.preventDefault();
+        addTableSeparator(tableId);
+    }
+}
+
+function addTableRow(tableId) {
+    const table = document.getElementById(tableId);
+    if (!table) return;
+    const tbody = table.querySelector('tbody');
+    const lastRow = tbody.querySelector('tr:not(.separator-row):last-child');
+    if (!lastRow) return;
+
+    const newRow = lastRow.cloneNode(true);
+    newRow.querySelectorAll('input, textarea').forEach(input => input.value = '');
+
+    const taskChipsContainer = newRow.querySelector('.task-chips-container');
+    if (taskChipsContainer) taskChipsContainer.innerHTML = '';
+
+    tbody.appendChild(newRow);
+}
+
+function addTableSeparator(tableId) {
+    const table = document.getElementById(tableId);
+    if (!table) return;
+    const tbody = table.querySelector('tbody');
+    const colCount = table.querySelectorAll('th').length;
+
+    const sepRow = document.createElement('tr');
+    sepRow.className = 'separator-row';
+    sepRow.innerHTML = `<td colspan="${colCount}"></td>`;
+    tbody.appendChild(sepRow);
+}
+
+function resetTable(tableId) {
+    const table = document.getElementById(tableId);
+    if (!table) return;
+    const tbody = table.querySelector('tbody');
+    const firstRow = tbody.querySelector('tr');
+    if (!firstRow) return;
+
+    tbody.innerHTML = '';
+    const newRow = firstRow.cloneNode(true);
+    newRow.querySelectorAll('input, textarea').forEach(input => input.value = '');
+
+    const taskChipsContainer = newRow.querySelector('.task-chips-container');
+    if (taskChipsContainer) taskChipsContainer.innerHTML = '';
+
+    tbody.appendChild(newRow);
+}
+
+function getTableData(tableId) {
+    const table = document.getElementById(tableId);
+    if (!table) return [];
+    const tbody = table.querySelector('tbody');
+    const rows = tbody.querySelectorAll('tr');
+    const data = [];
+
+    rows.forEach(row => {
+        if (row.classList.contains('separator-row')) {
+            data.push({separator: true});
+        } else {
+            const cells = row.querySelectorAll('td');
+            const rowData = {};
+            cells.forEach((cell, index) => {
+                const input = cell.querySelector('input, textarea');
+                rowData[`col${index}`] = input ? input.value : '';
+            });
+            data.push(rowData);
+        }
+    });
+
+    return data;
+}
+
+function loadTableData(tableId, data) {
+    if (!data || data.length === 0) return;
+
+    const table = document.getElementById(tableId);
+    if (!table) return;
+    const tbody = table.querySelector('tbody');
+    tbody.innerHTML = '';
+
+    data.forEach(rowData => {
+        if (rowData.separator) {
+            const colCount = table.querySelectorAll('th').length;
+            const sepRow = document.createElement('tr');
+            sepRow.className = 'separator-row';
+            sepRow.innerHTML = `<td colspan="${colCount}"></td>`;
+            tbody.appendChild(sepRow);
+        } else {
+            const row = document.createElement('tr');
+            const colCount = Object.keys(rowData).length;
+
+            for (let i = 0; i < colCount; i++) {
+                const cell = document.createElement('td');
+                const value = (rowData[`col${i}`] || '').replace(/"/g, '&quot;');
+
+                if (tableId === 'discussionsTable' && (i === 3 || i === 4)) {
+                    cell.innerHTML = `<textarea onkeydown="handleTableNav(event, '${tableId}')">${value}</textarea>`;
+
+                    if (i === 4) {
+                        cell.innerHTML += `
+                            <div class="task-chips-container"></div>
+                            <div style="margin-top: 6px; display: flex; gap: 6px;">
+                                <button type="button" class="btn btn-secondary btn-small" onclick="createTaskFromDiscussion(this)"><span style="color: #ffffff;">➕</span> Tâche</button>
+                                <button type="button" class="btn btn-secondary btn-small" onclick="linkExistingTask(this)">🔗 Lier</button>
+                            </div>
+                        `;
+                    }
+                } else {
+                    cell.innerHTML = `<input type="text" onkeydown="handleTableNav(event, '${tableId}')" value="${value}">`;
+                }
+
+                row.appendChild(cell);
+            }
+
+            tbody.appendChild(row);
+        }
+    });
+}
+
+function createTaskFromDiscussion(button) {
+    alert('Fonctionnalité à venir : créer une nouvelle tâche');
+}
+
+function linkExistingTask(button) {
+    alert('Fonctionnalité à venir : lier une tâche existante');
+}
+
+// GESTION RESSOURCES
+function openResourcesManagementModal() {
+    loadMainUser();
+    renderResourcesList();
+    openModal('resourcesManagementModal');
+}
+
+function loadMainUser() {
+    document.getElementById('mainUserName').value = mainUser.name || '';
+    document.getElementById('mainUserGrade').value = mainUser.grade || '';
+    document.getElementById('mainUserUnit').value = mainUser.unit || '';
+    document.getElementById('mainUserEmail').value = mainUser.email || '';
+}
+
+function saveMainUser() {
+    mainUser = {
+        name: document.getElementById('mainUserName').value.trim(),
+        grade: document.getElementById('mainUserGrade').value.trim(),
+        unit: document.getElementById('mainUserUnit').value.trim(),
+        email: document.getElementById('mainUserEmail').value.trim(),
+        isMain: true
+    };
+    saveMainUserToStorage();
+    alert('Utilisateur principal enregistré');
+}
+
+function renderResourcesList() {
+    const container = document.getElementById('resourcesList');
+    const countEl = document.getElementById('resourceCount');
+    if (countEl) countEl.textContent = resources.length;
+
+    if (resources.length === 0) {
+        container.innerHTML = '<div style="text-align: center; padding: 20px; color: #888;">Aucune ressource</div>';
+        return;
+    }
+
+    container.innerHTML = resources.map((r, index) => `
+        <div class="resource-item">
+            <div class="resource-name">${r.name}</div>
+            <div class="resource-grade">${r.grade || '-'}</div>
+            <div class="resource-unit">${r.unit || '-'}</div>
+            <div class="resource-email">${r.email || '-'}</div>
+            <button class="btn btn-secondary btn-small" onclick="deleteResource(${index})" style="padding: 6px 12px;">🗑️</button>
+        </div>
+    `).join('');
+}
+
+function addResource() {
+    const name = document.getElementById('newResourceName').value.trim();
+    const grade = document.getElementById('newResourceGrade').value.trim();
+    const unit = document.getElementById('newResourceUnit').value.trim();
+    const email = document.getElementById('newResourceEmail').value.trim();
+
+    if (!name) {
+        alert('Nom requis');
+        return;
+    }
+
+    resources.push({name, grade, unit, email});
+    saveResourcesToStorage();
+    renderResourcesList();
+
+    document.getElementById('newResourceName').value = '';
+    document.getElementById('newResourceGrade').value = '';
+    document.getElementById('newResourceUnit').value = '';
+    document.getElementById('newResourceEmail').value = '';
+}
+
+function deleteResource(index) {
+    if (!confirm('Supprimer cette ressource ?')) return;
+    resources.splice(index, 1);
+    saveResourcesToStorage();
+    renderResourcesList();
+}
+
+function sortResources() {
+    resources.sort((a, b) => a.name.localeCompare(b.name));
+    saveResourcesToStorage();
+    renderResourcesList();
+}
+
+function exportResources() {
+    const rows = [];
+
+    // Ligne utilisateur principal si défini
+    if (mainUser && mainUser.name) {
+        rows.push({
+            name: mainUser.name,
+            grade: mainUser.grade || '',
+            unit: mainUser.unit || '',
+            email: mainUser.email || '',
+            isMain: 'true'
+        });
+    }
+
+    // Ressources normales
+    resources.forEach(r => {
+        rows.push({
+            name: r.name,
+            grade: r.grade || '',
+            unit: r.unit || '',
+            email: r.email || '',
+            isMain: r.isMain ? 'true' : ''
+        });
+    });
+
+    const header = 'Nom,Grade,Unité,Email,IsMain\n';
+    const csv = header + rows.map(r =>
+        `"${r.name}","${r.grade}","${r.unit}","${r.email}","${r.isMain}"`
+    ).join('\n');
+
+    const blob = new Blob([csv], {type: 'text/csv;charset=utf-8;'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'ressources_' + new Date().toISOString().split('T')[0] + '.csv';
+    a.click();
+    URL.revokeObjectURL(url);
+}
+
+function importResources(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        try {
+            const text = e.target.result;
+            const lines = text.split('\n').filter(l => l.trim());
+            const imported = [];
+            let mainUserImported = null;
+
+            for (let i = 1; i < lines.length; i++) {
+                const match = lines[i].match(/"([^"]*)","([^"]*)","([^"]*)","([^"]*)","?([^"]*)"?/);
+                if (match) {
+                    const resource = {
+                        name: match[1],
+                        grade: match[2],
+                        unit: match[3],
+                        email: match[4]
+                    };
+
+                    // Vérifier si c'est l'utilisateur principal
+                    if (match[5] && match[5].toLowerCase() === 'true') {
+                        resource.isMain = true;
+                        mainUserImported = resource;
+                    } else {
+                        imported.push(resource);
+                    }
+                }
+            }
+
+            // Restaurer l'utilisateur principal si trouvé
+            if (mainUserImported) {
+                mainUser = mainUserImported;
+                saveMainUserToStorage();
+                loadMainUser();
+            }
+
+            if (imported.length > 0) {
+                resources.push(...imported);
+                saveResourcesToStorage();
+                renderResourcesList();
+            }
+
+            const total = imported.length + (mainUserImported ? 1 : 0);
+            alert(`${total} ressource(s) importée(s)` + (mainUserImported ? ' (dont utilisateur principal)' : ''));
+        } catch (err) {
+            alert('Erreur lors de l\'import du fichier CSV');
+        }
+    };
+    reader.readAsText(file);
+    event.target.value = '';
+}
+
+// GESTION TAGS
+function openTagsManagementModal() {
+    renderTagsList();
+    openModal('tagsManagementModal');
+}
+
+function renderTagsList() {
+    const container = document.getElementById('tagsList');
+    const countEl = document.getElementById('tagCount');
+    if (countEl) countEl.textContent = meetingTags.length;
+
+    if (meetingTags.length === 0) {
+        container.innerHTML = '<div style="text-align: center; padding: 20px; color: #888;">Aucun tag</div>';
+        return;
+    }
+
+    container.innerHTML = meetingTags.map((tag, index) => {
+        const escaped = tag.replace(/'/g, "\'").replace(/"/g, '&quot;');
+        return `<span class="tag-chip">${tag}<button onclick="deleteTag(${index})">×</button></span>`;
+    }).join('');
+}
+
+function addTag() {
+    const input = document.getElementById('newTagInput');
+    const tag = input.value.trim();
+
+    if (!tag) {
+        alert('Tag vide');
+        return;
+    }
+
+    if (meetingTags.includes(tag)) {
+        alert('Ce tag existe déjà');
+        return;
+    }
+
+    meetingTags.push(tag);
+    saveMeetingTagsToStorage();
+    renderTagsList();
+    input.value = '';
+}
+
+function deleteTag(index) {
+    if (!confirm('Supprimer ce tag ?')) return;
+    meetingTags.splice(index, 1);
+    saveMeetingTagsToStorage();
+    renderTagsList();
+}
+
+function sortTags() {
+    meetingTags.sort((a, b) => a.localeCompare(b));
+    saveMeetingTagsToStorage();
+    renderTagsList();
+}
+
+// INTÉGRATION AU CALENDRIER
+(function() {
+    const originalRenderCalendar = typeof renderCalendar !== 'undefined' ? renderCalendar : function() {};
+    window.renderCalendar = function() {
+        if (!currentCalendarDate) {
+            currentCalendarDate = new Date();
+        }
+
+        originalRenderCalendar();
+
+        const grid = document.getElementById('calendarGrid');
+        if (!grid) return;
+
+        const year = currentCalendarDate.getFullYear();
+        const month = currentCalendarDate.getMonth();
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+        for (let day = 1; day <= daysInMonth; day++) {
+            let dayMRs = meetingReports.filter(mr => {
+                if (!mr.statusDate) return false;
+                const mrDate = new Date(mr.statusDate);
+                return mrDate.getDate() === day && 
+                       mrDate.getMonth() === month && 
+                       mrDate.getFullYear() === year;
+            });
+
+            if (currentView !== 'general' && currentView !== 'reunions') {
+                dayMRs = dayMRs.filter(mr => 
+                    mr.sections && mr.sections.some(s => s.toLowerCase() === currentView.toLowerCase())
+                );
+            }
+
+            if (dayMRs.length > 0) {
+                const dayDivs = grid.querySelectorAll('.calendar-day');
+                const dayDiv = dayDivs[day - 1];
+                if (dayDiv) {
+                    dayMRs.forEach(mr => {
+                        const statusIcon = mr.status === 'brouillon' ? '⚪' : mr.status === 'encours' ? '🟠' : '🟢';
+                        const mrElement = document.createElement('div');
+                        mrElement.className = 'calendar-task meeting';
+                        mrElement.innerHTML = `📋 ${statusIcon} ${mr.title}`;
+                        mrElement.onclick = (e) => {
+                            e.stopPropagation();
+                            showMRDetail(mr.id, e);
+                        };
+                        dayDiv.appendChild(mrElement);
+                    });
+                }
+            }
+        }
+    };
+})();
+
+function showMRDetail(mrId, event) {
+    const mr = meetingReports.find(m => m.id === mrId);
+    if (!mr) return;
+
+    const bubble = document.getElementById('calendarTaskDetail');
+    if (!bubble) return;
+
+    document.getElementById('detailTitle').textContent = `📋 ${mr.title}`;
+
+    const statusIcon = mr.status === 'brouillon' ? '⚪' : mr.status === 'encours' ? '🟠' : '🟢';
+    const statusLabel = mr.status === 'brouillon' ? 'Brouillon' : mr.status === 'encours' ? 'En cours' : 'Validé';
+
+    const sectionEl = document.getElementById('detailSection');
+    const sectionsText = mr.sections && mr.sections.length > 0 ? mr.sections.join(', ') : 'Général';
+    sectionEl.textContent = sectionsText;
+    sectionEl.style.background = 'rgba(142, 68, 173, 0.3)';
+    sectionEl.style.color = '#ba68c8';
+    sectionEl.style.display = 'inline-block';
+
+    const descEl = document.getElementById('detailDescription');
+    descEl.textContent = `${statusIcon} ${statusLabel} - ${formatDateDisplay(mr.statusDate)}`;
+    descEl.style.display = 'block';
+
+    const metaItems = [];
+    if (mr.participants && mr.participants.length > 0) {
+        metaItems.push(`<div class="calendar-task-detail-meta-item">👥 ${mr.participants.length} participants</div>`);
+    }
+    if (mr.tags && mr.tags.length > 0) {
+        metaItems.push(`<div class="calendar-task-detail-meta-item">🏷️ ${mr.tags.join(', ')}</div>`);
+    }
+
+    const metaEl = document.getElementById('detailMeta');
+    metaEl.innerHTML = metaItems.join('');
+    metaEl.style.display = metaItems.length > 0 ? 'flex' : 'none';
+
+    const progressContainer = document.getElementById('detailProgressContainer');
+    if (progressContainer) progressContainer.style.display = 'none';
+
+    let left = event.pageX + 20, top = event.pageY;
+    if (left + 350 > window.innerWidth) {
+        left = event.pageX - 370;
+    }
+    bubble.style.left = left + 'px';
+    bubble.style.top = top + 'px';
+    bubble.classList.add('show');
+
+    window.currentDetailMRId = mrId;
+
+    window.originalEditCardFromDetail = window.editCardFromDetail;
+    window.originalDeleteCardFromDetail = window.deleteCardFromDetail;
+
+    window.editCardFromDetail = function() {
+        closeTaskDetail();
+        editMeetingReport(window.currentDetailMRId);
+    };
+
+    window.deleteCardFromDetail = function() {
+        closeTaskDetail();
+        deleteMeetingReport(window.currentDetailMRId);
+    };
+}
+
+// Restaurer les fonctions originales lors de la fermeture
+(function() {
+    const originalCloseTaskDetail = typeof closeTaskDetail !== 'undefined' ? closeTaskDetail : function() {};
+    window.closeTaskDetail = function() {
+        originalCloseTaskDetail();
+
+        if (window.originalEditCardFromDetail) {
+            window.editCardFromDetail = window.originalEditCardFromDetail;
+            window.deleteCardFromDetail = window.originalDeleteCardFromDetail;
+        }
+    };
+})();
+
 </script>
 
 <!-- Modal Gestion Sections -->
@@ -3531,5 +5031,465 @@ Continuer ?`;
     <div class="footer">
         © 2025, CEN Damien SICHAUMETTE
     </div>
+
+    <!-- ============================================ -->
+    <!-- MODALES COMPTES RENDUS DE RÉUNION - V80     -->
+    <!-- ============================================ -->
+
+    <!-- Modal Liste CR -->
+    <div class="modal" id="meetingReportsListModal">
+        <div class="modal-content" style="max-width: 1200px;">
+            <div class="modal-header">
+                <h2>📋 Comptes Rendus de Réunion</h2>
+                <span class="close-modal" onclick="closeModal('meetingReportsListModal')">×</span>
+            </div>
+            <div class="form-group" style="padding: 20px;">
+                <button class="btn" onclick="openMeetingReportModal()" style="margin-bottom: 20px;">
+                    <span style="color: #ffffff; font-size: 18px;">➕</span> Nouveau Compte Rendu
+                </button>
+
+                <div id="meetingReportsList" style="display: flex; flex-direction: column; gap: 15px;">
+                    <!-- Les CR seront affichés ici -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Édition CR -->
+    <div class="modal" id="meetingReportModal">
+        <div class="modal-content" style="max-width: 1200px; max-height: 90vh; overflow-y: auto;">
+            <div class="modal-header" style="position: sticky; top: 0; z-index: 10; background: rgba(40,40,40,0.98);">
+                <h2 id="meetingReportModalTitle">📋 Nouveau Compte Rendu</h2>
+                <span class="close-modal" onclick="closeModal('meetingReportModal')">×</span>
+            </div>
+
+            <div style="padding: 30px;">
+                <!-- Titre -->
+                <div class="form-group">
+                    <label>Titre du compte rendu</label>
+                    <input type="text" id="mrTitle" placeholder="ex: CR Réunion hebdo DGCE 22-12-2025">
+                </div>
+
+                <!-- Statut et Date -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <div class="form-group">
+                        <label>Statut</label>
+                        <select id="mrStatus">
+                            <option value="brouillon">⚪ Brouillon</option>
+                            <option value="encours">🟠 En cours</option>
+                            <option value="valide">🟢 Validé</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Date du statut</label>
+                        <input type="date" id="mrStatusDate">
+                    </div>
+                </div>
+
+                <!-- Tags -->
+                <div class="form-group">
+                    <label>Tags <span style="font-size: 0.85em; color: #888;">(optionnel)</span></label>
+                    <div id="mrTagsContainer" class="tags-container">
+                        <!-- Tags sélectionnés -->
+                    </div>
+                    <input type="text" id="mrTagInput" placeholder="Tapez pour ajouter un tag..." 
+                           style="margin-top: 10px;" 
+                           onkeydown="handleMRTagInput(event)"
+                           oninput="showMRTagSuggestions(event)">
+                    <div id="mrTagSuggestions" class="suggestions-dropdown">
+                        <!-- Suggestions -->
+                    </div>
+                </div>
+
+                <!-- Sections -->
+                <div class="form-group">
+                    <label>Sections du CR <span style="font-size: 0.85em; color: #888;">(apparaîtra dans les calendriers sélectionnés)</span></label>
+                    <div id="mrSectionsContainer" class="sections-checkboxes">
+                        <!-- Cases à cocher -->
+                    </div>
+                </div>
+
+                <!-- Participants -->
+                <div class="form-group">
+                    <label>👥 Participants</label>
+                    <div id="mrParticipantsContainer" class="participants-container">
+                        <!-- Chips participants -->
+                    </div>
+                    <input type="text" id="mrParticipantInput" placeholder="Ajouter un participant..." 
+                           style="margin-top: 10px;"
+                           oninput="showParticipantSuggestions(event)"
+                           onkeydown="handleParticipantInput(event)">
+                    <div id="mrParticipantSuggestions" class="suggestions-dropdown">
+                        <!-- Suggestions -->
+                    </div>
+                </div>
+
+                <!-- Agenda -->
+                <div class="form-group">
+                    <label style="display: flex; align-items: center; gap: 8px;">
+                        📅 Agenda
+                        <span class="help-icon" title="Navigation : Tab (colonne suivante) | Entrée (nouvelle ligne) | Ctrl+L (séparateur)">?</span>
+                    </label>
+
+                    <h4 style="margin-top: 20px; margin-bottom: 10px; color: #aaa; font-size: 14px;">Semaine passée</h4>
+                    <div style="overflow-x: auto;">
+                        <table id="agendaPast" class="mr-table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 15%;">Quand</th>
+                                    <th style="width: 10%;">Heure</th>
+                                    <th style="width: 35%;">Quoi</th>
+                                    <th style="width: 20%;">Qui</th>
+                                    <th style="width: 20%;">Notes</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><input type="text" onkeydown="handleTableNav(event, 'agendaPast')"></td>
+                                    <td><input type="text" onkeydown="handleTableNav(event, 'agendaPast')"></td>
+                                    <td><input type="text" onkeydown="handleTableNav(event, 'agendaPast')"></td>
+                                    <td><input type="text" onkeydown="handleTableNav(event, 'agendaPast')"></td>
+                                    <td><input type="text" onkeydown="handleTableNav(event, 'agendaPast')"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div style="margin-top: 8px; display: flex; gap: 8px;">
+                        <button type="button" class="btn btn-secondary" onclick="addTableRow('agendaPast')"><span style="color: #ffffff; font-size: 16px;">➕</span> Ligne</button>
+                        <button type="button" class="btn btn-secondary" onclick="addTableSeparator('agendaPast')">┄ Séparateur</button>
+                    </div>
+
+                    <h4 style="margin-top: 25px; margin-bottom: 10px; color: #aaa; font-size: 14px;">Semaine en cours</h4>
+                    <div style="overflow-x: auto;">
+                        <table id="agendaCurrent" class="mr-table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 15%;">Quand</th>
+                                    <th style="width: 10%;">Heure</th>
+                                    <th style="width: 35%;">Quoi</th>
+                                    <th style="width: 20%;">Qui</th>
+                                    <th style="width: 20%;">Notes</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><input type="text" onkeydown="handleTableNav(event, 'agendaCurrent')"></td>
+                                    <td><input type="text" onkeydown="handleTableNav(event, 'agendaCurrent')"></td>
+                                    <td><input type="text" onkeydown="handleTableNav(event, 'agendaCurrent')"></td>
+                                    <td><input type="text" onkeydown="handleTableNav(event, 'agendaCurrent')"></td>
+                                    <td><input type="text" onkeydown="handleTableNav(event, 'agendaCurrent')"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div style="margin-top: 8px; display: flex; gap: 8px;">
+                        <button type="button" class="btn btn-secondary" onclick="addTableRow('agendaCurrent')"><span style="color: #ffffff; font-size: 16px;">➕</span> Ligne</button>
+                        <button type="button" class="btn btn-secondary" onclick="addTableSeparator('agendaCurrent')">┄ Séparateur</button>
+                    </div>
+
+                    <h4 style="margin-top: 25px; margin-bottom: 10px; color: #aaa; font-size: 14px;">À venir</h4>
+                    <div style="overflow-x: auto;">
+                        <table id="agendaNext" class="mr-table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 15%;">Quand</th>
+                                    <th style="width: 10%;">Heure</th>
+                                    <th style="width: 35%;">Quoi</th>
+                                    <th style="width: 20%;">Qui</th>
+                                    <th style="width: 20%;">Notes</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><input type="text" onkeydown="handleTableNav(event, 'agendaNext')"></td>
+                                    <td><input type="text" onkeydown="handleTableNav(event, 'agendaNext')"></td>
+                                    <td><input type="text" onkeydown="handleTableNav(event, 'agendaNext')"></td>
+                                    <td><input type="text" onkeydown="handleTableNav(event, 'agendaNext')"></td>
+                                    <td><input type="text" onkeydown="handleTableNav(event, 'agendaNext')"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div style="margin-top: 8px; display: flex; gap: 8px;">
+                        <button type="button" class="btn btn-secondary" onclick="addTableRow('agendaNext')"><span style="color: #ffffff; font-size: 16px;">➕</span> Ligne</button>
+                        <button type="button" class="btn btn-secondary" onclick="addTableSeparator('agendaNext')">┄ Séparateur</button>
+                    </div>
+                </div>
+
+                <!-- Points de discussion -->
+                <div class="form-group">
+                    <label style="display: flex; align-items: center; gap: 8px;">
+                        💬 Points de discussion majeurs
+                        <span class="help-icon" title="Navigation tableau + possibilité de créer/lier des tâches">?</span>
+                    </label>
+                    <div style="overflow-x: auto;">
+                        <table id="discussionsTable" class="mr-table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 12%;">Section</th>
+                                    <th style="width: 15%;">Qui</th>
+                                    <th style="width: 20%;">Sujet</th>
+                                    <th style="width: 25%;">Point</th>
+                                    <th style="width: 28%;">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><input type="text" onkeydown="handleTableNav(event, 'discussionsTable')"></td>
+                                    <td><input type="text" onkeydown="handleTableNav(event, 'discussionsTable')"></td>
+                                    <td><input type="text" onkeydown="handleTableNav(event, 'discussionsTable')"></td>
+                                    <td><textarea onkeydown="handleTableNav(event, 'discussionsTable')"></textarea></td>
+                                    <td>
+                                        <textarea onkeydown="handleTableNav(event, 'discussionsTable')" placeholder="Description action..."></textarea>
+                                        <div class="task-chips-container"></div>
+                                        <div style="margin-top: 6px; display: flex; gap: 6px;">
+                                            <button type="button" class="btn btn-secondary btn-small" onclick="createTaskFromDiscussion(this)"><span style="color: #ffffff;">➕</span> Tâche</button>
+                                            <button type="button" class="btn btn-secondary btn-small" onclick="linkExistingTask(this)">🔗 Lier</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div style="margin-top: 8px; display: flex; gap: 8px;">
+                        <button type="button" class="btn btn-secondary" onclick="addTableRow('discussionsTable')"><span style="color: #ffffff; font-size: 16px;">➕</span> Ligne</button>
+                        <button type="button" class="btn btn-secondary" onclick="addTableSeparator('discussionsTable')">┄ Séparateur</button>
+                    </div>
+                </div>
+
+                <button class="btn" onclick="saveMeetingReport()" style="margin-top: 20px;">💾 Enregistrer</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Gestion des Ressources -->
+    <div class="modal" id="resourcesManagementModal">
+        <div class="modal-content" style="max-width: 1100px; max-height: 90vh; overflow-y: auto;">
+            <div class="modal-header" style="position: sticky; top: 0; z-index: 10; background: rgba(40,40,40,0.98);">
+                <h2>👥 Gestion des Ressources / Collaborateurs</h2>
+                <span class="close-modal" onclick="closeModal('resourcesManagementModal')">×</span>
+            </div>
+
+            <div style="padding: 30px;">
+                <div class="info-box">
+                    💡 <strong>Info :</strong> Cette liste est utilisée pour l'autocomplétion dans les CR et les ressources des tâches.
+                </div>
+
+                <!-- Utilisateur principal -->
+                <div class="form-group">
+                    <h3 style="margin-bottom: 15px; font-size: 16px;">⭐ Utilisateur Principal</h3>
+                    <div class="user-card">
+                        <div class="user-badge">VOUS</div>
+                        <div class="user-grid-4">
+                            <div class="form-field">
+                                <label>Nom complet *</label>
+                                <input type="text" id="mainUserName" placeholder="ex: DUPONT Jean LTN">
+                            </div>
+                            <div class="form-field">
+                                <label>Grade / Fonction</label>
+                                <input type="text" id="mainUserGrade" placeholder="ex: LTN">
+                            </div>
+                            <div class="form-field">
+                                <label>Unité / Service *</label>
+                                <input type="text" id="mainUserUnit" placeholder="ex: DGCE D2AC">
+                            </div>
+                            <div class="form-field">
+                                <label>Email (optionnel)</label>
+                                <input type="text" id="mainUserEmail" placeholder="ex: prenom.nom@...">
+                            </div>
+                        </div>
+                        <div style="display: flex; justify-content: flex-end; margin-top: 15px;">
+                            <button class="btn" onclick="saveMainUser()">💾 Enregistrer</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Liste ressources -->
+                <div class="form-group">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                        <h3 style="margin: 0; font-size: 16px;">📋 Liste des Ressources (<span id="resourceCount">0</span>)</h3>
+                    </div>
+
+                    <div id="resourcesList" class="resources-list">
+                        <!-- Liste -->
+                    </div>
+
+                    <!-- Formulaire ajout -->
+                    <div class="add-form">
+                        <h4 style="margin-bottom: 15px; font-size: 14px; display: flex; align-items: center; gap: 8px;">
+                            <span style="color: #ffffff; font-size: 18px;">➕</span> Ajouter une ressource
+                        </h4>
+                        <div class="form-grid-4">
+                            <div class="form-field">
+                                <label>Nom complet *</label>
+                                <input type="text" id="newResourceName" placeholder="ex: MARTIN Sophie">
+                            </div>
+                            <div class="form-field">
+                                <label>Grade / Fonction</label>
+                                <input type="text" id="newResourceGrade" placeholder="ex: CDT">
+                            </div>
+                            <div class="form-field">
+                                <label>Unité / Service</label>
+                                <input type="text" id="newResourceUnit" placeholder="ex: DGCE SOA">
+                            </div>
+                            <div class="form-field">
+                                <label>Email (optionnel)</label>
+                                <input type="text" id="newResourceEmail" placeholder="ex: prenom.nom@...">
+                            </div>
+                        </div>
+                        <div style="display: flex; justify-content: flex-end; margin-top: 15px;">
+                            <button class="btn" onclick="addResource()">
+                                <span style="color: #ffffff; font-size: 16px;">➕</span> Ajouter
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Boutons d'action EN BAS -->
+                    <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+                        <button class="btn btn-secondary btn-small" onclick="sortResources()">🔤 Trier A-Z</button>
+                        <button class="btn btn-secondary btn-small" onclick="exportResources()">📤 Export CSV</button>
+                        <button class="btn btn-secondary btn-small" onclick="document.getElementById('importResourcesFile').click()">📥 Import CSV</button>
+                        <input type="file" id="importResourcesFile" accept=".csv" style="display: none;" onchange="importResources(event)">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Gestion des Tags -->
+    <div class="modal" id="tagsManagementModal">
+        <div class="modal-content" style="max-width: 800px;">
+            <div class="modal-header">
+                <h2>🏷️ Gestion des Tags</h2>
+                <span class="close-modal" onclick="closeModal('tagsManagementModal')">×</span>
+            </div>
+
+            <div style="padding: 30px;">
+                <div class="info-box">
+                    💡 <strong>Info :</strong> Ces tags seront utilisés pour catégoriser les CR et, prochainement, les tâches.
+                </div>
+
+                <div class="form-group">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                        <h3 style="margin: 0; font-size: 16px;">📋 Tags disponibles (<span id="tagCount">0</span>)</h3>
+                        <button class="btn btn-secondary btn-small" onclick="sortTags()">🔤 Trier A-Z</button>
+                    </div>
+                    <div id="tagsList" class="tags-list">
+                        <!-- Tags -->
+                    </div>
+
+                    <!-- Formulaire ajout avec plus d'espace -->
+                    <div style="margin-top: 28px;">
+                        <label>Nouveau tag</label>
+                        <div style="display: flex; gap: 10px; margin-top: 10px;">
+                            <input type="text" id="newTagInput" placeholder="ex: COPIL, Réunion hebdo, MCIC2..." style="flex: 1;">
+                            <button class="btn" onclick="addTag()">
+                                <span style="color: #ffffff; font-size: 16px;">➕</span> Ajouter
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<script>
+// Réunions: vue intégrée (V92)
+(function() {
+  const origSwitchView = window.switchView;
+  const origShowCalendar = window.showCalendar;
+  const origShowAllTasks = window.showAllTasks;
+  const origFilterOverdue = window.filterOverdue;
+  const origFilterThisWeek = window.filterThisWeek;
+  const origFilterThisMonth = window.filterThisMonth;
+
+  function setActiveReunions(active) {
+    const btn = document.getElementById('btn-reunions');
+    if (!btn) return;
+    btn.classList.toggle('active', !!active);
+  }
+
+  function hideReunionsView() {
+    const v = document.getElementById('reunionsView');
+    if (v) v.style.display = 'none';
+  }
+
+  function showReunionsView() {
+    const v = document.getElementById('reunionsView');
+    if (v) v.style.display = 'block';
+    if (typeof renderMeetingReportsList === 'function') {
+      renderMeetingReportsList();
+    }
+  }
+
+  function exitReunionsToKanban() {
+    hideReunionsView();
+    setActiveReunions(false);
+    const kanban = document.getElementById('kanbanContainer');
+    if (kanban) kanban.style.display = 'flex';
+  }
+
+  // Patch switchView
+  window.switchView = function(view) {
+    const kanban = document.getElementById('kanbanContainer');
+    const cal = document.getElementById('calendarView');
+
+    if (view === 'reunions') {
+      // Désactiver les boutons de section
+      document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+      setActiveReunions(true);
+
+      // Cacher Kanban / Calendrier
+      if (kanban) kanban.style.display = 'none';
+      if (cal) cal.classList.remove('show');
+
+      showReunionsView();
+      localStorage.setItem('currentView', 'reunions');
+      return;
+    }
+
+    // Quitter Réunions
+    exitReunionsToKanban();
+
+    // Revenir au comportement standard
+    if (typeof origSwitchView === 'function') {
+      origSwitchView(view);
+    }
+  };
+
+  // Patch calendrier et filtres pour sortir de Réunions
+  window.showCalendar = function() {
+    exitReunionsToKanban();
+    if (typeof origShowCalendar === 'function') return origShowCalendar();
+  };
+  window.showAllTasks = function() {
+    exitReunionsToKanban();
+    if (typeof origShowAllTasks === 'function') return origShowAllTasks();
+  };
+  window.filterOverdue = function() {
+    exitReunionsToKanban();
+    if (typeof origFilterOverdue === 'function') return origFilterOverdue();
+  };
+  window.filterThisWeek = function() {
+    exitReunionsToKanban();
+    if (typeof origFilterThisWeek === 'function') return origFilterThisWeek();
+  };
+  window.filterThisMonth = function() {
+    exitReunionsToKanban();
+    if (typeof origFilterThisMonth === 'function') return origFilterThisMonth();
+  };
+
+  // Au chargement: restaurer la vue si besoin
+  document.addEventListener('DOMContentLoaded', () => {
+    const saved = localStorage.getItem('currentView');
+    if (saved === 'reunions') {
+      window.switchView('reunions');
+    }
+  });
+})();
+</script>
+
 </body>
 </html>
