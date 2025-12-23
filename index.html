@@ -23,10 +23,11 @@
         }
 
         .view-selector.filters {
-            margin-left: auto;
+            justify-content: flex-end;
+            justify-content: flex-end;
         }
 
-        * {
+       * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
@@ -53,12 +54,13 @@
             background: rgba(55,55,55,0.95);
             backdrop-filter: blur(20px);
             box-shadow: 0 4px 20px rgba(0,0,0,0.5);
-            padding: 1rem 2rem;
+            padding: 0.5rem 1rem;
             display: flex;
             justify-content: flex-start;
             align-items: center;
             flex-wrap: wrap;
             gap: 15px;
+
         }
 
         .header h1 {
@@ -1495,16 +1497,6 @@
 }
 
 
-
-/* Correctif final pour le bouton Réunions */
-button[onclick*="reunions"] {
-    display: inline-flex !important;
-    order: -1 !important; /* Force la 1ère position */
-    background: rgba(142, 68, 173, 0.25) !important; /* Fond violet léger pour le distinguer */
-    border: 1px solid #8e44ad !important;
-    font-weight: 600 !important;
-}
-
 /* S'assurer que le header laisse de la place */
 .view-selector {
     flex: 1; /* Prend l'espace disponible */
@@ -1525,17 +1517,16 @@ button[onclick*="reunions"] {
     grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
     gap: 20px;
 }
-</style>
+
+    </style>
 </head>
 <body>
     <div class="header">
         <button class="hamburger-menu-btn" onclick="toggleSettingsMenu()" title="Menu"><span>☰</span></button>
-            <h1>✅ KanBan DGCE</h1>
-        
-            <button id="btn-reunions" class="view-btn" onclick="switchView('reunions')" data-section-color="#8e44ad">📋 Réunions</button>
-<div class="view-selector">
-            <button class="view-btn" onclick="switchView('reunions')" data-section-color="#8e44ad">📋 Réunions</button>
-            <button class="view-btn active" onclick="switchView('general')">Général</button>
+        <h1>✅ KanBan DGCE</h1>
+        <button id="btn-reunions" class="view-btn" onclick="switchView('reunions')" data-section-color="#8e44ad">📋 Réunions</button>
+        <div class="view-selector">
+            <button class="view-btn" onclick="switchView('general')">Général</button>
             <button class="view-btn" onclick="switchView('soa')">SOA</button>
             <button class="view-btn" onclick="switchView('smsc')">SMSC</button>
             <button class="view-btn" onclick="switchView('sosc')">SOSC</button>
@@ -1864,7 +1855,6 @@ function getSectionOrder(sectionId) {
         // Palette de 30 couleurs
         const colorPalette = [
             '#0066cc', '#4ecca3', '#ffa500', '#ff6b9d', '#9b59b6',
-            
             'rgba(255,149,0,0.3)', 'rgba(255,59,48,0.3)', 'rgba(255,204,0,0.3)',
             'rgba(52,199,89,0.3)', 'rgba(0,122,255,0.3)', 'rgba(88,86,214,0.3)',
             'rgba(175,82,222,0.3)', 'rgba(255,45,85,0.3)', 'rgba(255,99,164,0.3)',
