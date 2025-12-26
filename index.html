@@ -23,11 +23,10 @@
         }
 
         .view-selector.filters {
-            justify-content: flex-end;
-            justify-content: flex-end;
+            margin-left: auto;
         }
 
-       * {
+        * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
@@ -54,18 +53,17 @@
             background: rgba(55,55,55,0.95);
             backdrop-filter: blur(20px);
             box-shadow: 0 4px 20px rgba(0,0,0,0.5);
-            padding: 0.5rem 1rem;
+            padding: 1rem 2rem;
             display: flex;
             justify-content: flex-start;
             align-items: center;
             flex-wrap: wrap;
             gap: 15px;
-
         }
 
         .header h1 {
             font-size: 1.8rem;
-            color: var(--primary-text);
+            color: #ffffff;
             letter-spacing: 0.5px;
             margin: 0;
             margin-right: 33px;
@@ -157,7 +155,7 @@
             display: flex;
             gap: 1.5rem;
             overflow-x: auto;
-            min-height: calc(100vh - 120px);
+            /* min-height calculé dynamiquement par JavaScript V130 */
         }
 
         .column {
@@ -784,16 +782,16 @@
         .calendar-task-detail-header-left { display: flex; align-items: center; gap: 0.75rem; flex: 1; min-width: 0; }
         .calendar-task-detail-header-right { display: flex; align-items: center; gap: 0.5rem; flex-shrink: 0; }
         .calendar-task-detail-title { font-size: 1.1rem; font-weight: 600; color: #f5f5f7; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .calendar-task-detail-section { display: inline-block; background: rgba(100,149,237,0.25); color: #ffffff; padding: 0.25rem 0.75rem; border-radius: 6px; font-size: 0.85rem; white-space: nowrap; flex-shrink: 0; }
+        .calendar-task-detail-section { display: inline-block; background: rgba(100,149,237,0.25); color: #6495ed; padding: 0.25rem 0.75rem; border-radius: 6px; font-size: 0.85rem; white-space: nowrap; flex-shrink: 0; }
         .calendar-task-detail-menu { position: relative; }
         .calendar-task-detail-menu-btn { background: none; border: none; color: #f5f5f7; font-size: 1.2rem; cursor: pointer; padding: 0.25rem; transition: color 0.2s ease; line-height: 1; }
-        .calendar-task-detail-menu-btn:hover { color: #ffffff; }
+        .calendar-task-detail-menu-btn:hover { color: #6495ed; }
         .calendar-task-detail-menu-dropdown { display: none; position: absolute; right: 0; top: 100%; margin-top: 0.5rem; background: rgba(40,40,40,0.95); border: 1px solid #6495ed; border-radius: 8px; min-width: 150px; box-shadow: 0 4px 12px rgba(0,0,0,0.5); z-index: 1001; }
         .calendar-task-detail-menu-dropdown.show { display: block; }
         .calendar-task-detail-menu-dropdown button { width: 100%; padding: 0.75rem 1rem; background: none; border: none; color: #f5f5f7; text-align: left; cursor: pointer; transition: background 0.2s ease; font-size: 0.9rem; }
         .calendar-task-detail-menu-dropdown button:hover { background: rgba(100,149,237,0.2); }
         .calendar-task-detail-close { background: none; border: none; color: #f5f5f7; font-size: 1.5rem; cursor: pointer; padding: 0; transition: color 0.2s ease; line-height: 1; }
-        .calendar-task-detail-close:hover { color: #ffffff; }
+        .calendar-task-detail-close:hover { color: #6495ed; }
         .calendar-task-detail-description { color: #d0d0d0; margin-bottom: 1rem; line-height: 1.5; }
         .calendar-task-detail-meta { display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.9rem; color: #b0b0b0; }
         .calendar-task-detail-meta-item { display: flex; align-items: center; gap: 0.5rem; }
@@ -990,6 +988,27 @@
         }
 
 
+        /* CSS info-box pour modales Tags/Ressources */
+        .info-box {
+    background: rgba(33, 150, 243, 0.1);
+    border-left: 4px solid #2196f3;
+    padding: 15px;
+    border-radius: 6px;
+    margin-bottom: 25px;
+    font-size: 13px;
+    color: #64b5f6;
+}
+
+    
+
+        /* ============================================ */
+        /* CSS AJOUTÉ DEPUIS V82_VISIBLE POUR MODALES */
+        /* Tags et Ressources - Styles améliorés      */
+        /* ============================================ */
+
+
+
+
 /* ============================================ */
 /* STYLES COMPTES RENDUS DE RÉUNION - V80     */
 /* ============================================ */
@@ -1005,6 +1024,8 @@
     color: #64b5f6;
 }
 
+
+
 /* Utilisateur principal */
 .user-card {
     background: rgba(142, 68, 173, 0.1);
@@ -1013,6 +1034,8 @@
     padding: 20px;
     position: relative;
 }
+
+
 
 .user-badge {
     position: absolute;
@@ -1026,11 +1049,15 @@
     font-weight: 600;
 }
 
+
+
 .user-grid-4 {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 15px;
 }
+
+
 
 /* Grille 4 colonnes pour ressources */
 .form-grid-4 {
@@ -1039,17 +1066,23 @@
     gap: 15px;
 }
 
+
+
 .form-field {
     display: flex;
     flex-direction: column;
     gap: 6px;
 }
 
+
+
 .form-field label {
     font-size: 12px;
     font-weight: 600;
     color: #aaa;
 }
+
+
 
 .form-field input {
     padding: 8px 12px;
@@ -1060,11 +1093,15 @@
     font-size: 13px;
 }
 
+
+
 .form-field input:focus {
     border-color: rgba(142, 68, 173, 0.5);
     background: rgba(255,255,255,0.08);
     outline: none;
 }
+
+
 
 /* Liste des ressources */
 .resources-list {
@@ -1075,6 +1112,8 @@
     max-height: 400px;
     overflow-y: auto;
 }
+
+
 
 .resource-item {
     display: grid;
@@ -1088,10 +1127,14 @@
     transition: all 0.2s;
 }
 
+
+
 .resource-item:hover {
     background: rgba(255,255,255,0.08);
     border-color: rgba(142, 68, 173, 0.3);
 }
+
+
 
 .resource-name {
     font-weight: 500;
@@ -1099,12 +1142,16 @@
     color: #f5f5f7;
 }
 
+
+
 .resource-grade,
 .resource-unit,
 .resource-email {
     color: #aaa;
     font-size: 13px;
 }
+
+
 
 /* Formulaire d'ajout */
 .add-form {
@@ -1114,6 +1161,8 @@
     padding: 20px;
     margin-top: 20px;
 }
+
+
 
 /* Tags */
 .tags-container {
@@ -1127,15 +1176,20 @@
     border: 1px solid rgba(255,255,255,0.1);
 }
 
+
+
 .tags-list {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
-    padding: 15px;
-    background: rgba(255,255,255,0.03);
-    border-radius: 8px;
-    min-height: 100px;
+    gap: 10px;
+    padding: 20px;
+    background: rgba(255,255,255,0.02);
+    border-radius: 12px;
+    min-height: 120px;
+    align-items: flex-start;
 }
+
+
 
 .tag-chip {
     padding: 8px 12px;
@@ -1149,6 +1203,8 @@
     gap: 8px;
     font-weight: 500;
 }
+
+
 
 .tag-chip button {
     background: rgba(244, 67, 54, 0.8);
@@ -1166,10 +1222,14 @@
     transition: all 0.2s;
 }
 
+
+
 .tag-chip button:hover {
     background: #f44336;
     transform: scale(1.1);
 }
+
+
 
 /* Sections checkboxes */
 .sections-checkboxes {
@@ -1181,6 +1241,8 @@
     border-radius: 8px;
     border: 1px solid rgba(255,255,255,0.1);
 }
+
+
 
 .section-checkbox {
     display: inline-flex;
@@ -1195,9 +1257,13 @@
     font-size: 14px;
 }
 
+
+
 .section-checkbox:hover {
     background: rgba(255,255,255,0.08);
 }
+
+
 
 .section-checkbox.selected {
     background: rgba(33, 150, 243, 0.15);
@@ -1206,9 +1272,13 @@
     font-weight: 500;
 }
 
+
+
 .section-checkbox input[type="checkbox"] {
     cursor: pointer;
 }
+
+
 
 /* Participants */
 .participants-container {
@@ -1222,6 +1292,8 @@
     border: 1px solid rgba(255,255,255,0.1);
 }
 
+
+
 .participant-chip {
     padding: 6px 12px;
     border-radius: 16px;
@@ -1231,6 +1303,8 @@
     gap: 6px;
 }
 
+
+
 .chip-organizer {
     background: rgba(33, 150, 243, 0.2);
     color: #64b5f6;
@@ -1238,11 +1312,15 @@
     border: 1px solid rgba(33, 150, 243, 0.3);
 }
 
+
+
 .chip-attendee {
     background: rgba(255,255,255,0.08);
     color: #f5f5f7;
     border: 1px solid rgba(255,255,255,0.15);
 }
+
+
 
 .chip-remove {
     background: rgba(244, 67, 54, 0.8);
@@ -1260,10 +1338,14 @@
     transition: all 0.2s;
 }
 
+
+
 .chip-remove:hover {
     background: #f44336;
     transform: scale(1.1);
 }
+
+
 
 /* Suggestions dropdown */
 .suggestions-dropdown {
@@ -1280,6 +1362,8 @@
     z-index: 100;
 }
 
+
+
 .suggestion-item {
     padding: 10px 15px;
     cursor: pointer;
@@ -1287,19 +1371,27 @@
     transition: all 0.2s;
 }
 
+
+
 .suggestion-item:hover {
     background: rgba(142, 68, 173, 0.2);
 }
 
+
+
 .suggestion-item:last-child {
     border-bottom: none;
 }
+
+
 
 /* Tableaux */
 .mr-table {
     width: 100%;
     border-collapse: collapse;
 }
+
+
 
 .mr-table th {
     background: rgba(255,255,255,0.08);
@@ -1311,10 +1403,14 @@
     color: #aaa;
 }
 
+
+
 .mr-table td {
     padding: 8px;
     border: 1px solid rgba(255,255,255,0.1);
 }
+
+
 
 .mr-table input,
 .mr-table textarea {
@@ -1328,15 +1424,21 @@
     padding: 4px;
 }
 
+
+
 .mr-table input:focus,
 .mr-table textarea:focus {
     background: rgba(255,255,255,0.05);
 }
 
+
+
 .mr-table textarea {
     resize: vertical;
     min-height: 40px;
 }
+
+
 
 .mr-table tr.separator-row td {
     background: rgba(255,255,255,0.05);
@@ -1345,6 +1447,8 @@
     border: none;
 }
 
+
+
 /* Task chips dans les tableaux */
 .task-chips-container {
     margin-top: 8px;
@@ -1352,6 +1456,8 @@
     flex-wrap: wrap;
     gap: 6px;
 }
+
+
 
 .task-chip {
     padding: 4px 8px;
@@ -1366,11 +1472,253 @@
     transition: all 0.2s;
 }
 
+
+
 .task-chip:hover {
     background: rgba(76, 175, 80, 0.3);
 }
 
+
+
 /* Cartes CR dans la liste */
+.mr-card {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-left: 4px solid;
+    border-radius: 8px;
+    padding: 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+
+
+.mr-card:hover {
+    background: rgba(255,255,255,0.08);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+}
+
+
+
+.mr-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+
+
+.mr-card-title {
+    font-size: 16px;
+    font-weight: 600;
+    flex: 1;
+    color: #f5f5f7;
+}
+
+
+
+.mr-status-badge {
+    padding: 5px 14px;
+    border-radius: 14px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+
+
+.mr-status-brouillon {
+    background: rgba(158, 158, 158, 0.2);
+    color: #bdbdbd;
+    border: 1px solid rgba(158, 158, 158, 0.3);
+}
+
+
+
+.mr-status-encours {
+    background: rgba(255, 152, 0, 0.2);
+    color: #ffb74d;
+    border: 1px solid rgba(255, 152, 0, 0.3);
+}
+
+
+
+.mr-status-valide {
+    background: rgba(76, 175, 80, 0.2);
+    color: #81c784;
+    border: 1px solid rgba(76, 175, 80, 0.3);
+}
+
+
+
+.mr-meta {
+    display: flex;
+    gap: 20px;
+    font-size: 13px;
+    color: #aaa;
+    margin-top: 10px;
+}
+
+
+
+.mr-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 12px;
+}
+
+
+
+.mr-tag {
+    padding: 4px 10px;
+    background: rgba(142, 68, 173, 0.15);
+    color: #ba68c8;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 500;
+    border: 1px solid rgba(142, 68, 173, 0.25);
+}
+
+
+
+/* Boutons spécifiques CR */
+.btn-small {
+    padding: 6px 12px;
+    font-size: 12px;
+}
+
+
+
+/* Help icon */
+.help-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 50%;
+    font-size: 12px;
+    cursor: help;
+    color: #aaa;
+}
+
+
+
+/* Intégration calendrier */
+.calendar-task.meeting {
+    background: rgba(142, 68, 173, 0.2) !important;
+    border-left-color: #8e44ad !important;
+    color: #ba68c8 !important;
+}
+
+
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .form-grid-4, .user-grid-4 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .resource-item {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+}
+
+
+
+
+
+/* GARANTIE VISIBILITÉ BOUTON RÉUNIONS */
+button[onclick*="reunions"] {
+    display: inline-flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    position: relative !important;
+    z-index: 10 !important;
+    order: -1 !important; /* Premier dans le flex */
+    background: rgba(142, 68, 173, 0.2) !important;
+    border: 1.5px solid rgba(142, 68, 173, 0.6) !important;
+}
+
+
+
+/* S'assurer que view-selector affiche tout */
+.view-selector {
+    display: flex !important;
+    gap: 10px !important;
+    flex-wrap: wrap !important;
+    overflow: visible !important;
+}
+
+    
+        /* ============================================ */
+        /* TAGS EN BULLES - DESIGN MODERNE ÉPURÉ      */
+        /* ============================================ */
+
+        .tag-bubble {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 14px;
+            background: rgba(100, 149, 237, 0.12);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(100, 149, 237, 0.25);
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+            color: #8ab4f8;
+            transition: all 0.2s ease;
+            cursor: default;
+        }
+
+        .tag-bubble:hover {
+            background: rgba(100, 149, 237, 0.18);
+            border-color: rgba(100, 149, 237, 0.4);
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(100, 149, 237, 0.2);
+        }
+
+        .tag-label {
+            color: #e8eaed;
+            font-weight: 500;
+        }
+
+        .tag-remove {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            height: 20px;
+            padding: 0;
+            margin: 0;
+            background: rgba(255, 255, 255, 0.08);
+            border: none;
+            border-radius: 50%;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 18px;
+            font-weight: 400;
+            line-height: 1;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .tag-remove:hover {
+            background: rgba(255, 59, 48, 0.2);
+            color: #ff3b30;
+            transform: scale(1.1);
+        }
+
+        .tag-remove:active {
+            transform: scale(0.95);
+        }
+
+    
+
+        /* Cartes CR dans la liste */
 .mr-card {
     background: rgba(255,255,255,0.05);
     border: 1px solid rgba(255,255,255,0.1);
@@ -1457,76 +1805,566 @@
     font-size: 12px;
 }
 
-/* Help icon */
-.help-icon {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 18px;
-    height: 18px;
-    background: rgba(255,255,255,0.1);
-    border-radius: 50%;
-    font-size: 12px;
-    cursor: help;
-    color: #aaa;
+
+    
+/* ========== FULL PAGE CR FORM - V88 ========== */
+
+.mr-fullpage-form {
+    display: none;
+    position: fixed;
+    top: 0;           /* Full-screen complet */
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100vh;    /* 100% hauteur */
+    background: #1a1a1a;
+    z-index: 9999;    /* Au-dessus de tout */
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
-/* Intégration calendrier */
-.calendar-task.meeting {
-    background: rgba(142, 68, 173, 0.2) !important;
-    border-left-color: #8e44ad !important;
-    color: #ba68c8 !important;
+.mr-fullpage-form.active {
+    display: flex;
+    flex-direction: column;
+}
+
+.mr-fullpage-form.active {
+    display: block;
+}
+
+.mr-fullpage-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(40,40,40,0.98);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(100,149,237,0.3);
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.mr-fullpage-header-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.mr-back-btn {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: #f5f5f7;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.2s;
+}
+
+.mr-back-btn:hover {
+    background: rgba(255,255,255,0.15);
+}
+
+.mr-fullpage-title {
+    font-size: 1.5rem;
+    color: #6495ed;
+    margin: 0;
+}
+
+.mr-fullpage-actions {
+    display: flex;
+    gap: 1rem;
+}
+
+.mr-fullpage-body {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+/* Champ Tags/Ressources moderne avec inline chips */
+.modern-chip-input-container {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 12px;
+    padding: 0.75rem;
+    min-height: 60px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: center;
+    cursor: text;
+    transition: all 0.3s;
+}
+
+.modern-chip-input-container:focus-within {
+    background: rgba(255,255,255,0.08);
+    border-color: rgba(100,149,237,0.5);
+    box-shadow: 0 0 0 3px rgba(100,149,237,0.1);
+}
+
+.chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background: rgba(100,149,237,0.2);
+    border: 1px solid rgba(100,149,237,0.3);
+    border-radius: 16px;
+    font-size: 13px;
+    color: #8ab4f8;
+    transition: all 0.2s;
+}
+
+.chip.primary-user {
+    background: rgba(255,215,0,0.2);
+    border-color: rgba(255,215,0,0.4);
+    color: #ffd700;
+    font-weight: 600;
+}
+
+.chip-remove {
+    background: rgba(255,59,48,0.2);
+    border: none;
+    color: #ff6b6b;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    transition: all 0.2s;
+    padding: 0;
+    line-height: 1;
+}
+
+.chip-remove:hover {
+    background: rgba(255,59,48,0.4);
+    transform: scale(1.1);
+}
+
+.chip-input {
+    flex: 1;
+    min-width: 200px;
+    background: transparent;
+    border: none;
+    color: #f5f5f7;
+    font-size: 14px;
+    padding: 0.4rem;
+    outline: none;
+}
+
+.chip-input::placeholder {
+    color: rgba(255,255,255,0.4);
+}
+
+/* Auto-complétion dropdown */
+.autocomplete-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    margin-top: 0.5rem;
+    background: rgba(30,30,30,0.98);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(100,149,237,0.3);
+    border-radius: 12px;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 1000;
+    display: none;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+}
+
+.autocomplete-dropdown.show {
+    display: block;
+}
+
+.autocomplete-item {
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    color: #f5f5f7;
+}
+
+.autocomplete-item:hover, .autocomplete-item.selected {
+    background: rgba(100,149,237,0.2);
+}
+
+.autocomplete-item:last-child {
+    border-bottom: none;
+}
+
+.autocomplete-item-new {
+    color: #4caf50;
+    font-style: italic;
+}
+
+/* Form groups modernes */
+.form-group-modern {
+    margin-bottom: 1.5rem;
+}
+
+.form-group-modern label {
+    display: block;
+    font-weight: 600;
+    color: rgba(255,255,255,0.9);
+    margin-bottom: 0.75rem;
+    font-size: 14px;
+}
+
+.form-input-modern {
+    width: 100%;
+    padding: 0.875rem 1rem;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 12px;
+    color: #f5f5f7;
+    font-size: 14px;
+    transition: all 0.3s;
+    font-family: inherit;
+}
+
+.form-input-modern:focus {
+    background: rgba(255,255,255,0.08);
+    border-color: rgba(100,149,237,0.5);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(100,149,237,0.1);
+}
+
+.form-input-modern::placeholder {
+    color: rgba(255,255,255,0.3);
+}
+
+/* Layout 2 colonnes desktop */
+@media (min-width: 1024px) {
+    .mr-form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+    }
+
+    .mr-form-full {
+        grid-column: 1 / -1;
+    }
 }
 
 /* Responsive */
-@media (max-width: 1024px) {
-    .form-grid-4, .user-grid-4 {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .resource-item {
-        grid-template-columns: 1fr;
-        gap: 8px;
-    }
-}
-
 @media (max-width: 768px) {
-    .form-grid-4, .user-grid-4 {
-        grid-template-columns: 1fr;
+    .mr-fullpage-header {
+        padding: 1rem;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .mr-fullpage-body {
+        padding: 1rem;
+    }
+
+    .mr-fullpage-actions {
+        width: 100%;
+        justify-content: flex-end;
     }
 }
 
 
-/* S'assurer que le header laisse de la place */
-.view-selector {
-    flex: 1; /* Prend l'espace disponible */
-    min-width: 0; /* Évite les problèmes de flex overflow */
+
+
+/* ========== CSS TABLEAUX V91 (ÉTAPES 7+8) ========== */
+
+/* Boutons insertion ligne au survol */
+.table-row-actions {
+    position: relative;
+    text-align: center;
+    padding: 0 !important;
+}
+
+.btn-insert-row {
+    background: rgba(100,149,237,0.15);
+    border: 1px solid rgba(100,149,237,0.3);
+    color: #6495ed;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 0;
+    line-height: 1;
+    transition: all 0.2s;
+    opacity: 0;
+}
+
+.mr-table tbody tr:hover .btn-insert-row {
+    opacity: 1;
+}
+
+.btn-insert-row:hover {
+    background: rgba(100,149,237,0.3);
+    transform: scale(1.1);
+}
+
+/* Ligne séparatrice */
+.mr-table tr.separator-row td {
+    background: rgba(255,255,255,0.05);
+    height: 8px;
+    padding: 0;
+    border: none;
+}
+
+/* Textareas multi-lignes (ÉTAPE 6) */
+.mr-table textarea {
+    resize: vertical;
+    min-height: 34px;
+    height: 34px;
+    padding: 8px;
+    overflow: hidden;
+    line-height: 1.4;
+    width: 100%;
+    background: transparent;
+    border: none;
+    color: #f5f5f7;
+    font-family: inherit;
+    font-size: 13px;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.mr-table textarea:focus {
+    min-height: 60px;
+    background: rgba(255,255,255,0.05);
+    position: relative;
+    z-index: 10;
+    border-radius: 4px;
+}
+
+/* Boutons petits */
+.btn-small {
+    padding: 6px 12px;
+    font-size: 12px;
 }
 
 
-/* Réunions: bouton actif (texte bleu + contour violet) */
-#btn-reunions.active {
-    color: #6495ed !important;
-    border-color: #8e44ad !important;
-    box-shadow: 0 4px 15px rgba(142, 68, 173, 0.35) !important;
+
+
+/* ========== LAYOUT VERTICAL V93 ========== */
+
+.mr-form-vertical {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    width: 100%;
 }
 
-/* Réunions: grille de cartes */
-.meeting-reports-grid {
+/* Ligne inline pour Titre | Statut | Date */
+.mr-form-row-inline {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+}
+
+/* Responsive: passer en colonne sur mobile */
+@media (max-width: 768px) {
+    .mr-form-row-inline {
+        flex-direction: column;
+    }
+
+    .mr-form-row-inline > * {
+        flex: 1 !important;
+        width: 100% !important;
+    }
+}
+
+/* Header formulaire */
+.mr-fullpage-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    background: rgba(0,0,0,0.4);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: blur(10px);
+}
+
+.mr-fullpage-header-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.btn-back {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.2);
+    color: #f5f5f7;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-back:hover {
+    background: rgba(255,255,255,0.1);
+    border-color: rgba(255,255,255,0.3);
+}
+
+.mr-fullpage-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: #f5f5f7;  /* Blanc */
+    margin: 0;
+}
+
+.mr-fullpage-actions {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+}
+
+/* Body formulaire */
+.mr-fullpage-body {
+    flex: 1;
+    padding: 2rem 1.5rem;
+    overflow-y: auto;
+}
+
+/* Sections checkboxes */
+.sections-checkboxes {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 0.5rem;
+    padding: 0.75rem;
+    background: rgba(255,255,255,0.02);
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.05);
+}
+
+.sections-checkboxes label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.2s;
+    font-size: 13px;
+}
+
+.sections-checkboxes label:hover {
+    background: rgba(255,255,255,0.05);
+}
+
+.sections-checkboxes input[type="checkbox"] {
+    cursor: pointer;
+}
+
+
+
+        /* Fond dynamique Calendrier et Réunions - V128 (JS automatique) */
+        /* min-height calculé dynamiquement par JavaScript */
+
+/* Style pour modale plein écran */
+.modal.fullscreen-modal {
+    display: flex;
+    align-items: stretch;
+    justify-content: stretch;
+    padding: 0;
+    z-index: 9999;
+}
+
+.modal.fullscreen-modal .modal-content {
+    max-width: 100% !important;
+    max-height: 100% !important;
+    width: 100%;
+    height: 100vh;
+    margin: 0;
+    border-radius: 0;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.modal.fullscreen-modal .modal-header {
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 1000 !important;
+    background: rgba(40,40,40,0.98) !important;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 30px;
+    border-bottom: 2px solid #444;
+}
+
+.modal.fullscreen-modal .modal-header h2 {
+    margin: 0;
+    flex-grow: 1;
+    text-align: center;
+}
+
+.modal.fullscreen-modal .modal-header .close-modal {
+    display: none;
+}
+
+.modal-nav-buttons {
+    display: flex;
+    align-items: center;
     gap: 20px;
 }
 
-    </style>
+.btn-back, .btn-save-header {
+    padding: 8px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.btn-back {
+    background: #555;
+    color: white;
+}
+
+.btn-back:hover {
+    background: #666;
+}
+
+.btn-save-header {
+    background: #4CAF50;
+    color: white;
+}
+
+.btn-save-header:hover {
+    background: #45a049;
+}
+
+</style>
 </head>
 <body>
     <div class="header">
         <button class="hamburger-menu-btn" onclick="toggleSettingsMenu()" title="Menu"><span>☰</span></button>
-        <h1>✅ KanBan DGCE</h1>
-        <button id="btn-reunions" class="view-btn" onclick="switchView('reunions')" data-section-color="#8e44ad">📋 Réunions</button>
+            <h1>✅ KanBan DGCE</h1>
         <div class="view-selector">
-            <button class="view-btn" onclick="switchView('general')">Général</button>
+            <button class="view-btn active" onclick="switchView('general')">Général</button>
             <button class="view-btn" onclick="switchView('soa')">SOA</button>
             <button class="view-btn" onclick="switchView('smsc')">SMSC</button>
             <button class="view-btn" onclick="switchView('sosc')">SOSC</button>
@@ -1539,25 +2377,13 @@
             <button class="filter-btn" onclick="filterThisWeek()">Cette semaine</button>
             <button class="filter-btn" onclick="filterThisMonth()">Ce mois</button>
             <button class="filter-btn" onclick="showCalendar()">📅 Calendrier</button>
+            <button class="filter-btn" onclick="showMeetingReportsView()">📋 Réunions</button>
         </div>
     </div>
 
     <div class="kanban-container" id="kanbanContainer"></div>
     
-    
-
-    <!-- VUE RÉUNIONS (Intégrée) -->
-    <div id="reunionsView" style="display:none; padding: 20px; height: calc(100vh - 140px); overflow-y: auto;">
-        <div style="display:flex; justify-content: space-between; align-items:center; margin-bottom: 20px; gap: 15px; flex-wrap: wrap;">
-            <h2 style="margin: 0;">📋 Comptes Rendus de Réunion</h2>
-            <button class="btn" onclick="openMeetingReportModal()"><span style="color:#ffffff; font-size:16px;">➕</span> Nouveau Compte Rendu</button>
-        </div>
-        <div id="meetingReportsList" class="meeting-reports-grid"></div>
-    </div>
-<div class="calendar-view" 
-
-    
-id="calendarView">
+    <div class="calendar-view" id="calendarView">
         
         
         <div class="calendar-navigation">
@@ -1567,6 +2393,18 @@ id="calendarView">
             <button class="filter-btn" onclick="goToToday()" style="margin:0;">Aujourd'hui</button>
         </div>
 <div class="calendar-grid" id="calendarGrid"></div>
+    </div>
+
+    <!-- Vue Réunions -->
+    <div class="meeting-reports-view" id="meetingReportsView" style="display: none; padding: 0 1em;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px; margin-bottom: 20px;">
+            <h2 style="color: #f5f5f7; font-size: 24px; margin: 0;">📋 Comptes Rendus de Réunion</h2>
+            <button class="btn" onclick="createMeetingReport()">+ Nouveau</button>
+        </div>
+
+        <div id="meetingReportsList" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 20px;">
+            <!-- Les cartes CR seront affichées ici -->
+        </div>
     </div>
 
     <div class="calendar-task-detail" id="calendarTaskDetail">
@@ -1715,6 +2553,11 @@ id="calendarView">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script>
 
+// ========================================
+// VARIABLES GLOBALES
+// ========================================
+let sections = []; // Déclaration explicite
+
 // Log sur création colonne
 function addColumnToSection(sectionId, colId) {
     let section = sections.find(s => s.id === sectionId);
@@ -1855,6 +2698,7 @@ function getSectionOrder(sectionId) {
         // Palette de 30 couleurs
         const colorPalette = [
             '#0066cc', '#4ecca3', '#ffa500', '#ff6b9d', '#9b59b6',
+            
             'rgba(255,149,0,0.3)', 'rgba(255,59,48,0.3)', 'rgba(255,204,0,0.3)',
             'rgba(52,199,89,0.3)', 'rgba(0,122,255,0.3)', 'rgba(88,86,214,0.3)',
             'rgba(175,82,222,0.3)', 'rgba(255,45,85,0.3)', 'rgba(255,99,164,0.3)',
@@ -1886,6 +2730,7 @@ function getSectionOrder(sectionId) {
 
         // Initialisation
         document.addEventListener('DOMContentLoaded', () => {
+            initSections(); // Charger les sections AVANT tout le reste
             loadAppTitle();
             renderKanban();
             initializeColorPicker();
@@ -2132,14 +2977,24 @@ if (currentSection && currentSection.columns) {
                 }
             }
 
-            // 2. Gestion intelligente Calendrier vs Kanban
+            // 2. Masquer la vue Réunions
+            const mrView = document.getElementById('meetingReportsView');
+            if (mrView) mrView.style.display = 'none';
+
+            // 3. Gestion intelligente Calendrier vs Kanban
             const calendarView = document.getElementById('calendarView');
             const isCalendarOpen = calendarView && (
                 calendarView.classList.contains('show') ||
                 (calendarView.style.display && calendarView.style.display !== 'none')
             );
 
-            // 3. Mettre à jour la vue appropriée
+            // Afficher le Kanban sauf si calendrier ouvert
+            const kanbanContainer = document.getElementById('kanbanContainer');
+            if (kanbanContainer && !isCalendarOpen) {
+                kanbanContainer.style.display = '';  // Retour à l'affichage normal
+            }
+
+            // 4. Mettre à jour la vue appropriée
             if (isCalendarOpen) {
                 renderCalendar();
             } else {
@@ -2155,6 +3010,10 @@ if (currentSection && currentSection.columns) {
 
         // Filtres
         function showAllTasks() {
+        // Masquer la vue Réunions
+        const mrView = document.getElementById('meetingReportsView');
+        if (mrView) mrView.style.display = 'none';
+
         // Cacher le calendrier et réafficher le kanban
         document.getElementById('calendarView').classList.remove('show');
         document.getElementById('kanbanContainer').style.display = 'flex';
@@ -2166,6 +3025,10 @@ if (currentSection && currentSection.columns) {
 
         // Filtre les tâches en retard selon la vue actuelle
         function filterOverdue() {
+        // Masquer la vue Réunions
+        const mrView = document.getElementById('meetingReportsView');
+        if (mrView) mrView.style.display = 'none';
+
         // Cacher le calendrier et réafficher le kanban
         document.getElementById('calendarView').classList.remove('show');
         document.getElementById('kanbanContainer').style.display = 'flex';
@@ -2193,6 +3056,10 @@ if (currentSection && currentSection.columns) {
 
         // Filtre les tâches de cette semaine selon la vue actuelle
         function filterThisWeek() {
+        // Masquer la vue Réunions
+        const mrView = document.getElementById('meetingReportsView');
+        if (mrView) mrView.style.display = 'none';
+
         // Cacher le calendrier et réafficher le kanban
         document.getElementById('calendarView').classList.remove('show');
         document.getElementById('kanbanContainer').style.display = 'flex';
@@ -2236,6 +3103,10 @@ if (currentSection && currentSection.columns) {
 
         // Filtre les tâches de ce mois selon la vue actuelle
         function filterThisMonth() {
+        // Masquer la vue Réunions
+        const mrView = document.getElementById('meetingReportsView');
+        if (mrView) mrView.style.display = 'none';
+
         // Cacher le calendrier et réafficher le kanban
         document.getElementById('calendarView').classList.remove('show');
         document.getElementById('kanbanContainer').style.display = 'flex';
@@ -2338,7 +3209,17 @@ if (currentSection && currentSection.columns) {
             document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
 
             document.getElementById('kanbanContainer').style.display = 'none';
-            document.getElementById('calendarView').classList.add('show');
+
+            // Masquer la vue Réunions
+            const mrView = document.getElementById('meetingReportsView');
+            if (mrView) mrView.style.display = 'none';
+
+            // Afficher le calendrier (réinitialiser style.display avant classList)
+            const calendarView = document.getElementById('calendarView');
+            if (calendarView) {
+                calendarView.style.display = '';  // Retirer inline style (priorité sur classe)
+                calendarView.classList.add('show');
+            }
             renderCalendar();
         }
 
@@ -3320,8 +4201,12 @@ Continuer ?`;
                 cards: cards,
                 sections: sections,
                 columnOrders: columnOrders,
+                meetingReports: meetingReports,
+                resources: resources,
+                meetingTags: meetingTags,
+                mainUser: JSON.parse(localStorage.getItem('mainUser') || 'null'),
                 exportDate: new Date().toISOString(),
-                version: '3.0'
+                version: '4.1'
             };
 
             const jsonString = JSON.stringify(data, null, 2);
@@ -3468,6 +4353,80 @@ Continuer ?`;
                         console.log('Import - Cartes après:', cards.length);
 
                         
+                        
+                        // Merge meetingReports (même logique que cards avec lastUpdated)
+                        if (data.meetingReports && Array.isArray(data.meetingReports)) {
+                            data.meetingReports.forEach(mr => {
+                                if (!mr) return;
+                                if (!mr.lastUpdated) mr.lastUpdated = mr.id || Date.now();
+
+                                const existing = meetingReports.find(m => m.id === mr.id);
+                                if (!existing) {
+                                    meetingReports.push(mr);
+                                    console.log('Ajout CR:', mr.id);
+                                } else {
+                                    const existingTime = existing.lastUpdated || existing.id || 0;
+                                    if (mr.lastUpdated > existingTime) {
+                                        Object.assign(existing, mr);
+                                        console.log('Mise à jour CR:', mr.id);
+                                    }
+                                }
+                            });
+                            console.log('Import - CR après:', meetingReports.length);
+                        }
+
+                        // Merge resources (normalise le format objet)
+                        if (data.resources && Array.isArray(data.resources)) {
+                            data.resources.forEach(res => {
+                                if (!res) return;
+
+                                // Extraire le nom (support string ou objet)
+                                const resName = typeof res === 'string' ? res : res.name;
+                                if (!resName) return;
+
+                                const existing = resources.find(r => 
+                                    (typeof r === 'string' ? r : r.name) === resName
+                                );
+
+                                if (!existing) {
+                                    // Garder le format objet complet si disponible
+                                    resources.push(res);
+                                    console.log('Ajout ressource:', resName);
+                                } else if (typeof res === 'object' && typeof existing === 'object') {
+                                    // Mettre à jour si les deux sont des objets
+                                    Object.assign(existing, res);
+                                    console.log('Mise à jour ressource:', resName);
+                                }
+                            });
+                            console.log('Import - Ressources après:', resources.length);
+                        }
+
+                        // Merge meetingTags (accepte string ou objet)
+                        if (data.meetingTags && Array.isArray(data.meetingTags)) {
+                            data.meetingTags.forEach(tag => {
+                                if (!tag) return;
+
+                                // Support format string ET objet
+                                const tagName = typeof tag === 'string' ? tag : tag.name;
+                                if (!tagName) return;
+
+                                const existing = meetingTags.find(t => t === tagName);
+                                if (!existing) {
+                                    meetingTags.push(tagName);  // Garder format string
+                                    console.log('Ajout tag:', tagName);
+                                }
+                                // Pas de mise à jour pour les strings simples
+                            });
+                            console.log('Import - Tags après:', meetingTags.length);
+
+                        // Restaurer mainUser (ressource principale) si présent
+                        if (data.mainUser && data.mainUser.name) {
+                            localStorage.setItem('mainUser', JSON.stringify(data.mainUser));
+                            console.log('Import - mainUser restauré:', data.mainUser.name);
+                            mainUser = data.mainUser;  // Recharger variable globale
+                        }
+                        }
+
                         // Restaurer les ordres de colonnes par section si disponibles
                         if (data.columnOrders) {
                             Object.keys(data.columnOrders).forEach(sectionId => {
@@ -3480,12 +4439,21 @@ Continuer ?`;
                         }
 
                         saveToLocalStorage();
+                        localStorage.setItem('meetingReports', JSON.stringify(meetingReports));
+                        localStorage.setItem('resources', JSON.stringify(resources));
+                        localStorage.setItem('meetingTags', JSON.stringify(meetingTags));
                         renderSectionsList();
                         updateSectionButtons();
                         updateSectionSelect();
                         updateAllViews();
 
                         alert('✅ Données importées et fusionnées avec succès !');
+
+                        // Rafraîchir l'affichage si on est sur la page paramètres
+                        const settingsContent = document.getElementById('settingsContent');
+                        if (settingsContent && settingsContent.style.display === 'block') {
+                            renderSettingsPage();
+                        }
                     } catch (error) {
                         console.error('Erreur lors de l\'importation:', error);
                         alert('❌ Erreur lors de l\'importation: ' + error.message);
@@ -3498,7 +4466,7 @@ Continuer ?`;
 
         // Efface toutes les données
         function clearAllData() {
-            if (!confirm('⚠️ ATTENTION !\n\nCette action va :\n• Effacer TOUTES les tâches\n• Effacer TOUTES les colonnes\n• Effacer TOUTES les sections\n\nVotre titre personnalisé sera conservé.\n\nContinuer ?')) {
+            if (!confirm('⚠️ ATTENTION !\n\nCette action va :\n• Effacer TOUTES les tâches\n• Effacer TOUTES les colonnes\n• Effacer TOUTES les sections\n• Effacer TOUS les comptes rendus de réunion\n\n⚠️ Le titre, ressources et tags seront conservés.\n\nContinuer ?')) {
                 return;
             }
 
@@ -3515,6 +4483,10 @@ Continuer ?`;
 
             // Effacer toutes les sections
             sections = [];
+
+            // Effacer tous les comptes rendus
+            meetingReports = [];
+            localStorage.setItem('meetingReports', JSON.stringify(meetingReports));
 
             // Nettoyer TOUS les ordres de colonnes dans localStorage
             Object.keys(localStorage).forEach(key => {
@@ -3537,7 +4509,7 @@ Continuer ?`;
         
         // Réinitialise TOTALEMENT l'application
         function resetApplication() {
-            if (!confirm('⚠️ RÉINITIALISATION TOTALE ⚠️\n\nCette action va TOUT effacer et réinitialiser l\'application aux paramètres d\'usine :\n\n• Toutes les tâches\n• Toutes les colonnes\n• Toutes les sections\n• Le titre\n\nCette action est IRRÉVERSIBLE !\n\nContinuer ?')) {
+            if (!confirm('⚠️ RÉINITIALISATION TOTALE ⚠️\n\nCette action va TOUT effacer et réinitialiser l\'application aux paramètres d\'usine :\n\n• Toutes les tâches\n• Toutes les colonnes\n• Toutes les sections\n• Tous les comptes rendus\n• Toutes les ressources\n• Tous les tags\n• Le titre\n\nCette action est IRRÉVERSIBLE !\n\nContinuer ?')) {
                 return;
             }
 
@@ -3566,6 +4538,21 @@ Continuer ?`;
                 { id: 5, name: 'Transverse', color: '#9b59b6', columns: [1, 2, 3, 4] }
             ];
 
+            // Effacer tous les comptes rendus
+            meetingReports = [];
+            localStorage.setItem('meetingReports', JSON.stringify(meetingReports));
+
+            // Effacer toutes les ressources
+            resources = [];
+            localStorage.setItem('resources', JSON.stringify(resources));
+            mainUser = {name: '', grade: '', unit: '', email: '', isMain: true};
+            localStorage.setItem('mainUser', JSON.stringify(mainUser));
+
+            // Effacer tous les tags
+            meetingTags = [];
+            localStorage.setItem('meetingTags', JSON.stringify(meetingTags));
+
+            
             // Réinitialiser le titre
             localStorage.setItem('appTitle', '✅ KanBan DGCE');
             loadAppTitle();
@@ -3702,6 +4689,7 @@ Continuer ?`;
 
             updateSectionButtons();
             updateSectionSelect();
+            updateAllViews();  // Rafraîchir toutes les vues après modification sections
 
             // Rouvrir la modale de paramètres en utilisant classList.add('show')
             const settingsModal = document.getElementById('settingsModal');
@@ -3900,7 +4888,7 @@ Continuer ?`;
             renderSectionsList();
             updateSectionButtons();
             updateSectionSelect();
-            renderKanban();
+            updateAllViews();  // Rafraîchir toutes les vues (tâches + calendrier + CR)
         }
 
         initSections();
@@ -4034,12 +5022,24 @@ Continuer ?`;
         function updateAllViews() {
             renderKanban();
             renderCalendar();
-        }
+        
+
+    // Rafraîchir la liste des CR si on est en vue Réunions
+    const mrView = document.getElementById('meetingReportsView');
+    if (mrView && mrView.style.display !== 'none') {
+        renderMeetingReportsList();
+    }
+}
 
 
 
+// ========================================
+// GESTION PARAMÈTRES + TAGS & RESSOURCES
+// ========================================
 
-// ============================================
+// Variables globales
+let availableTags = ["Urgent", "Important", "En attente"];
+let availableResources = ["Damien", "Paul", "Marie"];
 // COMPTES RENDUS DE RÉUNION - V80
 // ============================================
 
@@ -4110,6 +5110,133 @@ function openMeetingReportsListModal() {
 }
 
 // Render liste des CR
+
+
+// ========================================
+// FONCTIONS CR MANQUANTES - AJOUT V106
+// ========================================
+
+function closeMRFullPage() {
+    const form = document.getElementById('mrFullPageForm');
+    if (form) form.classList.remove('active');
+}
+
+function closeMeetingReportModal() {
+    closeModal('meetingReportModal');
+}
+
+function createMeetingReport() {
+    // Appeler openMeetingReportModal qui gère tout (sections, participants, tags)
+    openMeetingReportModal();
+}
+
+function focusChipInput(inputId) {
+    const input = document.getElementById(inputId);
+    if (input) input.focus();
+}
+
+function handleChipInputChange(event, type) {
+    // Type peut être 'tags' ou 'participants'
+    const input = event.target;
+    const value = input.value;
+
+    if (type === 'tags') {
+        showMRTagSuggestions(event);
+    } else if (type === 'participants') {
+        showParticipantSuggestions(event);
+    }
+}
+
+function insertRowBelow(tableId, button) {
+    const row = button.closest('tr');
+    const table = document.getElementById(tableId);
+    if (!table || !row) return;
+
+    const tbody = table.querySelector('tbody');
+    const newRow = row.cloneNode(true);
+
+    // Vider les inputs de la nouvelle ligne
+    newRow.querySelectorAll('input, textarea').forEach(input => {
+        input.value = '';
+    });
+
+    // Insérer après la ligne actuelle
+    if (row.nextSibling) {
+        tbody.insertBefore(newRow, row.nextSibling);
+    } else {
+        tbody.appendChild(newRow);
+    }
+}
+
+function saveMeetingReportFromFullPage() {
+    const title = document.getElementById('mrTitleFull')?.value.trim();
+    if (!title) {
+        alert('Veuillez saisir un titre');
+        return;
+    }
+
+    const mr = {
+        id: currentEditingMRId || Date.now(),
+        title: title,
+        status: document.getElementById('mrStatusFull')?.value || 'brouillon',
+        statusDate: document.getElementById('mrStatusDateFull')?.value || new Date().toISOString().split('T')[0],
+        tags: window.currentMRTags || [],
+        sections: window.currentMRSections || ['Général'],
+        participants: window.currentMRParticipants || [],
+        agendaPast: getTableData('agendaPast'),
+        agendaCurrent: getTableData('agendaCurrent'),
+        agendaNext: getTableData('agendaNext'),
+        discussions: getTableData('discussionsTable'),
+        lastUpdated: new Date().getTime()
+    };
+
+    if (currentEditingMRId) {
+        const index = meetingReports.findIndex(m => m.id === currentEditingMRId);
+        if (index >= 0) meetingReports[index] = mr;
+    } else {
+        meetingReports.push(mr);
+    }
+
+    saveMeetingReportsToStorage();
+    closeMRFullPage();
+    renderMeetingReportsList();
+}
+
+
+
+function handleChipInputKeydown(event, type) {
+    if (event.key === 'Enter') {
+        event.preventDefault();
+        if (type === 'tags') {
+            handleMRTagInput(event);
+        } else if (type === 'participants') {
+            handleParticipantInput(event);
+        }
+    } else if (event.key === 'Escape') {
+        event.target.value = '';
+        if (type === 'tags') {
+            document.getElementById('mrTagSuggestions').style.display = 'none';
+        } else if (type === 'participants') {
+            document.getElementById('mrParticipantSuggestions').style.display = 'none';
+        }
+    }
+}
+
+function showMeetingReportsView() {
+    document.getElementById('kanbanContainer').style.display = 'none';
+
+    const cal = document.getElementById('calendarView');
+    if (cal) {
+        cal.style.display = 'none';
+        cal.classList.remove('show');  // Retirer la classe aussi
+    }
+
+    const mrView = document.getElementById('meetingReportsView');
+    if (mrView) mrView.style.display = 'block';
+
+    renderMeetingReportsList();
+}
+
 function renderMeetingReportsList() {
     const container = document.getElementById('meetingReportsList');
     if (!container) return;
@@ -4130,7 +5257,12 @@ function renderMeetingReportsList() {
         const tagsHtml = mr.tags && mr.tags.length > 0 ? 
             `<div class="mr-tags">${mr.tags.map(tag => `<span class="mr-tag">${tag}</span>`).join('')}</div>` : '';
 
-        const sectionsText = mr.sections && mr.sections.length > 0 ? mr.sections.join(', ') : 'Général';
+        // Filtrer les sections obsolètes (comme dans loadMeetingReportData)
+        const validSectionNames = ['Général', ...sections.map(s => s.name)];
+        const validSections = mr.sections && mr.sections.length > 0 
+            ? mr.sections.filter(s => validSectionNames.includes(s))
+            : ['Général'];
+        const sectionsText = validSections.length > 0 ? validSections.join(', ') : 'Général';
 
         return `
             <div class="mr-card" style="border-left-color: ${borderColor};">
@@ -4155,7 +5287,15 @@ function renderMeetingReportsList() {
 
 // Ouvrir le formulaire CR
 function openMeetingReportModal(mrId = null) {
+    // Ajouter la classe fullscreen pour afficher en plein écran
+    const modal = document.getElementById('meetingReportModal');
+    modal.classList.add('fullscreen-modal');
+
+
+    console.log('openMeetingReportModal appelée avec mrId:', mrId);
+    console.log('currentEditingMR avant assignation:', currentEditingMR);
     currentEditingMR = mrId;
+    console.log('currentEditingMR après assignation:', currentEditingMR);
     const title = document.getElementById('meetingReportModalTitle');
 
     if (mrId) {
@@ -4163,6 +5303,9 @@ function openMeetingReportModal(mrId = null) {
         loadMeetingReportData(mrId);
     } else {
         title.textContent = '📋 Nouveau Compte Rendu';
+        // Réinitialiser Tags et Sections (Participants géré par resetMeetingReportForm)
+        window.currentMRTags = [];
+        window.currentMRSections = ['Général'];
         resetMeetingReportForm();
     }
 
@@ -4180,11 +5323,18 @@ function resetMeetingReportForm() {
 
     window.currentMRTags = [];
     window.currentMRSections = ['Général'];
-    window.currentMRParticipants = [{
-        name: mainUser.name, 
-        unit: mainUser.unit, 
-        isOrganizer: true
-    }];
+    // Debug: Vérifier mainUser
+    console.log('resetMeetingReportForm - mainUser:', mainUser);
+    // Ajouter mainUser seulement s'il est défini
+    if (mainUser.name && mainUser.name.trim() !== '') {
+        window.currentMRParticipants = [{
+            name: mainUser.name, 
+            unit: mainUser.unit, 
+            isOrganizer: true
+        }];
+    } else {
+        window.currentMRParticipants = [];
+    }
 
     renderMRTags();
     resetTable('agendaPast');
@@ -4203,7 +5353,14 @@ function loadMeetingReportData(mrId) {
     document.getElementById('mrStatusDate').value = mr.statusDate || '';
 
     window.currentMRTags = mr.tags || [];
-    window.currentMRSections = mr.sections || ['Général'];
+    // Filtrer les sections pour ne garder que celles qui existent
+    const validSectionNames = ['Général', ...sections.map(s => s.name)];
+    window.currentMRSections = (mr.sections || ['Général'])
+        .filter(s => validSectionNames.includes(s));
+    // Si aucune section valide, utiliser 'Général' par défaut
+    if (window.currentMRSections.length === 0) {
+        window.currentMRSections = ['Général'];
+    }
     window.currentMRParticipants = mr.participants || [{name: mainUser.name, unit: mainUser.unit, isOrganizer: true}];
 
     renderMRTags();
@@ -4245,6 +5402,9 @@ function saveMeetingReport() {
     }
 
     saveMeetingReportsToStorage();
+    console.log('saveMeetingReport - AVANT: currentEditingMR =', currentEditingMR);
+    currentEditingMR = null; // Réinitialiser le contexte
+    console.log('saveMeetingReport - APRÈS: currentEditingMR =', currentEditingMR);
     closeModal('meetingReportModal');
     renderMeetingReportsList();
 
@@ -4290,6 +5450,13 @@ function handleMRTagInput(event) {
         const value = input.value.trim();
         if (value && !window.currentMRTags.includes(value)) {
             window.currentMRTags.push(value);
+
+            // Sauvegarder aussi dans meetingTags global
+            if (!meetingTags.includes(value)) {
+                meetingTags.push(value);
+                localStorage.setItem('meetingTags', JSON.stringify(meetingTags));
+            }
+
             renderMRTags();
         }
         input.value = '';
@@ -4383,10 +5550,11 @@ function renderMRParticipants() {
     const container = document.getElementById('mrParticipantsContainer');
     if (!container) return;
 
-    const participants = window.currentMRParticipants || [];
+    // Ne pas filtrer - afficher tous les participants même si nom vide
+    const participants = (window.currentMRParticipants || []);
     container.innerHTML = participants.map((p, index) => {
         const chipClass = p.isOrganizer ? 'chip-organizer' : 'chip-attendee';
-        const icon = p.isOrganizer ? '👤 ' : '';
+        const icon = p.isOrganizer ? '⭐👤 ' : '';
         const removeBtn = p.isOrganizer ? '' : `<button class="chip-remove" onclick="removeMRParticipant(${index})">×</button>`;
 
         return `
@@ -4450,6 +5618,20 @@ function addMRParticipant(name, unit = '') {
 
     if (!window.currentMRParticipants.find(p => p.name === name)) {
         window.currentMRParticipants.push({name, unit, isOrganizer: false});
+
+        // Sauvegarder aussi dans resources global
+        if (!resources.find(r => r.name === name)) {
+            resources.push({
+                id: Date.now(),
+                name: name,
+                grade: '',
+                unit: unit || '',
+                email: '',
+                isMain: false
+            });
+            localStorage.setItem('resources', JSON.stringify(resources));
+        }
+
         renderMRParticipants();
     }
 }
@@ -4979,6 +6161,7 @@ function showMRDetail(mrId, event) {
     };
 })();
 
+
 </script>
 
 <!-- Modal Gestion Sections -->
@@ -5021,35 +6204,145 @@ function showMRDetail(mrId, event) {
     <div class="footer">
         © 2025, CEN Damien SICHAUMETTE
     </div>
-
-    <!-- ============================================ -->
-    <!-- MODALES COMPTES RENDUS DE RÉUNION - V80     -->
-    <!-- ============================================ -->
-
-    <!-- Modal Liste CR -->
-    <div class="modal" id="meetingReportsListModal">
-        <div class="modal-content" style="max-width: 1200px;">
+<div class="modal" id="tagsManagementModal">
+        <div class="modal-content" style="max-width: 800px;">
             <div class="modal-header">
-                <h2>📋 Comptes Rendus de Réunion</h2>
-                <span class="close-modal" onclick="closeModal('meetingReportsListModal')">×</span>
+                <h2>🏷️ Gestion des Tags</h2>
+                <span class="close-modal" onclick="closeModal('tagsManagementModal')">×</span>
             </div>
-            <div class="form-group" style="padding: 20px;">
-                <button class="btn" onclick="openMeetingReportModal()" style="margin-bottom: 20px;">
-                    <span style="color: #ffffff; font-size: 18px;">➕</span> Nouveau Compte Rendu
-                </button>
 
-                <div id="meetingReportsList" style="display: flex; flex-direction: column; gap: 15px;">
-                    <!-- Les CR seront affichés ici -->
+            <div style="padding: 30px;">
+                <div class="info-box">
+                    💡 <strong>Info :</strong> Ces tags seront utilisés pour catégoriser les CR et, prochainement, les tâches.
+                </div>
+
+                <div class="form-group">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                        <h3 style="margin: 0; font-size: 16px;">📋 Tags disponibles (<span id="tagCount">0</span>)</h3>
+                        <button class="btn btn-secondary btn-small" onclick="sortTags()">🔤 Trier A-Z</button>
+                    </div>
+                    <div id="tagsList" class="tags-list">
+                        <!-- Tags -->
+                    </div>
+
+                    <!-- Formulaire ajout avec plus d'espace -->
+                    <div style="margin-top: 28px;">
+                        <label>Nouveau tag</label>
+                        <div style="display: flex; gap: 10px; margin-top: 10px;">
+                            <input type="text" id="newTagInput" placeholder="ex: COPIL, Réunion hebdo, MCIC2..." style="flex: 1;">
+                            <button class="btn" onclick="addTag()">
+                                <span style="color: #ffffff; font-size: 16px;">➕</span> Ajouter
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<div class="modal" id="resourcesManagementModal">
+        <div class="modal-content" style="max-width: 1100px; max-height: 90vh; overflow-y: auto;">
+            <div class="modal-header" style="position: sticky; top: 0; z-index: 10; background: rgba(40,40,40,0.98);">
+                <h2>👥 Gestion des Ressources / Collaborateurs</h2>
+                <span class="close-modal" onclick="closeModal('resourcesManagementModal')">×</span>
+            </div>
+
+            <div style="padding: 30px;">
+                <div class="info-box">
+                    💡 <strong>Info :</strong> Cette liste est utilisée pour l'autocomplétion dans les CR et les ressources des tâches.
+                </div>
+
+                <!-- Utilisateur principal -->
+                <div class="form-group">
+                    <h3 style="margin-bottom: 15px; font-size: 16px;">⭐ Utilisateur Principal</h3>
+                    <div class="user-card">
+                        <div class="user-badge">VOUS</div>
+                        <div class="user-grid-4">
+                            <div class="form-field">
+                                <label>Nom complet *</label>
+                                <input type="text" id="mainUserName" placeholder="ex: DUPONT Jean LTN">
+                            </div>
+                            <div class="form-field">
+                                <label>Grade / Fonction</label>
+                                <input type="text" id="mainUserGrade" placeholder="ex: LTN">
+                            </div>
+                            <div class="form-field">
+                                <label>Unité / Service *</label>
+                                <input type="text" id="mainUserUnit" placeholder="ex: DGCE D2AC">
+                            </div>
+                            <div class="form-field">
+                                <label>Email (optionnel)</label>
+                                <input type="text" id="mainUserEmail" placeholder="ex: prenom.nom@...">
+                            </div>
+                        </div>
+                        <div style="display: flex; justify-content: flex-end; margin-top: 15px;">
+                            <button class="btn" onclick="saveMainUser()">💾 Enregistrer</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Liste ressources -->
+                <div class="form-group">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                        <h3 style="margin: 0; font-size: 16px;">📋 Liste des Ressources (<span id="resourceCount">0</span>)</h3>
+                    </div>
+
+                    <div id="resourcesList" class="resources-list">
+                        <!-- Liste -->
+                    </div>
+
+                    <!-- Formulaire ajout -->
+                    <div class="add-form">
+                        <h4 style="margin-bottom: 15px; font-size: 14px; display: flex; align-items: center; gap: 8px;">
+                            <span style="color: #ffffff; font-size: 18px;">➕</span> Ajouter une ressource
+                        </h4>
+                        <div class="form-grid-4">
+                            <div class="form-field">
+                                <label>Nom complet *</label>
+                                <input type="text" id="newResourceName" placeholder="ex: MARTIN Sophie">
+                            </div>
+                            <div class="form-field">
+                                <label>Grade / Fonction</label>
+                                <input type="text" id="newResourceGrade" placeholder="ex: CDT">
+                            </div>
+                            <div class="form-field">
+                                <label>Unité / Service</label>
+                                <input type="text" id="newResourceUnit" placeholder="ex: DGCE SOA">
+                            </div>
+                            <div class="form-field">
+                                <label>Email (optionnel)</label>
+                                <input type="text" id="newResourceEmail" placeholder="ex: prenom.nom@...">
+                            </div>
+                        </div>
+                        <div style="display: flex; justify-content: flex-end; margin-top: 15px;">
+                            <button class="btn" onclick="addResource()">
+                                <span style="color: #ffffff; font-size: 16px;">➕</span> Ajouter
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Boutons d'action EN BAS -->
+                    <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+                        <button class="btn btn-secondary btn-small" onclick="sortResources()">🔤 Trier A-Z</button>
+                        <button class="btn btn-secondary btn-small" onclick="exportResources()">📤 Export CSV</button>
+                        <button class="btn btn-secondary btn-small" onclick="document.getElementById('importResourcesFile').click()">📥 Import CSV</button>
+                        <input type="file" id="importResourcesFile" accept=".csv" style="display: none;" onchange="importResources(event)">
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Modal Édition CR -->
+
     <div class="modal" id="meetingReportModal">
         <div class="modal-content" style="max-width: 1200px; max-height: 90vh; overflow-y: auto;">
             <div class="modal-header" style="position: sticky; top: 0; z-index: 10; background: rgba(40,40,40,0.98);">
+                <div class="modal-nav-buttons">
+                    <button class="btn-back" onclick="cancelMeetingReport()">← Retour</button>
+                </div>
                 <h2 id="meetingReportModalTitle">📋 Nouveau Compte Rendu</h2>
+                <div class="modal-nav-buttons">
+                    <button class="btn-save-header" onclick="saveMeetingReport()">💾 Enregistrer</button>
+                </div>
                 <span class="close-modal" onclick="closeModal('meetingReportModal')">×</span>
             </div>
 
@@ -5253,233 +6546,302 @@ function showMRDetail(mrId, event) {
         </div>
     </div>
 
-    <!-- Modal Gestion des Ressources -->
-    <div class="modal" id="resourcesManagementModal">
-        <div class="modal-content" style="max-width: 1100px; max-height: 90vh; overflow-y: auto;">
-            <div class="modal-header" style="position: sticky; top: 0; z-index: 10; background: rgba(40,40,40,0.98);">
-                <h2>👥 Gestion des Ressources / Collaborateurs</h2>
-                <span class="close-modal" onclick="closeModal('resourcesManagementModal')">×</span>
+
+    <!-- ========== FULL PAGE CR FORM - V88 ========== -->
+    <div class="mr-fullpage-form" id="mrFullPageForm">
+        <!-- Header formulaire simplifié -->
+        <div class="mr-fullpage-header">
+            <div class="mr-fullpage-header-left">
+                <button class="btn-back" onclick="closeMRFullPage()" title="Retour">
+                    ← Retour
+                </button>
+                <h1 class="mr-fullpage-title" id="mrFullPageTitle">📋 Nouveau Compte Rendu</h1>
             </div>
+            <div class="mr-fullpage-actions">
+                <button class="btn" onclick="saveMeetingReportFromFullPage()">💾 Enregistrer</button>
+            </div>
+        </div>
 
-            <div style="padding: 30px;">
-                <div class="info-box">
-                    💡 <strong>Info :</strong> Cette liste est utilisée pour l'autocomplétion dans les CR et les ressources des tâches.
-                </div>
+        <!-- Contenu formulaire (layout vertical) -->
+        <div class="mr-fullpage-body">
+            <div class="mr-form-vertical">
 
-                <!-- Utilisateur principal -->
-                <div class="form-group">
-                    <h3 style="margin-bottom: 15px; font-size: 16px;">⭐ Utilisateur Principal</h3>
-                    <div class="user-card">
-                        <div class="user-badge">VOUS</div>
-                        <div class="user-grid-4">
-                            <div class="form-field">
-                                <label>Nom complet *</label>
-                                <input type="text" id="mainUserName" placeholder="ex: DUPONT Jean LTN">
-                            </div>
-                            <div class="form-field">
-                                <label>Grade / Fonction</label>
-                                <input type="text" id="mainUserGrade" placeholder="ex: LTN">
-                            </div>
-                            <div class="form-field">
-                                <label>Unité / Service *</label>
-                                <input type="text" id="mainUserUnit" placeholder="ex: DGCE D2AC">
-                            </div>
-                            <div class="form-field">
-                                <label>Email (optionnel)</label>
-                                <input type="text" id="mainUserEmail" placeholder="ex: prenom.nom@...">
-                            </div>
-                        </div>
-                        <div style="display: flex; justify-content: flex-end; margin-top: 15px;">
-                            <button class="btn" onclick="saveMainUser()">💾 Enregistrer</button>
-                        </div>
+                <!-- Ligne 1: Titre | Statut | Date -->
+                <div class="mr-form-row-inline">
+                    <div class="form-group-modern" style="flex: 2;">
+                        <label>Titre du compte rendu <span style="color:#ff6b6b">*</span></label>
+                        <input type="text" id="mrTitleFull" class="form-input-modern" 
+                               placeholder="ex: CR Réunion hebdo DGCE 24-12-2025">
+                    </div>
+                    <div class="form-group-modern" style="flex: 1;">
+                        <label>Statut</label>
+                        <select id="mrStatusFull" class="form-input-modern">
+                            <option value="brouillon">📝 Brouillon</option>
+                            <option value="encours">⏳ En cours</option>
+                            <option value="valide">✅ Validé</option>
+                        </select>
+                    </div>
+                    <div class="form-group-modern" style="flex: 1;">
+                        <label>Date</label>
+                        <input type="date" id="mrStatusDateFull" class="form-input-modern">
                     </div>
                 </div>
 
-                <!-- Liste ressources -->
-                <div class="form-group">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                        <h3 style="margin: 0; font-size: 16px;">📋 Liste des Ressources (<span id="resourceCount">0</span>)</h3>
-                    </div>
+                <!-- Sections -->
+                <div class="form-group-modern">
+                    <label>Sections du CR</label>
+                    <div class="sections-checkboxes" id="mrSectionsFullCheckboxes"></div>
+                </div>
 
-                    <div id="resourcesList" class="resources-list">
-                        <!-- Liste -->
-                    </div>
-
-                    <!-- Formulaire ajout -->
-                    <div class="add-form">
-                        <h4 style="margin-bottom: 15px; font-size: 14px; display: flex; align-items: center; gap: 8px;">
-                            <span style="color: #ffffff; font-size: 18px;">➕</span> Ajouter une ressource
-                        </h4>
-                        <div class="form-grid-4">
-                            <div class="form-field">
-                                <label>Nom complet *</label>
-                                <input type="text" id="newResourceName" placeholder="ex: MARTIN Sophie">
-                            </div>
-                            <div class="form-field">
-                                <label>Grade / Fonction</label>
-                                <input type="text" id="newResourceGrade" placeholder="ex: CDT">
-                            </div>
-                            <div class="form-field">
-                                <label>Unité / Service</label>
-                                <input type="text" id="newResourceUnit" placeholder="ex: DGCE SOA">
-                            </div>
-                            <div class="form-field">
-                                <label>Email (optionnel)</label>
-                                <input type="text" id="newResourceEmail" placeholder="ex: prenom.nom@...">
-                            </div>
+                <!-- Tags -->
+                <div class="form-group-modern">
+                    <label>Tags</label>
+                    <div style="position: relative;">
+                        <div class="modern-chip-input-container" id="mrTagsChipContainer" onclick="focusChipInput('mrTagsInput')">
+                            <input type="text" id="mrTagsInput" class="chip-input" 
+                                   placeholder="Ajouter un tag..."
+                                   onkeydown="handleChipInputKeydown(event, 'tags')"
+                                   oninput="handleChipInputChange(event, 'tags')">
                         </div>
-                        <div style="display: flex; justify-content: flex-end; margin-top: 15px;">
-                            <button class="btn" onclick="addResource()">
-                                <span style="color: #ffffff; font-size: 16px;">➕</span> Ajouter
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Boutons d'action EN BAS -->
-                    <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
-                        <button class="btn btn-secondary btn-small" onclick="sortResources()">🔤 Trier A-Z</button>
-                        <button class="btn btn-secondary btn-small" onclick="exportResources()">📤 Export CSV</button>
-                        <button class="btn btn-secondary btn-small" onclick="document.getElementById('importResourcesFile').click()">📥 Import CSV</button>
-                        <input type="file" id="importResourcesFile" accept=".csv" style="display: none;" onchange="importResources(event)">
+                        <div class="autocomplete-dropdown" id="tagsAutocomplete"></div>
                     </div>
                 </div>
+
+                <!-- Participants -->
+                <div class="form-group-modern">
+                    <label>Participants</label>
+                    <div style="position: relative;">
+                        <div class="modern-chip-input-container" id="mrParticipantsChipContainer" onclick="focusChipInput('mrParticipantsInput')">
+                            <input type="text" id="mrParticipantsInput" class="chip-input" 
+                                   placeholder="Ajouter un participant..."
+                                   onkeydown="handleChipInputKeydown(event, 'participants')"
+                                   oninput="handleChipInputChange(event, 'participants')">
+                        </div>
+                        <div class="autocomplete-dropdown" id="participantsAutocomplete"></div>
+                    </div>
+                </div>
+
+                <!-- Agenda Semaine passée -->
+                <div class="form-group-modern">
+                    <label>📅 Agenda - Semaine passée</label>
+                    <div style="overflow-x: auto; margin-top: 0.5rem;">
+                        <table id="agendaPastFull" class="mr-table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 15%;">Quand</th>
+                                    <th style="width: 10%;">Heure</th>
+                                    <th style="width: 35%;">Quoi</th>
+                                    <th style="width: 20%;">Qui</th>
+                                    <th style="width: 20%;">Notes</th>
+                                    <th style="width: 40px;"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><textarea rows="1" onkeydown="handleTableNav(event, 'agendaPast')"></textarea></td>
+                                    <td><textarea rows="1" onkeydown="handleTableNav(event, 'agendaPast')"></textarea></td>
+                                    <td><textarea rows="1" onkeydown="handleTableNav(event, 'agendaPast')"></textarea></td>
+                                    <td><textarea rows="1" onkeydown="handleTableNav(event, 'agendaPast')"></textarea></td>
+                                    <td><textarea rows="1" onkeydown="handleTableNav(event, 'agendaPast')"></textarea></td>
+                                    <td class="table-row-actions"><button type="button" class="btn-insert-row" onclick="insertRowBelow(this, 'agendaPast')" title="Insérer ligne">+</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div style="margin-top: 0.5rem; display: flex; gap: 0.5rem;">
+                        <button type="button" class="btn btn-secondary btn-small" onclick="addTableSeparator('agendaPast')">Séparateur</button>
+                        <button type="button" class="btn btn-secondary btn-small" onclick="addTableRow('agendaPastFull')">+ Ligne</button>
+                    </div>
+                </div>
+
+                <!-- Agenda Semaine en cours -->
+                <div class="form-group-modern">
+                    <label>📋 Agenda - Semaine en cours</label>
+                    <div style="overflow-x: auto; margin-top: 0.5rem;">
+                        <table id="agendaCurrentFull" class="mr-table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 15%;">Quand</th>
+                                    <th style="width: 10%;">Heure</th>
+                                    <th style="width: 35%;">Quoi</th>
+                                    <th style="width: 20%;">Qui</th>
+                                    <th style="width: 20%;">Notes</th>
+                                    <th style="width: 40px;"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><textarea rows="1" onkeydown="handleTableNav(event, 'agendaCurrent')"></textarea></td>
+                                    <td><textarea rows="1" onkeydown="handleTableNav(event, 'agendaCurrent')"></textarea></td>
+                                    <td><textarea rows="1" onkeydown="handleTableNav(event, 'agendaCurrent')"></textarea></td>
+                                    <td><textarea rows="1" onkeydown="handleTableNav(event, 'agendaCurrent')"></textarea></td>
+                                    <td><textarea rows="1" onkeydown="handleTableNav(event, 'agendaCurrent')"></textarea></td>
+                                    <td class="table-row-actions"><button type="button" class="btn-insert-row" onclick="insertRowBelow(this, 'agendaCurrent')" title="Insérer ligne">+</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div style="margin-top: 0.5rem; display: flex; gap: 0.5rem;">
+                        <button type="button" class="btn btn-secondary btn-small" onclick="addTableSeparator('agendaCurrent')">Séparateur</button>
+                        <button type="button" class="btn btn-secondary btn-small" onclick="addTableRow('agendaCurrentFull')">+ Ligne</button>
+                    </div>
+                </div>
+
+                <!-- Agenda À venir -->
+                <div class="form-group-modern">
+                    <label>🔜 Agenda - À venir</label>
+                    <div style="overflow-x: auto; margin-top: 0.5rem;">
+                        <table id="agendaNextFull" class="mr-table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 15%;">Quand</th>
+                                    <th style="width: 10%;">Heure</th>
+                                    <th style="width: 35%;">Quoi</th>
+                                    <th style="width: 20%;">Qui</th>
+                                    <th style="width: 20%;">Notes</th>
+                                    <th style="width: 40px;"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><textarea rows="1" onkeydown="handleTableNav(event, 'agendaNext')"></textarea></td>
+                                    <td><textarea rows="1" onkeydown="handleTableNav(event, 'agendaNext')"></textarea></td>
+                                    <td><textarea rows="1" onkeydown="handleTableNav(event, 'agendaNext')"></textarea></td>
+                                    <td><textarea rows="1" onkeydown="handleTableNav(event, 'agendaNext')"></textarea></td>
+                                    <td><textarea rows="1" onkeydown="handleTableNav(event, 'agendaNext')"></textarea></td>
+                                    <td class="table-row-actions"><button type="button" class="btn-insert-row" onclick="insertRowBelow(this, 'agendaNext')" title="Insérer ligne">+</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div style="margin-top: 0.5rem; display: flex; gap: 0.5rem;">
+                        <button type="button" class="btn btn-secondary btn-small" onclick="addTableSeparator('agendaNext')">Séparateur</button>
+                        <button type="button" class="btn btn-secondary btn-small" onclick="addTableRow('agendaNextFull')">+ Ligne</button>
+                    </div>
+                </div>
+
+                <!-- Discussions -->
+                <div class="form-group-modern">
+                    <label>💬 Points de discussion</label>
+                    <div style="overflow-x: auto; margin-top: 0.75rem;">
+                        <table id="discussionsTableFull" class="mr-table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 12%;">Section</th>
+                                    <th style="width: 15%;">Qui</th>
+                                    <th style="width: 20%;">Sujet</th>
+                                    <th style="width: 25%;">Point</th>
+                                    <th style="width: 28%;">Action</th>
+                                    <th style="width: 40px;"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><textarea rows="1" onkeydown="handleTableNav(event, 'discussionsTable')"></textarea></td>
+                                    <td><textarea rows="1" onkeydown="handleTableNav(event, 'discussionsTable')"></textarea></td>
+                                    <td><textarea rows="1" onkeydown="handleTableNav(event, 'discussionsTable')"></textarea></td>
+                                    <td><textarea rows="1" onkeydown="handleTableNav(event, 'discussionsTable')"></textarea></td>
+                                    <td><textarea rows="1" onkeydown="handleTableNav(event, 'discussionsTable')"></textarea></td>
+                                    <td class="table-row-actions"><button type="button" class="btn-insert-row" onclick="insertRowBelow(this, 'discussionsTable')" title="Insérer ligne">+</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div style="margin-top: 0.75rem; display: flex; gap: 0.5rem;">
+                        <button type="button" class="btn btn-secondary btn-small" onclick="addTableSeparator('discussionsTable')">Séparateur</button>
+                        <button type="button" class="btn btn-secondary btn-small" onclick="addTableRow('discussionsTableFull')">+ Ligne</button>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
 
-    <!-- Modal Gestion des Tags -->
-    <div class="modal" id="tagsManagementModal">
-        <div class="modal-content" style="max-width: 800px;">
-            <div class="modal-header">
-                <h2>🏷️ Gestion des Tags</h2>
-                <span class="close-modal" onclick="closeModal('tagsManagementModal')">×</span>
-            </div>
 
-            <div style="padding: 30px;">
-                <div class="info-box">
-                    💡 <strong>Info :</strong> Ces tags seront utilisés pour catégoriser les CR et, prochainement, les tâches.
-                </div>
 
-                <div class="form-group">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                        <h3 style="margin: 0; font-size: 16px;">📋 Tags disponibles (<span id="tagCount">0</span>)</h3>
-                        <button class="btn btn-secondary btn-small" onclick="sortTags()">🔤 Trier A-Z</button>
-                    </div>
-                    <div id="tagsList" class="tags-list">
-                        <!-- Tags -->
-                    </div>
-
-                    <!-- Formulaire ajout avec plus d'espace -->
-                    <div style="margin-top: 28px;">
-                        <label>Nouveau tag</label>
-                        <div style="display: flex; gap: 10px; margin-top: 10px;">
-                            <input type="text" id="newTagInput" placeholder="ex: COPIL, Réunion hebdo, MCIC2..." style="flex: 1;">
-                            <button class="btn" onclick="addTag()">
-                                <span style="color: #ffffff; font-size: 16px;">➕</span> Ajouter
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 
 
-<script>
-// Réunions: vue intégrée (V92)
-(function() {
-  const origSwitchView = window.switchView;
-  const origShowCalendar = window.showCalendar;
-  const origShowAllTasks = window.showAllTasks;
-  const origFilterOverdue = window.filterOverdue;
-  const origFilterThisWeek = window.filterThisWeek;
-  const origFilterThisMonth = window.filterThisMonth;
+    <script>
 
-  function setActiveReunions(active) {
-    const btn = document.getElementById('btn-reunions');
-    if (!btn) return;
-    btn.classList.toggle('active', !!active);
-  }
+        // Ajustement ultra-précis de la hauteur - V130 (Calendrier + Réunions + Kanban)
+        function adjustViewsHeight() {
+            const header = document.querySelector('.header');
+            const calendarView = document.getElementById('calendarView');
+            const meetingReportsView = document.getElementById('meetingReportsView');
+            const kanbanContainer = document.querySelector('.kanban-container');
 
-  function hideReunionsView() {
-    const v = document.getElementById('reunionsView');
-    if (v) v.style.display = 'none';
-  }
+            if (!header) return;
 
-  function showReunionsView() {
-    const v = document.getElementById('reunionsView');
-    if (v) v.style.display = 'block';
-    if (typeof renderMeetingReportsList === 'function') {
-      renderMeetingReportsList();
+            // Mesurer toutes les hauteurs occupées
+            const headerHeight = header.offsetHeight;
+
+            // Chercher un footer s'il existe
+            const footer = document.querySelector('.footer, footer');
+            const footerHeight = footer ? footer.offsetHeight : 0;
+
+            // Calculer les marges du body
+            const bodyStyles = window.getComputedStyle(document.body);
+            const bodyMarginTop = parseFloat(bodyStyles.marginTop) || 0;
+            const bodyMarginBottom = parseFloat(bodyStyles.marginBottom) || 0;
+
+            // Hauteur totale occupée
+            const totalOccupied = headerHeight + footerHeight + bodyMarginTop + bodyMarginBottom;
+
+            // Hauteur disponible pour les vues (avec une petite marge de sécurité de 1px)
+            const viewHeight = `calc(100vh - ${totalOccupied}px - 1px)`;
+
+            // Appliquer aux vues Calendrier et Réunions
+            if (calendarView) {
+                calendarView.style.minHeight = viewHeight;
+                calendarView.style.maxHeight = viewHeight;
+            }
+            if (meetingReportsView) {
+                meetingReportsView.style.minHeight = viewHeight;
+                meetingReportsView.style.maxHeight = viewHeight;
+            }
+
+            // Appliquer au Kanban (clé pour éliminer les 7px de trop)
+            if (kanbanContainer) {
+                kanbanContainer.style.minHeight = viewHeight;
+            }
+        }
+
+        // Exécuter au chargement de la page
+        window.addEventListener('DOMContentLoaded', adjustViewsHeight);
+
+        // Exécuter lors du redimensionnement
+        window.addEventListener('resize', adjustViewsHeight);
+
+        // Exécuter après un léger délai pour garantir le rendu complet
+        setTimeout(adjustViewsHeight, 100);
+
+    
+
+// Fonction pour annuler la création/modification d'un CR
+function cancelMeetingReport() {
+    if (confirm('Voulez-vous vraiment annuler ? Les modifications non sauvegardées seront perdues.')) {
+        const modal = document.getElementById('meetingReportModal');
+        modal.classList.remove('fullscreen-modal');
+        closeModal('meetingReportModal');
     }
-  }
+}
 
-  function exitReunionsToKanban() {
-    hideReunionsView();
-    setActiveReunions(false);
-    const kanban = document.getElementById('kanbanContainer');
-    if (kanban) kanban.style.display = 'flex';
-  }
-
-  // Patch switchView
-  window.switchView = function(view) {
-    const kanban = document.getElementById('kanbanContainer');
-    const cal = document.getElementById('calendarView');
-
-    if (view === 'reunions') {
-      // Désactiver les boutons de section
-      document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
-      setActiveReunions(true);
-
-      // Cacher Kanban / Calendrier
-      if (kanban) kanban.style.display = 'none';
-      if (cal) cal.classList.remove('show');
-
-      showReunionsView();
-      localStorage.setItem('currentView', 'reunions');
-      return;
+// Modification de la fermeture de la modale pour retirer la classe fullscreen
+const originalCloseModal = closeModal;
+window.closeModal = function(modalId) {
+    if (modalId === 'meetingReportModal') {
+        const modal = document.getElementById(modalId);
+        modal.classList.remove('fullscreen-modal');
     }
-
-    // Quitter Réunions
-    exitReunionsToKanban();
-
-    // Revenir au comportement standard
-    if (typeof origSwitchView === 'function') {
-      origSwitchView(view);
+    if (typeof originalCloseModal === 'function') {
+        originalCloseModal(modalId);
+    } else {
+        document.getElementById(modalId).style.display = 'none';
     }
-  };
+};
 
-  // Patch calendrier et filtres pour sortir de Réunions
-  window.showCalendar = function() {
-    exitReunionsToKanban();
-    if (typeof origShowCalendar === 'function') return origShowCalendar();
-  };
-  window.showAllTasks = function() {
-    exitReunionsToKanban();
-    if (typeof origShowAllTasks === 'function') return origShowAllTasks();
-  };
-  window.filterOverdue = function() {
-    exitReunionsToKanban();
-    if (typeof origFilterOverdue === 'function') return origFilterOverdue();
-  };
-  window.filterThisWeek = function() {
-    exitReunionsToKanban();
-    if (typeof origFilterThisWeek === 'function') return origFilterThisWeek();
-  };
-  window.filterThisMonth = function() {
-    exitReunionsToKanban();
-    if (typeof origFilterThisMonth === 'function') return origFilterThisMonth();
-  };
-
-  // Au chargement: restaurer la vue si besoin
-  document.addEventListener('DOMContentLoaded', () => {
-    const saved = localStorage.getItem('currentView');
-    if (saved === 'reunions') {
-      window.switchView('reunions');
-    }
-  });
-})();
 </script>
-
 </body>
 </html>
